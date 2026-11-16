@@ -11,17 +11,11 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-La demo usa el dataset real depurado por Kiara para TACCtico a partir de publicaciones de Mercado Libre Argentina. El CSV validado de la captura del 14/11/2026 tiene 363 publicaciones únicas. Pedí el archivo al equipo por el canal autorizado y copialo con el siguiente comando si lo guardaste en Descargas:
+La demo usa el dataset real depurado por Kiara a partir de publicaciones de Mercado Libre Argentina. El [CSV validado](data_public/mercadolibre_validado_2026-11-14.csv) contiene **363 publicaciones únicas**. Los precios corresponden a la captura del **14/11/2026**. Copiá el archivo publicado a la ubicación que lee la app:
 
 ```powershell
 New-Item -ItemType Directory -Force data_real | Out-Null
-Copy-Item -LiteralPath "$env:USERPROFILE/Downloads/mercadolibre_validado.csv" -Destination data_real/mercadolibre_validado.csv
-```
-
-Si recibiste `dataset_util.csv` y `dataset_final.csv` del mismo lote, generá ese archivo con el importador:
-
-```powershell
-.\.venv\Scripts\python.exe scripts/importar_mercadolibre.py "$env:USERPROFILE/Downloads/dataset_util.csv" data_real/mercadolibre_validado.csv --original "$env:USERPROFILE/Downloads/dataset_final.csv"
+Copy-Item -LiteralPath data_public/mercadolibre_validado_2026-11-14.csv -Destination data_real/mercadolibre_validado.csv
 ```
 
 Iniciá Streamlit desde la raíz del proyecto y mantené abierta la terminal. En macOS o Linux, el intérprete del entorno es `.venv/bin/python`.
@@ -32,7 +26,10 @@ Iniciá Streamlit desde la raíz del proyecto y mantené abierta la terminal. En
 
 [Abrir la demo local en el navegador](http://127.0.0.1:8501)
 
-En **Catálogo**, filtrá por insumo o título. En **Calculadora de compras**, elegí un insumo e ingresá una cantidad. La recomendación muestra el menor importe de mercadería estimado para cubrir el pedido con presentaciones enteras. Agregá una oferta a la lista, ajustá la cantidad y descargá el PDF. El presupuesto indica los cargos confirmados con el proveedor y los que quedan por confirmar.
+1. En **Catálogo**, comprobá que aparezcan 363 publicaciones y filtrá por insumo o título.
+2. En **Calculadora de compras → Por cantidad → Peso (kg o g)**, elegí **Polvo hornear**. En **Acotar ofertas → Publicaciones para comparar**, seleccioná `MLA3573151270`, `MLA1824200300` y `MLA3325209494`.
+3. Seleccioná gramos. Con `250` debería recomendar la presentación de **ARS 3.509,00**. Con `1.000` debería recomendar la de **ARS 6.639,00** para cubrir 1 kg. Los importes representan la mercadería de la captura.
+4. Agregá la oferta a la lista y descargá el PDF. Si el IVA y el envío siguen pendientes, el PDF muestra el **Importe conocido**.
 
 ## Esquema del CSV
 
@@ -83,6 +80,6 @@ El primer comando ejecuta casos del motor de compras y presupuesto. El segundo r
 
 ## Fuentes y licencias
 
-- Las publicaciones provienen de Mercado Libre Argentina. El CSV enlaza a cada ficha y conserva la fecha de captura. Los términos del programa de desarrolladores documentan el régimen de uso de la API y su contenido. La redistribución de la captura del equipo requiere una autorización aplicable. [Mercado Libre Argentina](https://www.mercadolibre.com.ar/), [Términos del programa de desarrolladores](https://developers.mercadolibre.com.ar/es_ar/es-ar-terminos-y-condiciones)
+- Las publicaciones provienen de Mercado Libre Argentina. El equipo autorizó este CSV validado para acompañar el portafolio del Capstone. El archivo enlaza a cada publicación y conserva su fecha de captura. [Mercado Libre Argentina](https://www.mercadolibre.com.ar/), [Términos del programa de desarrolladores](https://developers.mercadolibre.com.ar/es_ar/es-ar-terminos-y-condiciones)
 - Streamlit se distribuye bajo Apache 2.0. Pandas usa BSD de tres cláusulas y ReportLab usa BSD. [Streamlit](https://streamlit.io/terms-of-use), [pandas](https://github.com/pandas-dev/pandas/blob/v2.3.3/LICENSE), [ReportLab](https://pypi.org/project/reportlab/5.1.0/)
 - El equipo debe confirmar la licencia de su código antes de agregar un archivo `LICENSE` con permisos de reutilización.

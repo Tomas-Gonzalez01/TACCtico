@@ -16,3 +16,4 @@ secrets*.json
 /make/*
 !/make/README.md
 *.csv
+!/data_public/mercadolibre_validado_2026-11-14.csv

@@ -1,0 +1,129 @@
+[data-testid="stMainBlockContainer"] {
+    max-width: 96rem;
+    padding-top: 3.75rem;
+}
+
+.tacctico-header {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(5rem, 12vw, 9rem);
+    align-items: center;
+    gap: clamp(.8rem, 4vw, 2.5rem);
+    padding: clamp(1rem, 3vw, 2.2rem) clamp(1.1rem, 4vw, 3.35rem);
+    border-radius: 1.5rem;
+    color: #f8f9f0;
+    background: linear-gradient(110deg, #083c31, #165b42 60%, #367242);
+}
+
+.tacctico-header::before,
+.tacctico-header::after {
+    position: absolute;
+    z-index: -1;
+    content: "";
+    pointer-events: none;
+    border-radius: 48% 50% 0 0;
+    transform: rotate(-18deg);
+}
+
+.tacctico-header::before {
+    inset: 36% -14% -135% 52%;
+    background: #b7d49a2e;
+}
+
+.tacctico-header::after {
+    inset: 64% -18% -156% 46%;
+    background: #b7d49a24;
+}
+
+.tacctico-header h1 {
+    margin: 0;
+    padding: 0;
+    color: inherit;
+    font-size: clamp(1.8rem, 4vw, 3.55rem);
+    line-height: 1.05;
+    letter-spacing: -.045em;
+    text-wrap: balance;
+}
+
+.tacctico-header p { margin: .55rem 0 0; color: #e5efdd; }
+
+.tacctico-header img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 .45rem 1.35rem #092d2645;
+}
+
+.st-key-seccion [role="radiogroup"] {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: .3rem;
+    padding: .3rem;
+    border: 1px solid #80967850;
+    border-radius: .95rem;
+    background: #728a4610;
+}
+
+.st-key-seccion [role="radiogroup"] label {
+    min-height: 2.45rem;
+    margin: 0;
+    padding: .25rem .75rem;
+    border-radius: .65rem;
+}
+
+.st-key-seccion [role="radiogroup"] label:has(input:checked) {
+    background: #1763441a;
+    font-weight: 700;
+    box-shadow: 0 1px 3px #17372914;
+}
+
+.st-key-seccion [role="radiogroup"] label:has(input:focus-visible) {
+    outline: 2px solid #4f8d66;
+    outline-offset: -2px;
+}
+
+.st-key-catalogo_resumen [data-testid="stMetric"],
+.st-key-oferta_recomendada {
+    padding: .8rem 1rem;
+    border-radius: .9rem;
+    background: #17634414;
+    font-variant-numeric: tabular-nums;
+}
+
+.st-key-comparar_ofertas,
+.st-key-presupuesto {
+    background: #ffffff24;
+    border-radius: 1rem;
+}
+
+.st-key-presupuesto [data-testid="stMetricValue"] { font-variant-numeric: tabular-nums; }
+
+[data-testid="stMainBlockContainer"]:has(.st-key-calculadora) .tacctico-header {
+    padding-block: 1rem;
+    grid-template-columns: minmax(0, 1fr) clamp(5rem, 10vw, 6rem);
+}
+
+[data-testid="stMainBlockContainer"]:has(.st-key-calculadora) .tacctico-header h1 {
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+}
+
+@media (max-width: 1050px) {
+    .st-key-calculadora [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"] .st-key-presupuesto) {
+        flex-wrap: wrap;
+    }
+
+    .st-key-calculadora [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"] .st-key-presupuesto)
+        > [data-testid="stColumn"] {
+        flex: 1 1 100%;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 640px) {
+    .tacctico-header { border-radius: 1.1rem; }
+    .tacctico-header p { font-size: .95rem; }
+    .st-key-seccion [role="radiogroup"] label { padding-inline: .5rem; }
+}

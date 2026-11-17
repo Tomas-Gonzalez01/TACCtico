@@ -2,6 +2,10 @@
 
 TACCtico es un proyecto de Capstone B2B para planificar compras de insumos sin TACC. Permite consultar publicaciones de Mercado Libre Argentina, comparar cuánto cuesta cubrir una cantidad con presentaciones enteras y exportar una lista de compras como presupuesto PDF.
 
+[Abrir TACCtico online](https://tacctico-portafolio-ucn4pkoeemkzx9fowx7ktt.streamlit.app/)
+
+La demo tiene acceso público desde el navegador. Usa 363 publicaciones reales de Kiara, con precios de la captura del 14/11/2026.
+
 ## Ejecutar la demo
 
 Con Python 3.12, abrí PowerShell en la carpeta del proyecto y prepará el entorno:

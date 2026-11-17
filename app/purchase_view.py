@@ -165,7 +165,7 @@ def show_supplier_purchase(publications, needed, unit, product_key, *, compare_s
 
 
 def show_calculator(snapshot, original):
-    st.header("Calculadora de compras", anchor=False)
+    st.header("Arma tu presupuesto", anchor=False)
     if not snapshot.is_file():
         st.info("Guardá el CSV validado de Mercado Libre en data_real/mercadolibre_validado.csv.")
         return

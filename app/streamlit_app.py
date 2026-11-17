@@ -121,10 +121,10 @@ st.html("""
     </header>
 """)
 section = st.radio(
-    "Sección", ["Catálogo", "Calculadora de compras"], horizontal=True,
+    "Sección", ["Catálogo", "Arma tu presupuesto"], horizontal=True,
     key="seccion", label_visibility="collapsed",
 )
-if section == "Calculadora de compras":
+if section == "Arma tu presupuesto":
     original = next((path for path in (ORIGINAL_CSV, DOWNLOADED_CSV) if path.is_file()), None)
     show_calculator(MARKET_CSV, original)
 elif MARKET_CSV.is_file():

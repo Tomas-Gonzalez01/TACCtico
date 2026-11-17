@@ -11,6 +11,8 @@ from purchase_engine import candidate_quotes
 
 CART = "lista_compras"
 PENDING = "reemplazo_lista"
+NOTICE = "aviso_lista"
+OFFER_REVISION = "revision_ofertas"
 TAX_OPTIONS = {"pendiente": "Sin confirmar", "incluido": "Incluido en el precio", "neto": "Agregar IVA al precio neto"}
 OFFER_PICKER = st.components.v2.component(
     "tacctico_offers",
@@ -31,10 +33,22 @@ OFFER_PICKER = st.components.v2.component(
     a { color: var(--st-primary-color, #126747); }
     button { cursor: pointer; border: 1px solid var(--st-border-color, #aaa); border-radius: .45rem;
       padding: .38rem .7rem; min-height: 2.45rem; font: inherit; font-weight: 600;
-      background: var(--st-secondary-background-color, #eee); color: var(--st-text-color, #222); }
+      background: var(--st-secondary-background-color, #eee); color: var(--st-text-color, #222);
+      transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+    button:active:not(:focus-visible):not([aria-disabled="true"]) { transform: scale(0.97); }
+    button[aria-disabled="true"] { cursor: wait; }
     :is(a, button):focus-visible { outline: 2px solid var(--st-primary-color, #126747); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      button { transition: none; }
+      button:active:not(:focus-visible):not([aria-disabled="true"]) { transform: none; }
+    }
     """,
 )
+
+
+def acknowledge_offer_event():
+    # A receipt forces the picker to render again even when its offers did not change.
+    st.session_state[OFFER_REVISION] = st.session_state.get(OFFER_REVISION, 0) + 1
 
 
 def choose_offer(quotes, product_key, *, key):
@@ -66,7 +80,8 @@ def choose_offer(quotes, product_key, *, key):
     st.markdown("**Ofertas comparables**")
     st.caption("Mercadería estimada para la cantidad pedida. Podés agregar con un botón o doble clic.")
     event = OFFER_PICKER(
-        data={"offers": rows}, key=key, on_add_offer_change=lambda: None,
+        data={"offers": rows, "revision": st.session_state.get(OFFER_REVISION, 0)},
+        key=key, on_add_offer_change=acknowledge_offer_event,
     )
     if event.add_offer in records:
         add_to_cart(product_key, records[event.add_offer])
@@ -81,17 +96,37 @@ def add_to_cart(product_key, quote):
         cart[product_key] = quote
         if st.session_state.get(PENDING, (None,))[0] == product_key:
             st.session_state.pop(PENDING, None)
+        if current != quote:
+            st.session_state[NOTICE] = (
+                "Producto agregado a tu lista." if current is None
+                else "Cantidad actualizada en tu lista."
+            )
 
 
 def replace_offer(product_key, quote):
     st.session_state[CART][product_key] = quote
     st.session_state.pop(PENDING, None)
+    st.session_state[NOTICE] = "Oferta reemplazada en tu lista."
+
+
+def keep_offer():
+    st.session_state.pop(PENDING, None)
+    st.session_state[NOTICE] = "Conservaste la oferta actual de tu lista."
 
 
 def remove_offer(product_key):
-    st.session_state[CART].pop(product_key, None)
+    removed = st.session_state[CART].pop(product_key, None)
     if st.session_state.get(PENDING, (None,))[0] == product_key:
         st.session_state.pop(PENDING, None)
+    if removed is not None:
+        st.session_state[NOTICE] = "Producto quitado de tu lista."
+
+
+def show_notice():
+    # Consume the action once so editing quantities, IVA or shipping cannot replay it.
+    message = st.session_state.pop(NOTICE, None)
+    if message:
+        st.toast(message, icon=":material/check_circle:", duration="short")
 
 
 def format_quantity_input(key, whole_units):
@@ -103,8 +138,10 @@ def format_quantity_input(key, whole_units):
 
 
 def quantity_field(label, key, *, default=None, whole_units=False):
+    if key not in st.session_state:
+        st.session_state[key] = quantity_number(default) if default is not None else ""
     text = st.text_input(
-        label, value=quantity_number(default) if default is not None else "",
+        label, value=None,
         placeholder="Sin límite" if default is None else None,
         key=key, on_change=format_quantity_input, args=(key, whole_units),
     )
@@ -116,13 +153,16 @@ def quantity_field(label, key, *, default=None, whole_units=False):
 def show_budget():
     cart = st.session_state.setdefault(CART, {})
     st.subheader("Lista de compras")
+    with st.container(key="avisos_lista"):
+        show_notice()
     pending = st.session_state.get(PENDING)
     if pending is not None:
         product_key, quote = pending
-        st.info(f"¿Querés reemplazar la oferta actual por la de {quote.offer.supplier.name}?")
-        left, right = st.columns(2)
-        left.button("Reemplazar", on_click=replace_offer, args=(product_key, quote))
-        right.button("Conservar", on_click=st.session_state.pop, args=(PENDING, None))
+        with st.container(key="confirmar_reemplazo"):
+            st.info(f"¿Querés reemplazar la oferta actual por la de {quote.offer.supplier.name}?")
+            left, right = st.columns(2)
+            left.button("Reemplazar", on_click=replace_offer, args=(product_key, quote))
+            right.button("Conservar", on_click=keep_offer)
     if not cart:
         st.info("Agregá una oferta desde la comparación para empezar tu presupuesto.")
         return

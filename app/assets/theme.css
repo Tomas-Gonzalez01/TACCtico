@@ -1,3 +1,7 @@
+:root {
+    --tacctico-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
 [data-testid="stMainBlockContainer"] {
     max-width: 96rem;
     padding-top: 3.75rem;
@@ -100,6 +104,42 @@
 }
 
 .st-key-presupuesto [data-testid="stMetricValue"] { font-variant-numeric: tabular-nums; }
+
+.st-key-presupuesto :is([data-testid="stButton"], [data-testid="stDownloadButton"]) button {
+    transition: transform 160ms var(--tacctico-ease-out);
+}
+
+.st-key-presupuesto :is([data-testid="stButton"], [data-testid="stDownloadButton"])
+    button:active:not(:focus-visible):not(:disabled) {
+    transform: scale(0.97);
+}
+
+[data-testid="stToast"] {
+    animation: none;
+    transform: none;
+    opacity: 1;
+    transition: opacity 180ms var(--tacctico-ease-out);
+}
+
+.st-key-confirmar_reemplazo {
+    opacity: 1;
+    transition: opacity 200ms var(--tacctico-ease-out);
+}
+
+@starting-style {
+    [data-testid="stToast"], .st-key-confirmar_reemplazo { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .st-key-presupuesto :is([data-testid="stButton"], [data-testid="stDownloadButton"]) button {
+        transition: none;
+    }
+
+    .st-key-presupuesto :is([data-testid="stButton"], [data-testid="stDownloadButton"])
+        button:active:not(:focus-visible):not(:disabled) {
+        transform: none;
+    }
+}
 
 [data-testid="stMainBlockContainer"]:has(.st-key-calculadora) .tacctico-header {
     padding-block: 1rem;

@@ -1,6 +1,11 @@
 export default function ({ data, parentElement, setTriggerValue }) {
   const root = parentElement.querySelector(".offer-list");
+  const focusedKey = root.getRootNode().activeElement?.dataset.offerKey;
+  const scrollTop = root.scrollTop;
+  let submitting = false;
+  let restoreFocus;
   root.replaceChildren();
+  root.removeAttribute("aria-busy");
 
   function element(tag, text, className) {
     const item = document.createElement(tag);
@@ -11,7 +16,14 @@ export default function ({ data, parentElement, setTriggerValue }) {
 
   for (const offer of data.offers) {
     const card = element("article");
-    const addOffer = () => setTriggerValue("add_offer", offer.key);
+    const addOffer = () => {
+      if (submitting) return;
+      submitting = true;
+      root.setAttribute("aria-busy", "true");
+      for (const item of root.querySelectorAll("button")) item.setAttribute("aria-disabled", "true");
+      button.textContent = "Agregando…";
+      setTriggerValue("add_offer", offer.key);
+    };
     card.ondblclick = (event) => {
       if (!event.target.closest("a, button")) {
         event.preventDefault();
@@ -30,6 +42,8 @@ export default function ({ data, parentElement, setTriggerValue }) {
     const actions = element("div", null, "offer-actions");
     const button = element("button", "Agregar a la lista");
     button.type = "button";
+    button.dataset.offerKey = offer.key;
+    if (offer.key === focusedKey) restoreFocus = button;
     button.setAttribute("aria-label", `Agregar a la lista: ${offer.title} · ${offer.seller} · ${offer.price}`);
     button.onclick = addOffer;
     const link = element("a", "Ver publicación");
@@ -41,4 +55,6 @@ export default function ({ data, parentElement, setTriggerValue }) {
     card.append(heading, figures, actions);
     root.append(card);
   }
+  root.scrollTop = scrollTop;
+  restoreFocus?.focus({ preventScroll: true });
 }

@@ -15,7 +15,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-La demo carga automáticamente el [CSV validado de Kiara](data_public/mercadolibre_validado_2026-11-14.csv) con **363 publicaciones reales** de Mercado Libre Argentina. Los precios corresponden a la captura del **14/11/2026**. Para probar otro lote en tu computadora, guardá una copia validada en `data_real/mercadolibre_validado.csv`.
+La demo carga automáticamente el [CSV validado de Kiara](../data_public/mercadolibre_validado_2026-11-14.csv) con **363 publicaciones reales** de Mercado Libre Argentina. Los precios corresponden a la captura del **14/11/2026**. Para probar otro lote en tu computadora, guardá una copia validada en `data_real/mercadolibre_validado.csv`.
 
 Iniciá Streamlit desde la raíz del proyecto y mantené abierta la terminal. En macOS o Linux, el intérprete del entorno es `.venv/bin/python`.
 
@@ -26,9 +26,11 @@ Iniciá Streamlit desde la raíz del proyecto y mantené abierta la terminal. En
 [Abrir la demo local en el navegador](http://127.0.0.1:8501)
 
 1. En **Catálogo**, comprobá que aparezcan 363 publicaciones y filtrá por insumo o título.
-2. En **Calculadora de compras → Por cantidad → Peso (kg o g)**, elegí **Polvo hornear**. En **Acotar ofertas → Publicaciones para comparar**, seleccioná `MLA3573151270`, `MLA1824200300` y `MLA3325209494`.
+2. En **Arma tu presupuesto → Por cantidad → Peso (kg o g)**, elegí **Polvo hornear**. En **Acotar ofertas → Publicaciones para comparar**, seleccioná `MLA3573151270`, `MLA1824200300` y `MLA3325209494`.
 3. Seleccioná gramos. Con `250` debería recomendar la presentación de **ARS 3.509,00**. Con `1.000` debería recomendar la de **ARS 6.639,00** para cubrir 1 kg. Los importes representan la mercadería de la captura.
 4. Agregá la oferta a la lista y descargá el PDF. El presupuesto incluye el logo de TACCtico, un resumen de mercadería, IVA y envío, y el detalle por proveedor con cantidades, precios y enlaces a las publicaciones. Si el IVA y el envío siguen pendientes, muestra el **Importe conocido** y los conceptos por confirmar. Las listas largas repiten el encabezado y numeran sus páginas.
+
+Al agregar, actualizar, conservar, reemplazar o quitar una oferta aparece una confirmación breve. Cambiar cantidades, IVA o envío no repite avisos anteriores. Los botones responden al mouse o al toque con una pulsación suave y respetan la preferencia de movimiento reducido. También se pueden usar con teclado.
 
 ## Esquema del CSV
 
@@ -72,10 +74,11 @@ Para reproducir el tramo de Make con una cuenta propia:
 
 ```powershell
 .\.venv\Scripts\python.exe scripts/test_purchase_engine.py
+.\.venv\Scripts\python.exe scripts/test_budget_interactions.py
 .\.venv\Scripts\python.exe scripts/validar_demo.py
 ```
 
-El primer comando ejecuta casos del motor de compras y presupuesto. El segundo requiere el CSV validado y verifica que el catálogo cargue sus publicaciones y que funcione la búsqueda. En la demo, contrastá el precio por kg con el importe del pedido y descargá el PDF con la misma cantidad seleccionada.
+Los comandos comprueban los cálculos, las acciones de la lista y la carga del catálogo con su búsqueda. Requieren el CSV real incluido en el repositorio o una copia local validada. En la demo, contrastá el precio por kg con el importe del pedido y descargá el PDF con la misma cantidad seleccionada.
 
 ## Fuentes y licencias
 

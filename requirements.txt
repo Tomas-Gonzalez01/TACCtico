@@ -1,3 +1,4 @@
+# Dependencias de la interfaz Arma tu presupuesto (actualizacion completa 2026-11-17).
 streamlit==1.54.0
 pandas==2.3.3
 reportlab==5.1.0

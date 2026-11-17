@@ -28,7 +28,7 @@ Iniciá Streamlit desde la raíz del proyecto y mantené abierta la terminal. En
 1. En **Catálogo**, comprobá que aparezcan 363 publicaciones y filtrá por insumo o título.
 2. En **Calculadora de compras → Por cantidad → Peso (kg o g)**, elegí **Polvo hornear**. En **Acotar ofertas → Publicaciones para comparar**, seleccioná `MLA3573151270`, `MLA1824200300` y `MLA3325209494`.
 3. Seleccioná gramos. Con `250` debería recomendar la presentación de **ARS 3.509,00**. Con `1.000` debería recomendar la de **ARS 6.639,00** para cubrir 1 kg. Los importes representan la mercadería de la captura.
-4. Agregá la oferta a la lista y descargá el PDF. Si el IVA y el envío siguen pendientes, el PDF muestra el **Importe conocido**.
+4. Agregá la oferta a la lista y descargá el PDF. El presupuesto incluye el logo de TACCtico, un resumen de mercadería, IVA y envío, y el detalle por proveedor con cantidades, precios y enlaces a las publicaciones. Si el IVA y el envío siguen pendientes, muestra el **Importe conocido** y los conceptos por confirmar. Las listas largas repiten el encabezado y numeran sus páginas.
 
 ## Esquema del CSV
 

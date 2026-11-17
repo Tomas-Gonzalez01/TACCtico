@@ -11,7 +11,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 @patch.object(sys, "path", [str(ROOT / "app"), *sys.path])
 def main():
-    with (ROOT / "data_real" / "mercadolibre_validado.csv").open(encoding="utf-8", newline="") as file:
+    from purchase_data import market_csv
+
+    with market_csv(ROOT).open(encoding="utf-8", newline="") as file:
         rows = list(csv.DictReader(file))
     app = AppTest.from_file(str(ROOT / "app" / "streamlit_app.py"), default_timeout=20).run()
     assert not app.exception and not app.error

@@ -11,12 +11,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-La demo usa el dataset real depurado por Kiara a partir de publicaciones de Mercado Libre Argentina. El [CSV validado](data_public/mercadolibre_validado_2026-11-14.csv) contiene **363 publicaciones únicas**. Los precios corresponden a la captura del **14/11/2026**. Copiá el archivo publicado a la ubicación que lee la app:
-
-```powershell
-New-Item -ItemType Directory -Force data_real | Out-Null
-Copy-Item -LiteralPath data_public/mercadolibre_validado_2026-11-14.csv -Destination data_real/mercadolibre_validado.csv
-```
+La demo carga automáticamente el [CSV validado de Kiara](data_public/mercadolibre_validado_2026-11-14.csv) con **363 publicaciones reales** de Mercado Libre Argentina. Los precios corresponden a la captura del **14/11/2026**. Para probar otro lote en tu computadora, guardá una copia validada en `data_real/mercadolibre_validado.csv`.
 
 Iniciá Streamlit desde la raíz del proyecto y mantené abierta la terminal. En macOS o Linux, el intérprete del entorno es `.venv/bin/python`.
 

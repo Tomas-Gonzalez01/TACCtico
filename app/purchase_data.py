@@ -4,9 +4,17 @@ from collections import defaultdict
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
+from pathlib import Path
 from urllib.parse import urlsplit
 
 from purchase_engine import Offer, Supplier
+
+
+def market_csv(root: Path) -> Path:
+    local = root / "data_real" / "mercadolibre_validado.csv"
+    if local.is_file():
+        return local
+    return root / "data_public" / "mercadolibre_validado_2026-11-14.csv"
 
 
 WEIGHT = r"(\d+(?:[.,]\d+)?)\s*(kg|grs?|g)\b"

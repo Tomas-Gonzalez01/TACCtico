@@ -3,13 +3,14 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
+from purchase_data import market_csv
 from purchase_view import show_calculator
 
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "app" / "assets"
 LOGO = ROOT / "app" / "static" / "logo-tacctico.png"
-MARKET_CSV = ROOT / "data_real" / "mercadolibre_validado.csv"
+MARKET_CSV = market_csv(ROOT)
 ORIGINAL_CSV = ROOT / "data_real" / "dataset_final.csv"
 DOWNLOADED_CSV = Path.home() / "Downloads" / "dataset_final.csv"
 MARKET_COLUMNS = [
@@ -44,7 +45,7 @@ def show_market_offers():
         ):
             raise ValueError("El CSV no contiene publicaciones válidas en ARS.")
     except (OSError, ValueError) as error:
-        st.error(f"No se pudo cargar el CSV validado. Revisá data_real/mercadolibre_validado.csv. {error}")
+        st.error(f"No se pudo cargar el CSV validado ({MARKET_CSV.name}). {error}")
         return
 
     st.sidebar.subheader("Filtros del catálogo", anchor=False)
@@ -116,7 +117,7 @@ st.html("""
             <h1>Compras sin TACC</h1>
             <p>Compará ofertas y armá el presupuesto de tu negocio.</p>
         </div>
-        <img src="app/static/logo-tacctico.png" alt="TACCtico" width="144" height="144">
+        <img src="app/static/logo-tacctico.png?v=2" alt="TACCtico" width="144" height="144">
     </header>
 """)
 section = st.radio(

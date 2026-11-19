@@ -109,8 +109,7 @@ def order_total(quotes):
         raise ValueError("El pedido debe incluir ofertas de un solo proveedor.")
     merchandise = [quote.merchandise_with_vat for quote in quotes]
     known = sum(
-        (gross if gross is not None else quote.merchandise
-         for gross, quote in zip(merchandise, quotes)),
+        (gross if gross is not None else quote.merchandise for gross, quote in zip(merchandise, quotes)),
         ZERO,
     )
     pending = []
@@ -143,15 +142,23 @@ def quantity_in_unit(quantity, requested_unit, offer_unit):
 
 
 def candidate_quotes(
-    offer, quantity, unit, *, budget=None, max_quantity=None, single_order=True, published=False,
+    offer,
+    quantity,
+    unit,
+    *,
+    budget=None,
+    max_quantity=None,
+    single_order=True,
+    published=False,
 ):
     """Evalúa los extremos pertinentes de cada tramo de precio por bulto."""
     if offer.pack is None or not offer.pack.is_finite() or offer.pack <= 0:
         raise ValueError("Falta confirmar el contenido del bulto.")
     if not offer.price.is_finite() or offer.price <= 0 or offer.minimum_boxes < 1:
         raise ValueError("Precio o mínimo por oferta inválido.")
-    if any(tier.boxes < 1 or not tier.rate.is_finite() or not ZERO <= tier.rate < 1
-           for tier in offer.discounts):
+    if any(
+        tier.boxes < 1 or not tier.rate.is_finite() or not ZERO <= tier.rate < 1 for tier in offer.discounts
+    ):
         raise ValueError("Descuento por volumen inválido.")
     terms = (offer.vat_rate, offer.supplier.shipping, offer.supplier.minimum_order)
     if any(value is not None and (not value.is_finite() or value < 0) for value in terms):
@@ -214,11 +221,15 @@ def supplier_options(quotes, *, bounded, published=False):
     if not confirmed:
         return None, None
     minimum = confirmed[0]
+
     def unit_cost(quote):
         return cost_for_comparison(quote, published) / quote.received
 
     if bounded:
-        best = min(confirmed, key=lambda quote: (unit_cost(quote), cost_for_comparison(quote, published), quote.surplus))
+        best = min(
+            confirmed,
+            key=lambda quote: (unit_cost(quote), cost_for_comparison(quote, published), quote.surplus),
+        )
     else:
         better = (quote for quote in confirmed[1:] if unit_cost(quote) < unit_cost(minimum))
         best = next(better, minimum)

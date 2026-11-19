@@ -1,0 +1,13 @@
+proveedor,producto,marca,categoria,cantidad,unidad,precio,iva,bulto,promocion,fecha,fuente
+Mayorista ficticio 01,Galletitas de vainilla,Marca ficticia Bruma 01,Galletitas,180,g,19800,21,12,Sin promoción,2026-11-14,MOCK_FICTICIO
+Mayorista ficticio 02,Galletitas de vainilla,Marca ficticia Bruma 01,Galletitas,180,g,17400,21,12,5% desde 3 bultos,2026-11-14,MOCK_FICTICIO
+Mayorista ficticio 03,Galletitas de vainilla,Marca ficticia Bruma 01,Galletitas,180,g,28800,21,20,Sin promoción,2026-11-14,MOCK_FICTICIO
+Mayorista ficticio 01,Fideos de arroz,Marca ficticia Bruma 02,Pastas,400,g,28500,21,15,Sin promoción,2026-11-14,MOCK_FICTICIO
+Mayorista ficticio 04,Fideos de arroz,Marca ficticia Bruma 02,Pastas,400,g,21600,21,12,Sin promoción,2026-11-14,MOCK_FICTICIO
+Mayorista ficticio 05,Fideos de arroz,Marca ficticia Bruma 02,Pastas,400,g,41400,21,24,8% desde 4 bultos,2026-11-14,MOCK_FICTICIO
+Mayorista ficticio 02,Premezcla para pan,Marca ficticia Bruma 03,Premezclas,500,g,32000,21,10,Sin promoción,2026-11-14,MOCK_FICTICIO
+Mayorista ficticio 04,Premezcla para pan,Marca ficticia Bruma 03,Premezclas,500,g,60000,21,20,Sin promoción,2026-11-14,MOCK_FICTICIO
+Mayorista ficticio 05,Premezcla para pan,Marca ficticia Bruma 03,Premezclas,500,g,34800,21,12,5% desde 2 bultos,2026-11-14,MOCK_FICTICIO
+Mayorista ficticio 01,Crackers de semillas,Marca ficticia Bruma 04,Galletitas,150,g,33600,21,24,Sin promoción,2026-11-14,MOCK_FICTICIO
+Mayorista ficticio 03,Crackers de semillas,Marca ficticia Bruma 04,Galletitas,150,g,16440,21,12,Sin promoción,2026-11-14,MOCK_FICTICIO
+Mayorista ficticio 05,Crackers de semillas,Marca ficticia Bruma 04,Galletitas,150,g,18000,21,12,10% desde 5 bultos,2026-11-14,MOCK_FICTICIO

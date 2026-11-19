@@ -1,0 +1,3 @@
+-r requirements.txt
+-r n8n/requirements-python.txt
+ruff==0.17.6

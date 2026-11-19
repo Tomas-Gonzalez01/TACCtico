@@ -12,6 +12,7 @@ from purchase_engine import Offer, Supplier
 
 def market_csv(root: Path) -> Path:
     from data_release import load_local
+
     try:
         release = load_local(root)
         if release:
@@ -52,7 +53,8 @@ def resolve_presentation(title, specs):
     match = re.fullmatch(WEIGHT, specs.get("Peso neto", "").strip(), re.IGNORECASE)
     weight = kilograms(*match.groups()) if match else None
     counts = {
-        int(specs[name]) for name in ("Unidades por pack", "Cantidad de unidades", "Cantidad de envases")
+        int(specs[name])
+        for name in ("Unidades por pack", "Cantidad de unidades", "Cantidad de envases")
         if specs.get(name, "").strip().isdigit()
     }
     multiplications = [(int(n), kilograms(w, u)) for n, w, u in PACK_BEFORE.findall(title)]
@@ -61,7 +63,11 @@ def resolve_presentation(title, specs):
     title_counts.update(int(first or second) for first, second in PACK_COUNT.findall(title))
 
     if format_name == "unidad":
-        if counts - {1} or title_counts - {1} or re.search(r"\b(pack|bulto|combo|caja)\b", title, re.IGNORECASE):
+        if (
+            counts - {1}
+            or title_counts - {1}
+            or re.search(r"\b(pack|bulto|combo|caja)\b", title, re.IGNORECASE)
+        ):
             return None, None
         title_weights = {kilograms(w, u) for w, u in re.findall(WEIGHT, title, re.IGNORECASE)}
         return 1, weight if not title_weights or title_weights == {weight} else None
@@ -93,7 +99,8 @@ def details_index(path):
     rows = read_csv(path)
     return {
         (row["idPublicacion"].strip(), datetime.fromisoformat(row["Tiempo"])): row
-        for row in rows if row.get("idPublicacion") and row.get("Tiempo")
+        for row in rows
+        if row.get("idPublicacion") and row.get("Tiempo")
     }
 
 
@@ -112,15 +119,25 @@ def load_publications(snapshot, original):
         parsed = urlsplit(url)
         price = Decimal(row["precio_publicado"])
         if (
-            not listing or not title or row["moneda"] != "ARS" or not price.is_finite() or price <= 0
-            or parsed.scheme != "https" or parsed.netloc != "articulo.mercadolibre.com.ar"
+            not listing
+            or not title
+            or row["moneda"] != "ARS"
+            or not price.is_finite()
+            or price <= 0
+            or parsed.scheme != "https"
+            or parsed.netloc != "articulo.mercadolibre.com.ar"
         ):
             raise ValueError("El CSV validado contiene una publicación con datos inválidos.")
         insumo = row.get("insumo", "")
         review = row.get("revision_presentacion", "")
         if curated:
-            units, kg = (None, None) if review else (
-                int(row["unidades"]), Decimal(row["gramos_totales"]) / 1000,
+            units, kg = (
+                (None, None)
+                if review
+                else (
+                    int(row["unidades"]),
+                    Decimal(row["gramos_totales"]) / 1000,
+                )
             )
             seller_id, seller_name = row["vendedor_id"], row["vendedor"]
             parts = [row[key] for key in ("marca", "nombre_ficha", "linea", "sabor")]
@@ -130,7 +147,8 @@ def load_publications(snapshot, original):
             detail = details.get((listing, datetime.fromisoformat(row["capturado_en"])), {})
             specs = {
                 detail[key]: detail.get(key.removesuffix("/name") + "/value", "")
-                for key in detail if key.startswith("caracteristicas/") and key.endswith("/name") and detail[key]
+                for key in detail
+                if key.startswith("caracteristicas/") and key.endswith("/name") and detail[key]
             }
             units, kg = resolve_presentation(title, specs)
             seller_id = detail.get("sellerID", "").strip()
@@ -153,20 +171,31 @@ def load_publications(snapshot, original):
             name = title
             identity = (title, listing)
         key = tuple(part.casefold().strip() for part in identity)
-        groups[key].append((name, Publication(Offer(
-            product=title,
-            supplier=seller,
-            pack=kg,
-            unit="kg",
-            price=price,
-            basis="publicado",
-            listing=listing,
-            url=url,
-            shipping_note=shipping,
-            promotion=promotion,
-            category=category,
-            captured=row["capturado_en"],
-            units_per_pack=units,
-            outlier_price=row.get("outlier_precio") == "true",
-        ), units, insumo, review, parts[0])))
+        groups[key].append(
+            (
+                name,
+                Publication(
+                    Offer(
+                        product=title,
+                        supplier=seller,
+                        pack=kg,
+                        unit="kg",
+                        price=price,
+                        basis="publicado",
+                        listing=listing,
+                        url=url,
+                        shipping_note=shipping,
+                        promotion=promotion,
+                        category=category,
+                        captured=row["capturado_en"],
+                        units_per_pack=units,
+                        outlier_price=row.get("outlier_precio") == "true",
+                    ),
+                    units,
+                    insumo,
+                    review,
+                    parts[0],
+                ),
+            )
+        )
     return groups

@@ -1,4 +1,5 @@
 """Lectura de lotes verificados. No carga ni necesita credenciales de n8n."""
+
 import hashlib
 import io
 import json
@@ -37,8 +38,9 @@ def verify_folder(folder):
 def download_google(file_id, maximum):
     if not re.fullmatch(r"[A-Za-z0-9_-]{10,120}", file_id):
         raise ValueError("Referencia de Drive inválida")
-    request = Request("https://drive.google.com/uc?export=download&id=" + file_id,
-                      headers={"User-Agent": "TACCtico/1.0"})
+    request = Request(
+        "https://drive.google.com/uc?export=download&id=" + file_id, headers={"User-Agent": "TACCtico/1.0"}
+    )
     with urlopen(request, timeout=20) as response:
         content = response.read(maximum + 1)
     if len(content) > maximum:
@@ -65,7 +67,11 @@ def load_remote(pointer_id):
         raise ValueError("No se pudo reconocer la actualización")
     target = pointer["archivos"]["paquete"]
     root = Path(tempfile.gettempdir()) / "tacctico-lotes" / batch
-    if root.exists() and (root / ".paquete_sha256").is_file() and (root / ".paquete_sha256").read_text() == target["sha256"]:
+    if (
+        root.exists()
+        and (root / ".paquete_sha256").is_file()
+        and (root / ".paquete_sha256").read_text() == target["sha256"]
+    ):
         try:
             return verify_folder(root)
         except (OSError, ValueError, KeyError):

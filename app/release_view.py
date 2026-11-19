@@ -1,4 +1,5 @@
 """Mantiene catálogo, presupuesto y análisis en una única versión por sesión."""
+
 from pathlib import Path
 
 import streamlit as st
@@ -10,10 +11,15 @@ from data_release import load_local, load_remote, remote_id
 def choose_release(root, *, refresh=False, controls=True):
     messages = st.sidebar if controls else st
     current = st.session_state.get("lote_datos")
-    refresh = st.sidebar.button(
-        "Actualizar datos", help="Si hay un lote nuevo, se empieza un presupuesto vacío para usar sus precios.",
-        key="actualizar_lote",
-    ) if controls else refresh
+    refresh = (
+        st.sidebar.button(
+            "Actualizar datos",
+            help="Si hay un lote nuevo, se empieza un presupuesto vacío para usar sus precios.",
+            key="actualizar_lote",
+        )
+        if controls
+        else refresh
+    )
     if current is None or refresh:
         try:
             pointer = remote_id(root)
@@ -62,8 +68,16 @@ def show_dashboard(release):
         st.write(metrics["metodo"])
         for limitation in metrics["limitaciones"]:
             st.write("• " + limitation)
-        st.download_button("Descargar métricas", (folder / "metricas.json").read_bytes(),
-                           file_name="metricas_tacctico.json", mime="application/json")
-        st.download_button("Descargar dashboard", (folder / "dashboard.html").read_bytes(),
-                           file_name="dashboard_tacctico.html", mime="text/html")
+        st.download_button(
+            "Descargar métricas",
+            (folder / "metricas.json").read_bytes(),
+            file_name="metricas_tacctico.json",
+            mime="application/json",
+        )
+        st.download_button(
+            "Descargar dashboard",
+            (folder / "dashboard.html").read_bytes(),
+            file_name="dashboard_tacctico.html",
+            mime="text/html",
+        )
     components.html((folder / "dashboard.html").read_text(encoding="utf-8"), height=1550, scrolling=True)

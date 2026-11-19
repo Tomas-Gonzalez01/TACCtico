@@ -15,7 +15,11 @@ CART = "lista_compras"
 PENDING = "reemplazo_lista"
 NOTICE = "aviso_lista"
 OFFER_REVISION = "revision_ofertas"
-TAX_OPTIONS = {"pendiente": "Sin confirmar", "incluido": "Incluido en el precio", "neto": "Agregar IVA al precio neto"}
+TAX_OPTIONS = {
+    "pendiente": "Sin confirmar",
+    "incluido": "Incluido en el precio",
+    "neto": "Agregar IVA al precio neto",
+}
 OFFER_PICKER = st.components.v2.component(
     "tacctico_offers",
     html='<div class="offer-list"></div>',
@@ -40,26 +44,29 @@ def choose_offer(quotes, product_key, *, key):
         records[token] = quote
         presentation = "presentación" if quote.boxes == 1 else "presentaciones"
         measure = "kg" if offer.unit == "kg" else "unidad"
-        rows.append({
-            "key": token,
-            "title": offer.product,
-            "seller": offer.supplier.name,
-            "url": offer.url,
-            "price": ars(quote.merchandise),
-            "quantities": (
-                f"{quote.boxes} {presentation} · Recibís {quantity_label(quote.received, offer.unit)}"
-                f" · Sobrante {quantity_label(quote.surplus, offer.unit)}"
-            ),
-            "unit_price": (
-                f"{ars(quote.merchandise / quote.received)} por {measure}"
-                + (" · Precio atípico" if offer.outlier_price else "")
-            ),
-        })
+        rows.append(
+            {
+                "key": token,
+                "title": offer.product,
+                "seller": offer.supplier.name,
+                "url": offer.url,
+                "price": ars(quote.merchandise),
+                "quantities": (
+                    f"{quote.boxes} {presentation} · Recibís {quantity_label(quote.received, offer.unit)}"
+                    f" · Sobrante {quantity_label(quote.surplus, offer.unit)}"
+                ),
+                "unit_price": (
+                    f"{ars(quote.merchandise / quote.received)} por {measure}"
+                    + (" · Precio atípico" if offer.outlier_price else "")
+                ),
+            }
+        )
     st.markdown("**Ofertas comparables**")
     st.caption("Mercadería estimada para la cantidad pedida. Podés agregar con un botón o doble clic.")
     event = OFFER_PICKER(
         data={"offers": rows, "revision": st.session_state.get(OFFER_REVISION, 0)},
-        key=key, on_add_offer_change=acknowledge_offer_event,
+        key=key,
+        on_add_offer_change=acknowledge_offer_event,
     )
     if event.add_offer in records:
         add_to_cart(product_key, records[event.add_offer])
@@ -76,8 +83,7 @@ def add_to_cart(product_key, quote):
             st.session_state.pop(PENDING, None)
         if current != quote:
             st.session_state[NOTICE] = (
-                "Producto agregado a tu lista." if current is None
-                else "Cantidad actualizada en tu lista."
+                "Producto agregado a tu lista." if current is None else "Cantidad actualizada en tu lista."
             )
 
 
@@ -119,9 +125,12 @@ def quantity_field(label, key, *, default=None, whole_units=False):
     if key not in st.session_state:
         st.session_state[key] = quantity_number(default) if default is not None else ""
     text = st.text_input(
-        label, value=None,
+        label,
+        value=None,
         placeholder="Sin límite" if default is None else None,
-        key=key, on_change=format_quantity_input, args=(key, whole_units),
+        key=key,
+        on_change=format_quantity_input,
+        args=(key, whole_units),
     )
     if default is None and not text.strip():
         return None
@@ -157,14 +166,18 @@ def show_budget():
             try:
                 required = quantity_field(
                     "Cantidad pedida (kg)" if offer.unit == "kg" else "Unidades pedidas",
-                    f"pedido_{widget}", default=initial.required, whole_units=offer.unit == "unidad",
+                    f"pedido_{widget}",
+                    default=initial.required,
+                    whole_units=offer.unit == "unidad",
                 )
             except ValueError as error:
                 st.error(str(error))
                 st.button("Quitar", key=f"quitar_{widget}", on_click=remove_offer, args=(product_key,))
                 continue
-            quote = initial if required == initial.required else next(
-                candidate_quotes(offer, required, offer.unit, published=True)
+            quote = (
+                initial
+                if required == initial.required
+                else next(candidate_quotes(offer, required, offer.unit, published=True))
             )
             presentation = "presentación" if quote.boxes == 1 else "presentaciones"
             st.write(
@@ -177,14 +190,20 @@ def show_budget():
                     f"{ars(quote.merchandise / quote.received)} por {offer.unit}"
                 )
                 tax_basis = st.selectbox(
-                    "IVA confirmado", list(TAX_OPTIONS), format_func=TAX_OPTIONS.__getitem__,
+                    "IVA confirmado",
+                    list(TAX_OPTIONS),
+                    format_func=TAX_OPTIONS.__getitem__,
                     key=f"iva_modo_{widget}",
                 )
                 rate = None
                 if tax_basis != "pendiente":
                     entered = st.number_input(
-                        "Alícuota confirmada (%)", min_value=0.0, max_value=100.0,
-                        value=None, step=1.0, key=f"iva_tasa_{widget}",
+                        "Alícuota confirmada (%)",
+                        min_value=0.0,
+                        max_value=100.0,
+                        value=None,
+                        step=1.0,
+                        key=f"iva_tasa_{widget}",
                     )
                     if entered is not None:
                         rate = Decimal(str(entered)) / 100
@@ -201,10 +220,18 @@ def show_budget():
     with st.expander("Envío por proveedor"):
         sellers = {line.quote.offer.supplier.identifier: line.quote.offer.supplier for line in lines}
         for seller in sellers.values():
-            label = seller.name if seller.name != "Vendedor sin confirmar" else f"{seller.name} · {seller.identifier}"
+            label = (
+                seller.name
+                if seller.name != "Vendedor sin confirmar"
+                else f"{seller.name} · {seller.identifier}"
+            )
             amount = st.number_input(
-                f"{label} (ARS)", min_value=0.0, value=None, step=100.0,
-                placeholder="Sin confirmar", key=f"envio_{seller.identifier}",
+                f"{label} (ARS)",
+                min_value=0.0,
+                value=None,
+                step=100.0,
+                placeholder="Sin confirmar",
+                key=f"envio_{seller.identifier}",
             )
             if amount is not None:
                 shipping[seller.identifier] = money(Decimal(str(amount)))
@@ -226,7 +253,10 @@ def show_budget():
             "Descargar presupuesto (PDF)",
             data=lambda: create_pdf(orders, issued_at),
             file_name=f"tacctico_presupuesto_{issued_at:%Y%m%d_%H%M}.pdf",
-            mime="application/pdf", type="primary", width="stretch", on_click="ignore",
+            mime="application/pdf",
+            type="primary",
+            width="stretch",
+            on_click="ignore",
         )
     label = "Total estimado del pedido" if complete else "Importe conocido"
     pending = "" if complete else "Hay cargos por confirmar"
@@ -235,17 +265,20 @@ def show_budget():
     host_class = " cloud-budget" if hosted else ""
     st.html(
         f'<aside class="mobile-budget{host_class}" aria-label="Resumen del presupuesto">'
-        f'<div><span>{label}</span><strong>{escape(ars(known))}</strong><small>{pending}</small></div>'
+        f"<div><span>{label}</span><strong>{escape(ars(known))}</strong><small>{pending}</small></div>"
         '<a href="#lista-de-compras">Ver presupuesto</a></aside>'
     )
     with st.expander("Desglose por proveedor"):
-        st.dataframe([
-            {
-                "Proveedor": order.supplier,
-                "Mercadería": ars(order.merchandise),
-                "IVA a sumar conocido": ars(order.added_vat),
-                "Envío": ars(order.shipping),
-                "Importe conocido": ars(order.known),
-            }
-            for order in orders
-        ], hide_index=True)
+        st.dataframe(
+            [
+                {
+                    "Proveedor": order.supplier,
+                    "Mercadería": ars(order.merchandise),
+                    "IVA a sumar conocido": ars(order.added_vat),
+                    "Envío": ars(order.shipping),
+                    "Importe conocido": ars(order.known),
+                }
+                for order in orders
+            ],
+            hide_index=True,
+        )

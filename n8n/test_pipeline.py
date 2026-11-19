@@ -12,10 +12,13 @@ from tacctico_etl import procesar, guardar_lote
 
 def publication(**updates):
     row = {
-        "idPublicacion": "MLA-TEST", "articuloTitulo": "Premezcla para pan 500g",
-        "nuevoPrecio": "5000", "Moneda": "ARS",
+        "idPublicacion": "MLA-TEST",
+        "articuloTitulo": "Premezcla para pan 500g",
+        "nuevoPrecio": "5000",
+        "Moneda": "ARS",
         "zProductoLink": "https://articulo.mercadolibre.com.ar/MLA-TEST",
-        "Tiempo": "2026-11-14T20:00:00-03:00", "esTiendaOficial": "False",
+        "Tiempo": "2026-11-14T20:00:00-03:00",
+        "esTiendaOficial": "False",
     }
     return {**row, **updates}
 
@@ -43,8 +46,11 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(row["gramos_totales"], "3000.0")
 
     def test_ambiguous_pack_stays_in_catalog_without_comparison(self):
-        ambiguous = publication(idPublicacion="MLA-PACK", articuloTitulo="Premezcla para pan pack x2",
-            **{"caracteristicas/0/name": "Peso neto", "caracteristicas/0/value": "500 g"})
+        ambiguous = publication(
+            idPublicacion="MLA-PACK",
+            articuloTitulo="Premezcla para pan pack x2",
+            **{"caracteristicas/0/name": "Peso neto", "caracteristicas/0/value": "500 g"},
+        )
         result = procesar([publication(), ambiguous])
         row = next(r for r in output(result) if r["id_publicacion"] == "MLA-PACK")
         self.assertEqual(row["revision_presentacion"], "Presentación sin confirmar")
@@ -52,9 +58,18 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(len(output(result, "dataset_util.csv")), 1)
 
     def test_conflicting_weight_blocks_comparison(self):
-        row = output(procesar([publication(**{
-            "caracteristicas/0/name": "Peso neto", "caracteristicas/0/value": "250 g",
-        })]))[0]
+        row = output(
+            procesar(
+                [
+                    publication(
+                        **{
+                            "caracteristicas/0/name": "Peso neto",
+                            "caracteristicas/0/value": "250 g",
+                        }
+                    )
+                ]
+            )
+        )[0]
         self.assertIn("Peso discrepante", row["revision_presentacion"])
         self.assertEqual(row["precio_100g"], "")
 
@@ -73,8 +88,13 @@ class PipelineTests(unittest.TestCase):
             procesar([publication(), publication(nuevoPrecio="6000")])
 
     def test_bad_schema_and_empty_result(self):
-        for rows in ([], [{"titulo": "no es el esquema crudo"}], [publication(nuevoPrecio="NaN")],
-                     [publication(Tiempo="2026-11-14")], [publication(Moneda="USD")]):
+        for rows in (
+            [],
+            [{"titulo": "no es el esquema crudo"}],
+            [publication(nuevoPrecio="NaN")],
+            [publication(Tiempo="2026-11-14")],
+            [publication(Moneda="USD")],
+        ):
             with self.assertRaises(ValueError):
                 procesar(rows)
 

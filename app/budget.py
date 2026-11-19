@@ -115,7 +115,8 @@ def budget_orders(lines, shipping_by_seller):
         by_seller[seller.identifier or seller.name].append(line)
     return [
         BudgetOrder(
-            items[0].quote.offer.supplier.name, tuple(items),
+            items[0].quote.offer.supplier.name,
+            tuple(items),
             shipping_by_seller.get(items[0].quote.offer.supplier.identifier),
         )
         for items in by_seller.values()

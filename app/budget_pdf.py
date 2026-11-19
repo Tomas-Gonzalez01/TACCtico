@@ -54,9 +54,14 @@ def create_pdf(orders, issued_at: datetime):
     orders = tuple(orders)
     output = BytesIO()
     doc = SimpleDocTemplate(
-        output, pagesize=A4, leftMargin=36, rightMargin=36,
-        topMargin=126, bottomMargin=48,
-        title="TACCtico - Presupuesto de compra", author="TACCtico",
+        output,
+        pagesize=A4,
+        leftMargin=36,
+        rightMargin=36,
+        topMargin=126,
+        bottomMargin=48,
+        title="TACCtico - Presupuesto de compra",
+        author="TACCtico",
         subject="Detalle de productos, IVA y envío para planificar compras",
     )
     body = ParagraphStyle("Body", fontName="Helvetica", fontSize=8.5, leading=11.5, textColor=INK)
@@ -80,32 +85,52 @@ def create_pdf(orders, issued_at: datetime):
     shipping_pending = any(order.shipping is None for order in orders)
     total_label = "Total estimado del pedido" if complete else "Importe conocido"
 
-    breakdown = Table([
-        [Paragraph("Mercadería", detail), Paragraph(ars(merchandise), numeric)],
-        [Paragraph("IVA a sumar", detail), Paragraph(charge_amount(added_vat, tax_pending), numeric)],
-        [Paragraph("Envío", detail), Paragraph(charge_amount(shipping, shipping_pending), numeric)],
-    ], colWidths=[82, 155])
-    breakdown.setStyle(TableStyle([
-        ("VALIGN", (0, 0), (-1, -1), "TOP"),
-        ("LEFTPADDING", (0, 0), (-1, -1), 0),
-        ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-        ("TOPPADDING", (0, 0), (-1, -1), 2),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
-    ]))
+    breakdown = Table(
+        [
+            [Paragraph("Mercadería", detail), Paragraph(ars(merchandise), numeric)],
+            [Paragraph("IVA a sumar", detail), Paragraph(charge_amount(added_vat, tax_pending), numeric)],
+            [Paragraph("Envío", detail), Paragraph(charge_amount(shipping, shipping_pending), numeric)],
+        ],
+        colWidths=[82, 155],
+    )
+    breakdown.setStyle(
+        TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                ("TOPPADDING", (0, 0), (-1, -1), 2),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
+            ]
+        )
+    )
     item_word = "insumo" if len(lines) == 1 else "insumos"
     supplier_word = "proveedor" if len(orders) == 1 else "proveedores"
-    summary_rows = [[
-        [Paragraph(total_label, label), money_paragraph(known, grand, doc.width - 293),
-         Paragraph(f"{len(lines)} {item_word} · {len(orders)} {supplier_word} · Moneda ARS", detail)],
-        breakdown,
-    ]]
+    summary_rows = [
+        [
+            [
+                Paragraph(total_label, label),
+                money_paragraph(known, grand, doc.width - 293),
+                Paragraph(f"{len(lines)} {item_word} · {len(orders)} {supplier_word} · Moneda ARS", detail),
+            ],
+            breakdown,
+        ]
+    ]
     if not complete:
         pending = []
         if tax_pending:
             pending.append("IVA")
         if shipping_pending:
             pending.append("envío")
-        summary_rows.append([Paragraph(f"Pendiente de confirmar {' y '.join(pending)} para completar el total del pedido.", detail), ""])
+        summary_rows.append(
+            [
+                Paragraph(
+                    f"Pendiente de confirmar {' y '.join(pending)} para completar el total del pedido.",
+                    detail,
+                ),
+                "",
+            ]
+        )
     summary = Table(summary_rows, colWidths=[doc.width - 265, 265])
     summary_style = [
         ("BACKGROUND", (0, 0), (-1, -1), PALE),
@@ -116,10 +141,12 @@ def create_pdf(orders, issued_at: datetime):
         ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
     ]
     if not complete:
-        summary_style.extend([
-            ("SPAN", (0, 1), (-1, 1)),
-            ("TOPPADDING", (0, 1), (-1, 1), 0),
-        ])
+        summary_style.extend(
+            [
+                ("SPAN", (0, 1), (-1, 1)),
+                ("TOPPADDING", (0, 1), (-1, 1), 0),
+            ]
+        )
     summary.setStyle(TableStyle(summary_style))
     story = [summary, Spacer(1, 18)]
     column_widths = [doc.width - 314, 104, 103, 107]
@@ -127,9 +154,15 @@ def create_pdf(orders, issued_at: datetime):
     for order in orders:
         rows = [
             [Paragraph(escape(order.supplier), supplier), "", "", ""],
-            [Paragraph(heading, label) for heading in (
-                "Producto", "Pedido y entrega", "Precio publicado", "Importe",
-            )],
+            [
+                Paragraph(heading, label)
+                for heading in (
+                    "Producto",
+                    "Pedido y entrega",
+                    "Precio publicado",
+                    "Importe",
+                )
+            ],
         ]
         for line in order.lines:
             quote = line.quote
@@ -148,53 +181,82 @@ def create_pdf(orders, issued_at: datetime):
                 Paragraph(f"<b>{escape(offer.product)}</b>", body),
                 Paragraph(f"Categoría {escape(offer.category or 'Sin confirmar')}", detail),
                 Paragraph(escape(capture_label(offer.captured)), detail),
-                Paragraph(f'<link href={quoteattr(offer.url)} color="#176344">Ver publicación en Mercado Libre</link>', detail),
+                Paragraph(
+                    f'<link href={quoteattr(offer.url)} color="#176344">Ver publicación en Mercado Libre</link>',
+                    detail,
+                ),
             ]
-            rows.append([
-                product,
-                Paragraph(quantities, body),
-                [money_paragraph(offer.price, unit_money, column_widths[2] - 16),
-                 Paragraph("por presentación", numeric_detail), Spacer(1, 10),
-                 money_paragraph(line.merchandise / quote.received, numeric, column_widths[2] - 16),
-                 Paragraph(f"por {unit}", numeric_detail)],
-                [money_paragraph(line.known, amount, column_widths[3] - 16),
-                 Paragraph(escape(line.tax_label), numeric_detail)],
-            ])
+            rows.append(
+                [
+                    product,
+                    Paragraph(quantities, body),
+                    [
+                        money_paragraph(offer.price, unit_money, column_widths[2] - 16),
+                        Paragraph("por presentación", numeric_detail),
+                        Spacer(1, 10),
+                        money_paragraph(line.merchandise / quote.received, numeric, column_widths[2] - 16),
+                        Paragraph(f"por {unit}", numeric_detail),
+                    ],
+                    [
+                        money_paragraph(line.known, amount, column_widths[3] - 16),
+                        Paragraph(escape(line.tax_label), numeric_detail),
+                    ],
+                ]
+            )
 
         order_tax_pending = any(line.tax_pending for line in order.lines)
-        rows.append([
-            Paragraph(
-                f"Mercadería {ars(order.merchandise)}<br/>"
-                f"IVA a sumar {charge_amount(order.added_vat, order_tax_pending)}<br/>"
-                f"Envío {ars(order.shipping)}", detail,
-            ), "",
-            [Paragraph("Total estimado del proveedor" if order.complete else "Importe conocido del proveedor", total_note),
-             Paragraph(ars(order.known), amount)], "",
-        ])
+        rows.append(
+            [
+                Paragraph(
+                    f"Mercadería {ars(order.merchandise)}<br/>"
+                    f"IVA a sumar {charge_amount(order.added_vat, order_tax_pending)}<br/>"
+                    f"Envío {ars(order.shipping)}",
+                    detail,
+                ),
+                "",
+                [
+                    Paragraph(
+                        "Total estimado del proveedor"
+                        if order.complete
+                        else "Importe conocido del proveedor",
+                        total_note,
+                    ),
+                    Paragraph(ars(order.known), amount),
+                ],
+                "",
+            ]
+        )
         table = Table(rows, colWidths=column_widths, repeatRows=2, spaceAfter=12)
-        table.setStyle(TableStyle([
-            ("SPAN", (0, 0), (-1, 0)),
-            ("VALIGN", (0, 0), (-1, -1), "TOP"),
-            ("LEFTPADDING", (0, 0), (-1, -1), 8),
-            ("RIGHTPADDING", (0, 0), (-1, -1), 8),
-            ("TOPPADDING", (0, 0), (-1, -1), 5),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
-            ("LEFTPADDING", (0, 0), (-1, 0), 0),
-            ("BOTTOMPADDING", (0, 0), (-1, 0), 7),
-            ("LINEBELOW", (0, 0), (-1, 0), 1.2, GREEN),
-            ("BACKGROUND", (0, 1), (-1, 1), PALE),
-            ("LINEBELOW", (0, 2), (-1, -2), .4, LINE),
-            ("SPAN", (0, -1), (1, -1)),
-            ("SPAN", (2, -1), (3, -1)),
-            ("BACKGROUND", (0, -1), (-1, -1), PALE),
-            ("NOSPLIT", (0, -2), (-1, -1)),
-        ]))
+        table.setStyle(
+            TableStyle(
+                [
+                    ("SPAN", (0, 0), (-1, 0)),
+                    ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 8),
+                    ("RIGHTPADDING", (0, 0), (-1, -1), 8),
+                    ("TOPPADDING", (0, 0), (-1, -1), 5),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+                    ("LEFTPADDING", (0, 0), (-1, 0), 0),
+                    ("BOTTOMPADDING", (0, 0), (-1, 0), 7),
+                    ("LINEBELOW", (0, 0), (-1, 0), 1.2, GREEN),
+                    ("BACKGROUND", (0, 1), (-1, 1), PALE),
+                    ("LINEBELOW", (0, 2), (-1, -2), 0.4, LINE),
+                    ("SPAN", (0, -1), (1, -1)),
+                    ("SPAN", (2, -1), (3, -1)),
+                    ("BACKGROUND", (0, -1), (-1, -1), PALE),
+                    ("NOSPLIT", (0, -2), (-1, -1)),
+                ]
+            )
+        )
         story.append(table)
 
-    story.append(Paragraph(
-        "Precios de captura de Mercado Libre Argentina. Confirmá disponibilidad, "
-        "promociones y condiciones con cada proveedor antes de comprar.", detail,
-    ))
+    story.append(
+        Paragraph(
+            "Precios de captura de Mercado Libre Argentina. Confirmá disponibilidad, "
+            "promociones y condiciones con cada proveedor antes de comprar.",
+            detail,
+        )
+    )
 
     def page_header_and_footer(canvas, document):
         canvas.saveState()
@@ -218,7 +280,7 @@ def create_pdf(orders, issued_at: datetime):
         canvas.setFont("Helvetica", 8)
         canvas.drawRightString(width - 36, height - 81, f"{issued_at:%H:%M}")
         canvas.setStrokeColor(LINE)
-        canvas.setLineWidth(.5)
+        canvas.setLineWidth(0.5)
         canvas.line(36, 39, width - 36, 39)
         canvas.drawString(36, 25, "TACCtico · Presupuesto estimado · ARS")
         canvas.drawRightString(width - 36, 25, f"Página {document.page}")

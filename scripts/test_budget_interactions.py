@@ -44,7 +44,9 @@ class BudgetInteractionsTest(unittest.TestCase):
         self.assertEqual(self.state[view.CART][self.product], self.first)
         view.show_notice()
         self.toast.assert_called_once_with(
-            "Producto agregado a tu lista.", icon=":material/check_circle:", duration="short",
+            "Producto agregado a tu lista.",
+            icon=":material/check_circle:",
+            duration="short",
         )
         view.show_notice()
         self.toast.assert_called_once()

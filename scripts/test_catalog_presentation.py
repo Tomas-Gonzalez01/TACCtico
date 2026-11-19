@@ -1,4 +1,5 @@
 """La presentación de importes no cambia orden, filtros, presupuestos ni el dashboard."""
+
 from pathlib import Path
 import sys
 from types import SimpleNamespace
@@ -33,9 +34,15 @@ class CatalogPresentationTests(unittest.TestCase):
         self.assertTrue(any('class="tacctico-header"' in element.proto.body for element in app.get("html")))
         app.radio(key="seccion").set_value("Dashboard").run()
         self.assertFalse(app.exception or app.error)
-        brand = next(element.proto.body for element in app.get("html") if 'class="tacctico-header"' in element.proto.body)
-        self.assertIn('logo-tacctico.png', brand)
-        expected = (Path(app.session_state["lote_datos"]["folder"]) / "dashboard.html").read_text(encoding="utf-8")
+        brand = next(
+            element.proto.body
+            for element in app.get("html")
+            if 'class="tacctico-header"' in element.proto.body
+        )
+        self.assertIn("logo-tacctico.png", brand)
+        expected = (Path(app.session_state["lote_datos"]["folder"]) / "dashboard.html").read_text(
+            encoding="utf-8"
+        )
         self.assertEqual(app.get("iframe")[0].proto.srcdoc, expected)
 
     def test_mobile_summary_uses_the_same_amount_as_the_budget(self):
@@ -45,14 +52,23 @@ class CatalogPresentationTests(unittest.TestCase):
             from purchase_data import load_publications, market_csv
             from purchase_engine import candidate_quotes
             from decimal import Decimal
+
             products = load_publications(market_csv(ROOT), None)
-            offer = next(item.offer for group in products.values() for _, item in group
-                         if item.offer.pack and not item.offer.outlier_price)
+            offer = next(
+                item.offer
+                for group in products.values()
+                for _, item in group
+                if item.offer.pack and not item.offer.outlier_price
+            )
             quote = next(candidate_quotes(offer, Decimal(1), "kg", published=True))
             app.session_state["lista_compras"] = {("insumo_por_peso", "prueba"): quote}
             app.run()
             self.assertFalse(app.exception or app.error)
-            bar = next(element.proto.body for element in app.get("html") if 'class="mobile-budget"' in element.proto.body)
+            bar = next(
+                element.proto.body
+                for element in app.get("html")
+                if 'class="mobile-budget"' in element.proto.body
+            )
             self.assertIn(app.metric[-1].value, bar)
             self.assertIn("Importe conocido", bar)
             self.assertIn("Hay cargos por confirmar", bar)

@@ -15,12 +15,14 @@ class ReleaseViewTests(unittest.TestCase):
     def test_refresh_failure_retains_the_cart_and_lot(self):
         current = {"lote": "a" * 64, "metrics": {"captura_hasta": "2026-11-14"}}
         state = {"lote_datos": current, "lista_compras": {"pan": "oferta"}}
-        with patch.object(release_view.st, "session_state", state), \
-             patch.object(release_view.st.sidebar, "button", return_value=True), \
-             patch.object(release_view.st.sidebar, "caption"), \
-             patch.object(release_view.st.sidebar, "warning"), \
-             patch.object(release_view, "remote_id", return_value="prueba"), \
-             patch.object(release_view, "load_remote", side_effect=ValueError("integridad")):
+        with (
+            patch.object(release_view.st, "session_state", state),
+            patch.object(release_view.st.sidebar, "button", return_value=True),
+            patch.object(release_view.st.sidebar, "caption"),
+            patch.object(release_view.st.sidebar, "warning"),
+            patch.object(release_view, "remote_id", return_value="prueba"),
+            patch.object(release_view, "load_remote", side_effect=ValueError("integridad")),
+        ):
             self.assertEqual(release_view.choose_release(ROOT), current)
         self.assertEqual(state["lista_compras"], {"pan": "oferta"})
 
@@ -28,13 +30,15 @@ class ReleaseViewTests(unittest.TestCase):
         current = {"lote": "a" * 64, "metrics": {"captura_hasta": "2026-11-14"}}
         state = {"lote_datos": current, "lista_compras": {"pan": "oferta"}, "seccion": "Catálogo"}
         new = {**current, "lote": "b" * 64}
-        with patch.object(release_view.st, "session_state", state), \
-             patch.object(release_view.st.sidebar, "button", return_value=True), \
-             patch.object(release_view.st.sidebar, "caption"), \
-             patch.object(release_view.st.sidebar, "info"), \
-             patch.object(release_view.st.sidebar, "success"), \
-             patch.object(release_view, "remote_id", return_value=""), \
-             patch.object(release_view, "load_local", side_effect=[current, new]):
+        with (
+            patch.object(release_view.st, "session_state", state),
+            patch.object(release_view.st.sidebar, "button", return_value=True),
+            patch.object(release_view.st.sidebar, "caption"),
+            patch.object(release_view.st.sidebar, "info"),
+            patch.object(release_view.st.sidebar, "success"),
+            patch.object(release_view, "remote_id", return_value=""),
+            patch.object(release_view, "load_local", side_effect=[current, new]),
+        ):
             release_view.choose_release(ROOT)
             self.assertIn("lista_compras", state)
             self.assertEqual(release_view.choose_release(ROOT), new)

@@ -1,4 +1,5 @@
 """Controles de publicación y coherencia: nunca mezclar lotes ni publicar entradas crudas."""
+
 import hashlib
 import io
 import json
@@ -43,8 +44,16 @@ class PublicationTests(unittest.TestCase):
     def test_bundle_is_allowlisted_and_verifiable(self):
         data = self.result["archivos"]["paquete.zip"]
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
-            self.assertEqual(set(archive.namelist()), {
-                "mercadolibre_validado.csv", "metricas.json", "dashboard.html", "calidad.json", "manifest.json"})
+            self.assertEqual(
+                set(archive.namelist()),
+                {
+                    "mercadolibre_validado.csv",
+                    "metricas.json",
+                    "dashboard.html",
+                    "calidad.json",
+                    "manifest.json",
+                },
+            )
         with TemporaryDirectory() as temp:
             release = unpack(data, Path(temp))
             self.assertEqual(release["lote"], self.batch)
@@ -60,11 +69,22 @@ class PublicationTests(unittest.TestCase):
             unpack(stream.getvalue(), Path(temp) / "lote")
 
     def pointer(self):
-        return {"schema_version": 1, "lote": self.batch, "publicaciones": 1,
-            "archivos": {kind: {"drive_id": "archivo_drive_prueba", "sha256": hashlib.sha256(
-                self.result["archivos"][name].encode() if isinstance(self.result["archivos"][name], str)
-                else self.result["archivos"][name]).hexdigest()}
-            for kind, name in (("csv", "mercadolibre_validado.csv"), ("paquete", "paquete.zip"))}}
+        return {
+            "schema_version": 1,
+            "lote": self.batch,
+            "publicaciones": 1,
+            "archivos": {
+                kind: {
+                    "drive_id": "archivo_drive_prueba",
+                    "sha256": hashlib.sha256(
+                        self.result["archivos"][name].encode()
+                        if isinstance(self.result["archivos"][name], str)
+                        else self.result["archivos"][name]
+                    ).hexdigest(),
+                }
+                for kind, name in (("csv", "mercadolibre_validado.csv"), ("paquete", "paquete.zip"))
+            },
+        }
 
     def test_staging_does_not_advance_until_remote_confirmation(self):
         with TemporaryDirectory() as temp:

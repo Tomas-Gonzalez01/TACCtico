@@ -12,14 +12,37 @@ from importar_mercadolibre import FIELDS
 
 
 MOCK_FIELDS = (
-    "proveedor", "producto", "marca", "categoria", "cantidad", "unidad",
-    "precio", "iva", "bulto", "promocion", "fecha", "fuente",
+    "proveedor",
+    "producto",
+    "marca",
+    "categoria",
+    "cantidad",
+    "unidad",
+    "precio",
+    "iva",
+    "bulto",
+    "promocion",
+    "fecha",
+    "fuente",
 )
 MARKET_FIELDS = (*FIELDS.values(), "fuente")
 COLUMNS = (
-    "fuente", "clave", "fecha", "proveedor", "producto", "marca", "categoria",
-    "cantidad", "unidad", "precio", "moneda", "iva", "bulto", "promocion",
-    "tipo_precio", "url",
+    "fuente",
+    "clave",
+    "fecha",
+    "proveedor",
+    "producto",
+    "marca",
+    "categoria",
+    "cantidad",
+    "unidad",
+    "precio",
+    "moneda",
+    "iva",
+    "bulto",
+    "promocion",
+    "tipo_precio",
+    "url",
 )
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS capturas (
@@ -88,21 +111,29 @@ def normalize(row):
         captured = datetime.fromisoformat(fields["capturado_en"])
         url = urlsplit(fields["url"])
         if (
-            captured.utcoffset() is None or fields["moneda"] != "ARS"
+            captured.utcoffset() is None
+            or fields["moneda"] != "ARS"
             or fields["fuente"] != "Mercado Libre Argentina"
-            or url.scheme != "https" or url.netloc != "articulo.mercadolibre.com.ar" or not url.path.strip("/")
+            or url.scheme != "https"
+            or url.netloc != "articulo.mercadolibre.com.ar"
+            or not url.path.strip("/")
         ):
             raise ValueError("Captura, moneda, fuente o URL de Mercado Libre inválida.")
         return {
-            "fuente": fields["fuente"], "clave": fields["id_publicacion"],
+            "fuente": fields["fuente"],
+            "clave": fields["id_publicacion"],
             "fecha": captured.astimezone(timezone.utc).isoformat(timespec="microseconds"),
-            "producto": fields["titulo"], "precio": decimal_value(row, "precio_publicado"),
-            "moneda": fields["moneda"], "tipo_precio": "publicado", "url": fields["url"],
+            "producto": fields["titulo"],
+            "precio": decimal_value(row, "precio_publicado"),
+            "moneda": fields["moneda"],
+            "tipo_precio": "publicado",
+            "url": fields["url"],
         }
     if set(MOCK_FIELDS) <= row.keys():
         fields = {
             key: required_text(row, key)
-            for key in MOCK_FIELDS if key not in ("cantidad", "precio", "iva", "bulto")
+            for key in MOCK_FIELDS
+            if key not in ("cantidad", "precio", "iva", "bulto")
         }
         if fields["fuente"] != "MOCK_FICTICIO":
             raise ValueError("La entrada con esquema de la muestra debe usar la fuente MOCK_FICTICIO.")

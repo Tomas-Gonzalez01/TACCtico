@@ -8,13 +8,26 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "app"))
 from budget import BudgetLine, budget_orders, parse_quantity, quantity_label
 from purchase_data import resolve_presentation
-from purchase_engine import Discount, Offer, Supplier, best_purchase, candidate_quotes, order_total, supplier_options
+from purchase_engine import (
+    Discount,
+    Offer,
+    Supplier,
+    best_purchase,
+    candidate_quotes,
+    order_total,
+    supplier_options,
+)
 
 
 PICKUP = Supplier("Retiro", D(0), D(0))
 SMALL = Offer("Harina", PICKUP, D("1"), "kg", D("1200"), "final")
 BULK = Offer(
-    "Harina", Supplier("Mayorista", D(0), D(0)), D("20"), "kg", D("18000"), "final",
+    "Harina",
+    Supplier("Mayorista", D(0), D(0)),
+    D("20"),
+    "kg",
+    D("18000"),
+    "final",
     discounts=(Discount(5, D("0.10")),),
 )
 
@@ -65,16 +78,23 @@ class PurchaseTest(unittest.TestCase):
     def test_shipping_is_charged_once(self):
         supplier = Supplier("Mismo proveedor", D(200), D(2000))
         a = next(candidate_quotes(replace(SMALL, supplier=supplier), D(1), "kg", single_order=False))
-        b = next(candidate_quotes(
-            replace(SMALL, supplier=supplier, product="Otro producto"), D(1), "kg", single_order=False,
-        ))
+        b = next(
+            candidate_quotes(
+                replace(SMALL, supplier=supplier, product="Otro producto"),
+                D(1),
+                "kg",
+                single_order=False,
+            )
+        )
         self.assertIsNone(a.total)
         self.assertEqual(order_total([a, b]).total, D(2600))
 
     def test_volume_threshold_and_limits(self):
         minimum, suggested = supplier_options(candidate_quotes(BULK, D(80), "kg"), bounded=False)
         self.assertEqual((minimum.received, minimum.total, minimum.unit_cost), (D(80), D(72000), D(900)))
-        self.assertEqual((suggested.received, suggested.total, suggested.unit_cost), (D(100), D(81000), D(810)))
+        self.assertEqual(
+            (suggested.received, suggested.total, suggested.unit_cost), (D(100), D(81000), D(810))
+        )
         for caps in ({"budget": D(80000)}, {"max_quantity": D(99)}):
             _, best = supplier_options(candidate_quotes(BULK, D(80), "kg", **caps), bounded=True)
             self.assertEqual(best.boxes, 4)
@@ -88,7 +108,8 @@ class PurchaseTest(unittest.TestCase):
     def test_shipping_can_change_bounded_unit_cost(self):
         offer = replace(SMALL, supplier=Supplier("Envío fijo", D(1000), D(0)))
         _, best = supplier_options(
-            candidate_quotes(offer, D(1), "kg", budget=D(5000), max_quantity=D(4)), bounded=True,
+            candidate_quotes(offer, D(1), "kg", budget=D(5000), max_quantity=D(4)),
+            bounded=True,
         )
         self.assertEqual((best.boxes, best.total), (3, D(4600)))
 
@@ -108,7 +129,9 @@ class PurchaseTest(unittest.TestCase):
         self.assertEqual(resolve_presentation("Premezcla pack x 2", specs), (2, None))
         self.assertEqual(resolve_presentation("Premezcla 450 g x3", specs), (None, None))
         self.assertEqual(
-            resolve_presentation("Premezcla pack x 2 de 450 g", {"Formato de venta": "Unidad", "Peso neto": "450 g"}),
+            resolve_presentation(
+                "Premezcla pack x 2 de 450 g", {"Formato de venta": "Unidad", "Peso neto": "450 g"}
+            ),
             (None, None),
         )
 
@@ -124,7 +147,7 @@ class PurchaseTest(unittest.TestCase):
         quote = next(candidate_quotes(replace(SMALL, price=D("100")), D(1), "kg"))
         net = BudgetLine(quote, "neto", D("0.21"))
         included = BudgetLine(quote, "incluido", D("0.21"))
-        order, = budget_orders([net, included], {"": D(150)})
+        (order,) = budget_orders([net, included], {"": D(150)})
         self.assertEqual((net.vat, included.vat), (D("21.00"), D("17.36")))
         self.assertEqual((order.merchandise, order.added_vat, order.known), (D(200), D(21), D(371)))
         self.assertTrue(order.complete)
@@ -132,7 +155,7 @@ class PurchaseTest(unittest.TestCase):
     def test_budget_with_unconfirmed_tax_or_shipping_shows_known_amount(self):
         quote = next(candidate_quotes(SMALL, D(1), "kg"))
         line = BudgetLine(quote, "pendiente", None)
-        order, = budget_orders([line], {})
+        (order,) = budget_orders([line], {})
         self.assertEqual(order.known, D(1200))
         self.assertFalse(order.complete)
         self.assertEqual(line.tax_label, "IVA sin confirmar")

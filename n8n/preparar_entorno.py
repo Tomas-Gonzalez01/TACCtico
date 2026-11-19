@@ -1,4 +1,5 @@
 """Crea la clave interna de los ejecutores sin sobrescribir una existente."""
+
 from pathlib import Path
 import secrets
 

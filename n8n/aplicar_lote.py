@@ -1,4 +1,5 @@
 """Verifica un lote terminado antes de instalarlo atómicamente en la demo local."""
+
 import argparse
 import csv
 import hashlib
@@ -21,8 +22,14 @@ def verificar(storage):
     if not re.fullmatch("[a-f0-9]{64}", batch):
         raise ValueError("ID de lote inválido")
     folder = storage / "lotes" / batch
-    expected = {"dataset_limpio.csv", "dataset_util.csv", "mercadolibre_validado.csv",
-                "rechazados.csv", "calidad.json", "entrada_normalizada.csv"}
+    expected = {
+        "dataset_limpio.csv",
+        "dataset_util.csv",
+        "mercadolibre_validado.csv",
+        "rechazados.csv",
+        "calidad.json",
+        "entrada_normalizada.csv",
+    }
     allowed = expected | {"metricas.json", "dashboard.html", "paquete.zip"}
     if not expected <= set(manifest["sha256"]) or not set(manifest["sha256"]) <= allowed:
         raise ValueError("El manifiesto no tiene todos los archivos esperados")

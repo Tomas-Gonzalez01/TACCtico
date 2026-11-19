@@ -18,9 +18,21 @@ FIELDS = {
     "Tiempo": "capturado_en",
 }
 UTIL_FIELDS = (
-    "insumo", "marca", "vendedor", "tipo_vendedor", "gramos_unidad", "unidades",
-    "es_pack", "gramos_totales", "precio_100g", "fuente_peso", "peso_discrepa",
-    "outlier_precio", "tiene_promo", "descuento_pct", "precio_anterior",
+    "insumo",
+    "marca",
+    "vendedor",
+    "tipo_vendedor",
+    "gramos_unidad",
+    "unidades",
+    "es_pack",
+    "gramos_totales",
+    "precio_100g",
+    "fuente_peso",
+    "peso_discrepa",
+    "outlier_precio",
+    "tiene_promo",
+    "descuento_pct",
+    "precio_anterior",
 )
 DETAIL_FIELDS = {
     "sellerID": "vendedor_id",
@@ -29,7 +41,9 @@ DETAIL_FIELDS = {
     "promociones": "promocion",
 }
 SPEC_FIELDS = {
-    "Nombre": "nombre_ficha", "Línea": "linea", "Sabor": "sabor",
+    "Nombre": "nombre_ficha",
+    "Línea": "linea",
+    "Sabor": "sabor",
     "Número de inscripción de producto (RNPA)": "rnpa",
 }
 
@@ -47,7 +61,8 @@ def csv_reader(csv_text, required):
 
 def find_original(row, originals):
     matches = [
-        original for original in originals.get(row["idPublicacion"], [])
+        original
+        for original in originals.get(row["idPublicacion"], [])
         if row["titulo"] == original["articuloTitulo"].strip()
         and row["link"] == original["zProductoLink"].strip()
         and Decimal(row["precio"]) == Decimal(original["nuevoPrecio"])
@@ -65,7 +80,8 @@ def curated_item(row, originals):
     item.update({target: original.get(source, "").strip() for source, target in DETAIL_FIELDS.items()})
     specs = {
         original[key].strip(): original.get(key.removesuffix("/name") + "/value", "").strip()
-        for key in original if key.startswith("caracteristicas/") and key.endswith("/name")
+        for key in original
+        if key.startswith("caracteristicas/") and key.endswith("/name")
     }
     item.update({target: specs.get(source, "") for source, target in SPEC_FIELDS.items()})
 
@@ -97,13 +113,17 @@ def preparar_csv(csv_text, original_csv_text=None):
     originals = {}
     if curated:
         if original_csv_text is None:
-            raise ValueError("Usá --original con el dataset_final.csv del mismo lote para recuperar la fecha y la moneda.")
+            raise ValueError(
+                "Usá --original con el dataset_final.csv del mismo lote para recuperar la fecha y la moneda."
+            )
         for row in csv_reader(original_csv_text, FIELDS):
             if None in row or any(value is None for value in row.values()):
                 raise ValueError("El archivo de capturas originales contiene una fila incompleta.")
             originals.setdefault(row["idPublicacion"].strip(), []).append(row)
         reader = csv_reader(csv_text, ("idPublicacion", "titulo", "precio", "link", *UTIL_FIELDS))
-        columns.extend((*UTIL_FIELDS, *DETAIL_FIELDS.values(), *SPEC_FIELDS.values(), "revision_presentacion"))
+        columns.extend(
+            (*UTIL_FIELDS, *DETAIL_FIELDS.values(), *SPEC_FIELDS.values(), "revision_presentacion")
+        )
     else:
         reader = csv_reader(csv_text, FIELDS)
 
@@ -113,16 +133,22 @@ def preparar_csv(csv_text, original_csv_text=None):
         try:
             if None in row or any(value is None for value in row.values()):
                 raise ValueError
-            item = curated_item(row, originals) if curated else {
-                target: row[source].strip() for source, target in FIELDS.items()
-            }
+            item = (
+                curated_item(row, originals)
+                if curated
+                else {target: row[source].strip() for source, target in FIELDS.items()}
+            )
             price = Decimal(item["precio_publicado"])
             captured = datetime.fromisoformat(item["capturado_en"])
             url = urlsplit(item["url"])
             if (
-                not item["id_publicacion"] or not item["titulo"]
-                or item["moneda"] != "ARS" or not price.is_finite() or price <= 0
-                or captured.utcoffset() is None or url.scheme != "https"
+                not item["id_publicacion"]
+                or not item["titulo"]
+                or item["moneda"] != "ARS"
+                or not price.is_finite()
+                or price <= 0
+                or captured.utcoffset() is None
+                or url.scheme != "https"
                 or url.hostname != "articulo.mercadolibre.com.ar"
             ):
                 raise ValueError
@@ -154,7 +180,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("entrada", type=Path)
     parser.add_argument("salida", type=Path)
-    parser.add_argument("--original", type=Path, help="CSV original del mismo lote para importar dataset_util.csv.")
+    parser.add_argument(
+        "--original", type=Path, help="CSV original del mismo lote para importar dataset_util.csv."
+    )
     args = parser.parse_args()
     if args.entrada.resolve() == args.salida.resolve():
         parser.error("Elegí una ruta distinta para el CSV validado.")

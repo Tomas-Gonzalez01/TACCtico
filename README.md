@@ -4,6 +4,24 @@ Compará ofertas de insumos sin TACC y armá el presupuesto de tu negocio con pr
 
 [Abrir TACCtico online](https://tacctico-portafolio-ucn4pkoeemkzx9fowx7ktt.streamlit.app/)
 
+## Entrega y revisión del código
+
+- [Checklist contra la consigna de GitHub](docs/ENTREGA_GITHUB.md), con evidencias y pendientes.
+- [Guía para leer el código](docs/CODIGO.md), responsabilidades y verificación del formato.
+- [Flujos importables de n8n, código Python e instalación](n8n/README.md).
+- [Make: prototipo anterior, captura real e historial](make/README.md).
+- [Apify: autoría externa y datos que falta recuperar](apify/README.md).
+
+### Evidencias de automatización
+
+![Flujo real instalado en n8n](docs/evidencias/n8n-flujo-real.jpg)
+
+Captura del editor de n8n del 19/11/2026. El código y las plantillas importables están en `n8n/`; durante esta revisión no se ejecutó el flujo.
+
+![Make: webhook y subida a Drive](docs/evidencias/make-escenario-historico.jpg)
+
+El prototipo de Make fue reemplazado por n8n. Su captura muestra el escenario inactivo y la ejecución exitosa del 14/11/2026 a las 20:19:47. No se lanzó una corrida nueva.
+
 Se puede consultar sin cuenta. La versión procesada el **19/11/2026** tiene **372 publicaciones reales**, con precios de la captura del **14/11/2026**. El análisis estadístico usa **330** publicaciones útiles sin precios atípicos. La fecha de procesamiento no actualiza los precios de la captura.
 
 La interfaz muestra precios en formato argentino, nombres de insumos legibles y «Sin dato» cuando falta información. El catálogo usa una tabla en escritorio y tarjetas paginadas en celular. En el presupuesto, la cantidad aparece antes de los filtros opcionales; la lista queda visible en escritorio y una barra de resumen permite volver a ella en celular. Esa barra conserva el aviso de cargos pendientes.
@@ -17,7 +35,7 @@ El encabezado verde y el logo permanecen visibles también en **Dashboard**. Las
 3. En gramos, con `250` se recomienda la presentación de **ARS 3.509,00**. Con `1.000` se recomienda la de **ARS 6.639,00** para cubrir 1 kg. Los importes corresponden a mercadería de la captura.
 4. Pulsá **Agregar a la lista** o hacé doble clic en una oferta. Revisá cantidades, presentaciones enteras, peso recibido y sobrante. Completá IVA y envío solo si están confirmados. Descargá el **presupuesto PDF**, con logo, detalle por proveedor, cantidades, importes y enlaces. Si falta un cargo, muestra **Importe conocido** y los pendientes.
 5. En **Dashboard**, probá los filtros de insumo, formato, vendedor y envío. Revisá los ejemplos de pan, pizza y budín. Las brechas frente a la mediana son estimaciones, no ahorros observados. Los tiempos, frecuencia y valor por hora son supuestos editables.
-6. **Actualizar datos** consulta el último lote completo. Si cambió, comienza una lista vacía para usar sus precios. Si falla, conserva la versión disponible y el presupuesto. La barra lateral muestra la fecha de captura y la versión.
+6. **Actualizar datos** consulta el último lote completo. Si cambió, comienza una lista vacía para usar sus precios. Si falla, conserva la versión disponible y el presupuesto. La fecha está debajo de la navegación; su ayuda muestra la versión.
 
 Para cantidades usá formato argentino: `1` = un kilo; `1.000` = mil; `1,5` = uno y medio. Las presentaciones sin confirmar no se usan en comparaciones de cantidades. Los precios atípicos quedan fuera de las recomendaciones automáticas. El envío anunciado en la captura no garantiza el costo de envío de un pedido actual.
 

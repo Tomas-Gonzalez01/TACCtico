@@ -22,7 +22,9 @@ def quantity_input(unit, key):
         measure = st.selectbox("Medida", ["kg", "g"], key=f"{key}_medida")
     with amount_column:
         amount = quantity_field(
-            f"Cantidad requerida ({measure})", f"{key}_{measure}", default=Decimal(1),
+            f"Cantidad requerida ({measure})",
+            f"{key}_{measure}",
+            default=Decimal(1),
         )
     return amount / 1000 if measure == "g" else amount
 
@@ -37,12 +39,15 @@ def options_for(publications, needed, unit, **limits):
         try:
             quotes.extend(candidate_quotes(offer, needed, unit, published=True, **limits))
         except ValueError:
-            unavailable.append({
-                "Título": offer.product,
-                "Proveedor": offer.supplier.name,
-                "Motivo": publication.review or f"Contenido en {UNITS[unit]} sin confirmar para esta presentación",
-                "Publicación": offer.url,
-            })
+            unavailable.append(
+                {
+                    "Título": offer.product,
+                    "Proveedor": offer.supplier.name,
+                    "Motivo": publication.review
+                    or f"Contenido en {UNITS[unit]} sin confirmar para esta presentación",
+                    "Publicación": offer.url,
+                }
+            )
     return quotes, unavailable
 
 
@@ -78,7 +83,9 @@ def show_quotes(quotes, unit, product_key=None):
             "Recibís": quantity_label(quote.received, unit),
             "Sobrante": quantity_label(quote.surplus, unit),
             "Mercadería estimada": ars(quote.merchandise),
-            f"Precio publicado por {'kg' if unit == 'kg' else 'unidad'}": ars(quote.merchandise / quote.received),
+            f"Precio publicado por {'kg' if unit == 'kg' else 'unidad'}": ars(
+                quote.merchandise / quote.received
+            ),
             "Publicación": quote.offer.url,
             "Envío en la captura": quote.offer.shipping_note or "Sin dato",
             "Promoción publicada": quote.offer.promotion or "Sin dato",
@@ -86,11 +93,13 @@ def show_quotes(quotes, unit, product_key=None):
         }
         if unit == "kg":
             units = offer.units_per_pack
-            row.update({
-                "Peso por unidad": weight_label(offer.pack / units if units else None),
-                "Unidades por pack": quantity_number(units) if units else "Sin dato",
-                "Peso por pack": weight_label(offer.pack),
-            })
+            row.update(
+                {
+                    "Peso por unidad": weight_label(offer.pack / units if units else None),
+                    "Unidades por pack": quantity_number(units) if units else "Sin dato",
+                    "Peso por pack": weight_label(offer.pack),
+                }
+            )
         rows.append(row)
 
     if product_key is not None:
@@ -117,7 +126,9 @@ def show_supplier_purchase(publications, needed, unit, product_key, *, compare_s
     budget = st.number_input("Presupuesto máximo de mercadería (ARS)", min_value=0.0, value=None, step=100.0)
     try:
         max_quantity = quantity_field(
-            f"Cantidad máxima ({UNITS[unit]})", f"maximo_{unit}", whole_units=unit == "unidad",
+            f"Cantidad máxima ({UNITS[unit]})",
+            f"maximo_{unit}",
+            whole_units=unit == "unidad",
         )
     except ValueError as error:
         st.error(str(error))
@@ -129,11 +140,16 @@ def show_supplier_purchase(publications, needed, unit, product_key, *, compare_s
     visible_quotes = quotes
     if bounded:
         visible_quotes, _ = options_for(
-            selected, needed, unit, budget=Decimal(str(budget)) if budget is not None else None,
+            selected,
+            needed,
+            unit,
+            budget=Decimal(str(budget)) if budget is not None else None,
             max_quantity=max_quantity,
         )
         _, best = supplier_options(
-            [quote for quote in visible_quotes if not quote.offer.outlier_price], bounded=True, published=True,
+            [quote for quote in visible_quotes if not quote.offer.outlier_price],
+            bounded=True,
+            published=True,
         )
     if minimum is None:
         if quotes:
@@ -159,7 +175,8 @@ def show_supplier_purchase(publications, needed, unit, product_key, *, compare_s
             st.caption(f"Compra mínima de referencia · {ars(minimum.merchandise)}")
         show_quotes(
             sort_quotes(visible_quotes) if compare_sizes else quotes,
-            unit, product_key,
+            unit,
+            product_key,
         )
     return unavailable
 
@@ -198,7 +215,9 @@ def select_weight_offers(products, insumos, mode):
     quantity_slot = st.container()
     publications = [item for group in products.values() for _, item in group if item.insumo == insumo]
     with st.expander("Acotar ofertas"):
-        brand_options = sorted({item.brand or "Marca sin confirmar" for item in publications}, key=str.casefold)
+        brand_options = sorted(
+            {item.brand or "Marca sin confirmar" for item in publications}, key=str.casefold
+        )
         brands = st.multiselect("Marca", brand_options)
         if brands:
             publications = [item for item in publications if (item.brand or "Marca sin confirmar") in brands]
@@ -206,19 +225,24 @@ def select_weight_offers(products, insumos, mode):
         if mode == "Por cantidad":
             sellers = seller_labels(publications)
             sellers_selected = st.multiselect(
-                "Proveedor", sorted(sellers, key=lambda seller: (sellers[seller].casefold(), seller)),
+                "Proveedor",
+                sorted(sellers, key=lambda seller: (sellers[seller].casefold(), seller)),
                 format_func=sellers.__getitem__,
             )
             if sellers_selected:
-                publications = [item for item in publications if item.offer.supplier.identifier in sellers_selected]
+                publications = [
+                    item for item in publications if item.offer.supplier.identifier in sellers_selected
+                ]
 
         labels = {
             item.offer.listing: f"{item.offer.product} · {item.offer.supplier.name} · {item.offer.listing}"
             for item in publications
         }
         chosen = st.multiselect(
-            "Publicaciones para comparar", sorted(labels, key=lambda listing: labels[listing].casefold()),
-            format_func=labels.__getitem__, placeholder="Todas las filtradas",
+            "Publicaciones para comparar",
+            sorted(labels, key=lambda listing: labels[listing].casefold()),
+            format_func=labels.__getitem__,
+            placeholder="Todas las filtradas",
         )
         if chosen:
             publications = [item for item in publications if item.offer.listing in chosen]
@@ -228,7 +252,10 @@ def select_weight_offers(products, insumos, mode):
 def select_presentation(products, insumos):
     if insumos:
         insumo = st.selectbox(
-            "Insumo", insumos, index=None, placeholder="Todos los insumos",
+            "Insumo",
+            insumos,
+            index=None,
+            placeholder="Todos los insumos",
             format_func=lambda value: value.replace("_", " "),
         )
         if insumo:
@@ -254,8 +281,10 @@ def show_comparison(products):
     mode_column, unit_column = st.columns(2)
     mode = mode_column.radio("¿Cómo querés calcular?", ["Por cantidad", "Por proveedor"], horizontal=True)
     unit = unit_column.radio(
-        "Comparar por", ["kg", "unidad"],
-        format_func={"kg": "Peso (kg o g)", "unidad": "Unidades"}.__getitem__, horizontal=True,
+        "Comparar por",
+        ["kg", "unidad"],
+        format_func={"kg": "Peso (kg o g)", "unidad": "Unidades"}.__getitem__,
+        horizontal=True,
     )
     insumos = sorted({item.insumo for group in products.values() for _, item in group if item.insumo})
     compare_sizes = unit == "kg" and bool(insumos)
@@ -278,8 +307,11 @@ def show_comparison(products):
         quotes, unavailable = options_for(publications, needed, unit)
         best = best_purchase([quote for quote in quotes if not quote.offer.outlier_price], published=True)
         if best is not None:
-            label = ("Menor importe sin alerta de precio"
-                     if any(quote.offer.outlier_price for quote in quotes) else "Menor importe publicado")
+            label = (
+                "Menor importe sin alerta de precio"
+                if any(quote.offer.outlier_price for quote in quotes)
+                else "Menor importe publicado"
+            )
             show_recommendation(best, unit, label)
         elif quotes:
             st.info("Las ofertas comparables tienen precios atípicos. Revisalas antes de elegir.")

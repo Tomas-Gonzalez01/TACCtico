@@ -16,33 +16,56 @@ MARKET_CSV = market_csv(ROOT)
 ORIGINAL_CSV = ROOT / "data_real" / "dataset_final.csv"
 DOWNLOADED_CSV = Path.home() / "Downloads" / "dataset_final.csv"
 MARKET_COLUMNS = [
-    "id_publicacion", "titulo", "precio_publicado", "moneda", "url", "capturado_en", "fuente",
+    "id_publicacion",
+    "titulo",
+    "precio_publicado",
+    "moneda",
+    "url",
+    "capturado_en",
+    "fuente",
 ]
-OPTIONAL_COLUMNS = ["insumo", "marca", "vendedor", "precio_100g", "revision_presentacion", "gramos_totales", "unidades"]
+OPTIONAL_COLUMNS = [
+    "insumo",
+    "marca",
+    "vendedor",
+    "precio_100g",
+    "revision_presentacion",
+    "gramos_totales",
+    "unidades",
+]
 
 
 def show_market_offers():
     try:
         offers = pd.read_csv(
-            MARKET_CSV, usecols=lambda column: column in MARKET_COLUMNS + OPTIONAL_COLUMNS,
+            MARKET_CSV,
+            usecols=lambda column: column in MARKET_COLUMNS + OPTIONAL_COLUMNS,
             dtype={"id_publicacion": str},
         )
         if not set(MARKET_COLUMNS) <= set(offers.columns):
             raise ValueError("Faltan columnas obligatorias.")
         offers["precio_publicado"] = pd.to_numeric(offers["precio_publicado"], errors="raise")
         offers["capturado_en"] = pd.to_datetime(
-            offers["capturado_en"], format="ISO8601", utc=True,
+            offers["capturado_en"],
+            format="ISO8601",
+            utc=True,
         ).dt.tz_localize(None)
         if {"precio_100g", "revision_presentacion"} <= set(offers.columns):
             offers["precio_100g"] = pd.to_numeric(offers["precio_100g"], errors="coerce").where(
                 offers["revision_presentacion"].isna()
             )
         valid_prices = offers["precio_publicado"].between(0, float("inf"), inclusive="neither")
-        valid_urls = offers["url"].astype("string").str.match(
-            r"^https://articulo\.mercadolibre\.com\.ar/[^\s]+$", na=False,
+        valid_urls = (
+            offers["url"]
+            .astype("string")
+            .str.match(
+                r"^https://articulo\.mercadolibre\.com\.ar/[^\s]+$",
+                na=False,
+            )
         )
         if (
-            offers.empty or offers[MARKET_COLUMNS].isna().any().any()
+            offers.empty
+            or offers[MARKET_COLUMNS].isna().any().any()
             or not (valid_prices & valid_urls & offers["moneda"].eq("ARS")).all()
         ):
             raise ValueError("El CSV no contiene publicaciones válidas en ARS.")
@@ -53,24 +76,39 @@ def show_market_offers():
     st.header("Catálogo de publicaciones", anchor=False)
     with st.container(key="filtros_catalogo"):
         search_col, ingredient_col = st.columns([2, 1])
-        query = search_col.text_input("Buscar por título", key="titulo_real", placeholder="Por ejemplo, premezcla para pan").strip()
+        query = search_col.text_input(
+            "Buscar por título", key="titulo_real", placeholder="Por ejemplo, premezcla para pan"
+        ).strip()
         ingredient_slot = ingredient_col.container()
         price_filters = st.expander("Filtrar por precio publicado")
     insumo = None
     if "insumo" in offers:
         insumo = ingredient_slot.selectbox(
-            "Insumo", sorted(offers["insumo"].dropna().unique()),
-            index=None, placeholder="Todos los insumos", format_func=ingredient_label,
+            "Insumo",
+            sorted(offers["insumo"].dropna().unique()),
+            index=None,
+            placeholder="Todos los insumos",
+            format_func=ingredient_label,
             key="insumo_catalogo",
         )
     min_col, max_col = price_filters.columns(2)
     minimum = min_col.number_input(
-        "Precio mínimo (ARS)", min_value=0.0, value=None, step=1.0,
-        format="%.2f", placeholder="Sin mínimo", key="precio_minimo",
+        "Precio mínimo (ARS)",
+        min_value=0.0,
+        value=None,
+        step=1.0,
+        format="%.2f",
+        placeholder="Sin mínimo",
+        key="precio_minimo",
     )
     maximum = max_col.number_input(
-        "Precio máximo (ARS)", min_value=0.0, value=None, step=1.0,
-        format="%.2f", placeholder="Sin máximo", key="precio_maximo",
+        "Precio máximo (ARS)",
+        min_value=0.0,
+        value=None,
+        step=1.0,
+        format="%.2f",
+        placeholder="Sin máximo",
+        key="precio_maximo",
     )
     if minimum is not None and maximum is not None and minimum > maximum:
         st.error("El precio mínimo debe ser menor o igual al máximo.")
@@ -82,9 +120,7 @@ def show_market_offers():
     matches = offers["titulo"].str.contains(query, case=False, regex=False)
     if insumo is not None:
         matches &= offers["insumo"].eq(insumo)
-    filtered = offers[matches & prices.between(lower, upper)].sort_values(
-        ["precio_publicado", "titulo"]
-    )
+    filtered = offers[matches & prices.between(lower, upper)].sort_values(["precio_publicado", "titulo"])
 
     with st.container(key="catalogo_resumen"):
         count, origin = st.columns([1, 3], vertical_alignment="center")
@@ -97,11 +133,15 @@ def show_market_offers():
     show_catalog(filtered)
 
 
-st.set_page_config(page_title="TACCtico", page_icon=str(LOGO), layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(
+    page_title="TACCtico", page_icon=str(LOGO), layout="wide", initial_sidebar_state="collapsed"
+)
 st.html(ASSETS / "tokens.css")
 st.html(ASSETS / "theme.css")
 # Solo código estático del repositorio; ningún dato del CSV se ejecuta como JavaScript.
-st.html(f'<script>{(ASSETS / "navigation.js").read_text(encoding="utf-8")}</script>', unsafe_allow_javascript=True)
+st.html(
+    f"<script>{(ASSETS / 'navigation.js').read_text(encoding='utf-8')}</script>", unsafe_allow_javascript=True
+)
 with st.container(key="app_navigation"):
     st.html("""
         <header class="tacctico-header">
@@ -110,21 +150,33 @@ with st.container(key="app_navigation"):
         </header>
     """)
     section = st.radio(
-        "Sección", ["Catálogo", "Arma tu presupuesto", "Dashboard"], horizontal=True,
-        key="seccion", label_visibility="collapsed",
+        "Sección",
+        ["Catálogo", "Arma tu presupuesto", "Dashboard"],
+        horizontal=True,
+        key="seccion",
+        label_visibility="collapsed",
     )
 data_toolbar = st.container(key="datos_captura")
 with data_toolbar:
     capture, update = st.columns([3, 1], vertical_alignment="center")
-    refresh = update.button("Actualizar datos", key="actualizar_lote", help="Si hay un lote nuevo, empieza un presupuesto vacío.")
+    refresh = update.button(
+        "Actualizar datos", key="actualizar_lote", help="Si hay un lote nuevo, empieza un presupuesto vacío."
+    )
     release = choose_release(ROOT, refresh=refresh, controls=False)
     if release:
         date = (release["metrics"].get("captura_hasta") or "")[:10]
         date = "/".join(reversed(date.split("-"))) if date else "sin fecha"
-        capture.caption(f"Precios de la captura del {date}", help=f"Fuente: Mercado Libre Argentina. Versión {release['lote'][:8]}.")
+        capture.caption(
+            f"Precios de la captura del {date}",
+            help=f"Fuente: Mercado Libre Argentina. Versión {release['lote'][:8]}.",
+        )
 if release:
     MARKET_CSV = Path(release["folder"]) / "mercadolibre_validado.csv"
-content_keys = {"Catálogo": "contenido_catalogo", "Arma tu presupuesto": "contenido_presupuesto", "Dashboard": "contenido_dashboard"}
+content_keys = {
+    "Catálogo": "contenido_catalogo",
+    "Arma tu presupuesto": "contenido_presupuesto",
+    "Dashboard": "contenido_dashboard",
+}
 with st.container(key=content_keys[section]):
     if section == "Dashboard":
         show_dashboard(release)
@@ -135,4 +187,6 @@ with st.container(key=content_keys[section]):
         show_market_offers()
     else:
         st.info("Guardá el CSV validado de Mercado Libre en data_real/mercadolibre_validado.csv.")
-    st.html(f'<span class="tacctico-section-ready" data-section="{content_keys[section]}" aria-hidden="true"></span>')
+    st.html(
+        f'<span class="tacctico-section-ready" data-section="{content_keys[section]}" aria-hidden="true"></span>'
+    )

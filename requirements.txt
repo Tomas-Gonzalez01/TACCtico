@@ -1,4 +1,4 @@
-# Dependencias de la interfaz Arma tu presupuesto (actualizacion completa 2026-11-17).
+# Dependencias de la interfaz de catálogo y presupuesto (actualización completa 2026-11-19).
 streamlit==1.54.0
 pandas==2.3.3
 reportlab==5.1.0

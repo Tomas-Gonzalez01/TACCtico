@@ -121,6 +121,7 @@ html, body {
         min-width: 0;
     }
     [data-testid="stMainBlockContainer"]:has(.mobile-budget) { padding-bottom: 8rem; }
+    [data-testid="stMainBlockContainer"]:has(.cloud-budget) { padding-bottom: 11rem; }
     .mobile-budget {
         position: fixed;
         inset-inline: 0;
@@ -136,6 +137,7 @@ html, body {
         color: var(--color-ink);
     }
     .mobile-budget strong { display: block; font-size: 1.125rem; font-variant-numeric: tabular-nums; }
+    .cloud-budget { bottom: 3rem; }
     .mobile-budget span, .mobile-budget small { display: block; font-size: .8125rem; line-height: 1.4; }
     .mobile-budget small { color: var(--color-muted); }
     .mobile-budget a {

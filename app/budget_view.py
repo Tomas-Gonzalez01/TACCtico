@@ -2,6 +2,7 @@ from datetime import datetime, timezone, timedelta
 from decimal import Decimal
 from pathlib import Path
 from html import escape
+from urllib.parse import urlsplit
 
 import streamlit as st
 
@@ -229,8 +230,11 @@ def show_budget():
         )
     label = "Total estimado del pedido" if complete else "Importe conocido"
     pending = "" if complete else "Hay cargos por confirmar"
+    # En la web pública se deja libre el distintivo del alojamiento.
+    hosted = (urlsplit(st.context.url or "").hostname or "").endswith(".streamlit.app")
+    host_class = " cloud-budget" if hosted else ""
     st.html(
-        '<aside class="mobile-budget" aria-label="Resumen del presupuesto">'
+        f'<aside class="mobile-budget{host_class}" aria-label="Resumen del presupuesto">'
         f'<div><span>{label}</span><strong>{escape(ars(known))}</strong><small>{pending}</small></div>'
         '<a href="#lista-de-compras">Ver presupuesto</a></aside>'
     )

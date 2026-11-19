@@ -1,1 +1,4 @@
+# Manifests identify exact bytes; checkout must not change line endings.
 /data_public/mercadolibre_validado_2026-11-14.csv -text whitespace=cr-at-eol
+data_public/actual/** -text whitespace=cr-at-eol
+n8n/python/** -text whitespace=cr-at-eol

@@ -1,0 +1,161 @@
+{
+  "name": "TACCtico — Dataset limpio",
+  "active": false,
+  "nodes": [
+    {
+      "name": "Cargar CSV crudo",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "id": "4a4da903-094e-5517-ae97-7e41833c10f6",
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "formTitle": "TACCtico — Limpiar dataset",
+        "formDescription": "Subí el CSV crudo de Mercado Libre. El flujo genera el dataset compatible con TACCtico.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "dataset",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "acceptFileTypes": ".csv",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "webhookId": "tacctico-dataset-limpio"
+    },
+    {
+      "name": "Leer publicaciones",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.2,
+      "id": "b03ce114-d323-502b-8662-0c77ae353fdd",
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "binaryPropertyName": "dataset",
+        "options": {}
+      }
+    },
+    {
+      "name": "Validar archivo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "id": "dd6ebf65-b707-505e-a893-1beb1a242893",
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const items = $input.all();\nif (!items.length) throw new Error('El CSV está vacío.');\nconst required = ['idPublicacion','articuloTitulo','nuevoPrecio','Moneda','zProductoLink','Tiempo'];\nconst missing = required.filter(key => !items.some(item => Object.prototype.hasOwnProperty.call(item.json, key)));\nif (missing.length) throw new Error('Faltan columnas: ' + missing.join(', '));\nreturn items;"
+      }
+    },
+    {
+      "name": "Limpiar y guardar lote",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "id": "616ce236-98c0-5a7a-822f-b43686aa70da",
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "pythonNative",
+        "pythonCode": "from tacctico_etl import ejecutar\nresultado = ejecutar(_items)\nif not resultado[\"publicable\"]:\n    raise ValueError(\"Hay filas rechazadas. Revisá rechazados.csv en la carpeta del lote. El dataset vigente no cambió.\")\nreturn [{\"json\": resultado}]"
+      }
+    },
+    {
+      "name": "CSV listo para TACCtico",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "id": "b3e80bd9-5e54-514a-8527-55a5b7efafc7",
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "=/files/lotes/{{ $json.lote }}/mercadolibre_validado.csv",
+        "options": {
+          "fileName": "mercadolibre_validado.csv",
+          "mimeType": "text/csv",
+          "dataPropertyName": "dataset_limpio"
+        }
+      }
+    },
+    {
+      "name": "Cómo usar",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "id": "e8fa48cb-4dd9-51ae-bf6e-bdfeadd318d1",
+      "position": [
+        180,
+        240
+      ],
+      "parameters": {
+        "content": "## Dataset limpio para TACCtico\n1. Ejecutá el flujo y cargá el CSV crudo en el formulario.\n2. Revisá el resumen de Limpiar y guardar lote.\n3. Descargá dataset_limpio desde el último nodo.\n\nCada lote queda en n8n/storage/lotes. Repetir el mismo archivo reutiliza el lote. Si falla un control, se conserva el vigente.\n\nLa conexión a Drive se agrega cuando esté autorizada. No incluye EDA ni métricas.",
+        "height": 300,
+        "width": 740
+      }
+    }
+  ],
+  "connections": {
+    "Cargar CSV crudo": {
+      "main": [
+        [
+          {
+            "node": "Leer publicaciones",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer publicaciones": {
+      "main": [
+        [
+          {
+            "node": "Validar archivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar archivo": {
+      "main": [
+        [
+          {
+            "node": "Limpiar y guardar lote",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpiar y guardar lote": {
+      "main": [
+        [
+          {
+            "node": "CSV listo para TACCtico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "pinData": {}
+}

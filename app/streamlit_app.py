@@ -5,6 +5,7 @@ import streamlit as st
 
 from purchase_data import market_csv
 from purchase_view import show_calculator
+from release_view import choose_release, show_dashboard
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -120,11 +121,16 @@ st.html("""
         <img src="app/static/logo-tacctico.png?v=2" alt="TACCtico" width="144" height="144">
     </header>
 """)
+release = choose_release(ROOT)
+if release:
+    MARKET_CSV = Path(release["folder"]) / "mercadolibre_validado.csv"
 section = st.radio(
-    "Sección", ["Catálogo", "Arma tu presupuesto"], horizontal=True,
+    "Sección", ["Catálogo", "Arma tu presupuesto", "Dashboard"], horizontal=True,
     key="seccion", label_visibility="collapsed",
 )
-if section == "Arma tu presupuesto":
+if section == "Dashboard":
+    show_dashboard(release)
+elif section == "Arma tu presupuesto":
     original = next((path for path in (ORIGINAL_CSV, DOWNLOADED_CSV) if path.is_file()), None)
     show_calculator(MARKET_CSV, original)
 elif MARKET_CSV.is_file():

@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=77,<83"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tacctico-etl"
+version = "1.0.0"
+requires-python = ">=3.11"
+dependencies = ["pandas==2.3.3", "numpy==2.3.3"]
+
+[tool.setuptools.packages.find]
+include = ["tacctico_etl*"]
+
+[tool.setuptools.package-data]
+tacctico_etl = ["templates/*.html", "templates/*.json"]

@@ -1,0 +1,465 @@
+{
+  "name": "TACCtico — Drive a dataset limpio",
+  "active": false,
+  "nodes": [
+    {
+      "name": "Iniciar limpieza desde Drive",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "id": "e5e2204c-2ab1-5ea3-b7dd-715b1e44c071",
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "name": "Descargar CSV crudo de Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "id": "2e65690b-711c-5a9b-b6ea-864972e81767",
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "resource": "file",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ID_CSV_CRUDO"
+        },
+        "options": {
+          "binaryPropertyName": "dataset"
+        }
+      }
+    },
+    {
+      "name": "Leer publicaciones",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.2,
+      "id": "b03ce114-d323-502b-8662-0c77ae353fdd",
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "binaryPropertyName": "dataset",
+        "options": {}
+      }
+    },
+    {
+      "name": "Validar archivo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "id": "dd6ebf65-b707-505e-a893-1beb1a242893",
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const items = $input.all();\nif (!items.length) throw new Error('El CSV está vacío.');\nconst required = ['idPublicacion','articuloTitulo','nuevoPrecio','Moneda','zProductoLink','Tiempo'];\nconst missing = required.filter(key => !items.some(item => Object.prototype.hasOwnProperty.call(item.json, key)));\nif (missing.length) throw new Error('Faltan columnas: ' + missing.join(', '));\nreturn items;"
+      }
+    },
+    {
+      "name": "Limpiar y guardar lote",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "id": "616ce236-98c0-5a7a-822f-b43686aa70da",
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "pythonNative",
+        "pythonCode": "from tacctico_etl import ejecutar\nresultado = ejecutar(_items, publicar=False)\nif not resultado[\"publicable\"]:\n    raise ValueError(\"El lote tiene filas rechazadas; el vigente se conserva.\")\nreturn [{\"json\":resultado}]"
+      }
+    },
+    {
+      "name": "Preparar archivos del lote",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "id": "3cfb1034-43e2-5cfa-956c-07f3f19c8fd2",
+      "position": [
+        1200,
+        0
+      ],
+      "parameters": {
+        "jsCode": "return $input.first().json.archivos_publicar.map(archivo=>({json:archivo}));"
+      }
+    },
+    {
+      "name": "Guardar archivos verificados",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "id": "a56b1851-5922-5d18-a107-c825cfc28f0f",
+      "position": [
+        1440,
+        0
+      ],
+      "parameters": {
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ID_SUBFLUJO"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      }
+    },
+    {
+      "name": "Preparar vigente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "id": "aad39086-f986-5844-8c33-0ac0f4ca70cc",
+      "position": [
+        1680,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const archivos=$input.all().map(x=>x.json);\nif(archivos.length!==2||new Set(archivos.map(x=>x.tipo)).size!==2) throw new Error('Faltan archivos verificados.');\nconst resumen=$('Limpiar y guardar lote').first().json;\nif(archivos.some(x=>x.lote!==resumen.lote||!x.drive_id)) throw new Error('Los archivos no pertenecen al mismo lote.');\nconst campos=['tipo','lote','nombre','bytes','md5','sha256','drive_id','enlace'];\nconst porTipo=Object.fromEntries(archivos.map(x=>[x.tipo,Object.fromEntries(campos.map(k=>[k,x[k]]))]));\nconst vigente={schema_version:1,lote:resumen.lote,version_reglas:resumen.version_reglas,\n  publicaciones:resumen.publicaciones_tacctico,archivos:porTipo};\nconst bytes=Buffer.from(JSON.stringify(vigente,null,2)+'\\n','utf8');\nconst md5=require('crypto').createHash('md5').update(bytes).digest('hex');\nreturn [{json:{lote:resumen.lote,vigente,md5,bytes:bytes.length},binary:{archivo:{data:bytes.toString('base64'),mimeType:'application/json',fileName:'tacctico_vigente.json'}}}];"
+      }
+    },
+    {
+      "name": "Buscar puntero vigente",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "id": "52b2989b-db93-53a4-9d9a-390a89c38d93",
+      "position": [
+        1920,
+        0
+      ],
+      "parameters": {
+        "resource": "fileFolder",
+        "operation": "search",
+        "searchMethod": "query",
+        "queryString": "name = 'tacctico_vigente.json' and 'ID_CARPETA_SALIDA' in parents and trashed = false",
+        "limit": 2,
+        "filter": {},
+        "options": {
+          "fields": [
+            "*"
+          ]
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "name": "Preparar actualización del vigente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "id": "d455530d-327a-57c1-82bc-54c3a29447e2",
+      "position": [
+        2160,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const files=$input.all().filter(x=>x.json.id);\nif(files.length>1) throw new Error('Hay más de un puntero vigente. Se conserva el anterior.');\nconst original=$('Preparar vigente').first();\nreturn [{json:{...original.json,existe:!!files.length,id_vigente:files[0]?.json.id||''},binary:original.binary}];"
+      }
+    },
+    {
+      "name": "¿Existe vigente?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "id": "c119eccb-310d-5c73-97f9-499013a11735",
+      "position": [
+        2400,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "exists",
+              "leftValue": "={{ $json.existe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "name": "Actualizar vigente",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "id": "87503eb9-d8df-56c2-8b0b-a58e21872b0f",
+      "position": [
+        2640,
+        -120
+      ],
+      "parameters": {
+        "resource": "file",
+        "operation": "update",
+        "fileId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $json.id_vigente }}"
+        },
+        "changeFileContent": true,
+        "inputDataFieldName": "archivo",
+        "options": {
+          "fields": [
+            "*"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Crear vigente",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "id": "5e4a23ec-55fe-5eac-9f04-b9209d704e18",
+      "position": [
+        2640,
+        140
+      ],
+      "parameters": {
+        "resource": "file",
+        "operation": "upload",
+        "inputDataFieldName": "archivo",
+        "name": "tacctico_vigente.json",
+        "folderId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ID_CARPETA_SALIDA"
+        },
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "options": {
+          "simplifyOutput": false
+        }
+      }
+    },
+    {
+      "name": "Verificar vigente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "id": "301fd819-d835-56ce-9335-04f086f235a2",
+      "position": [
+        2880,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const a=$input.first().json,e=$('Preparar vigente').first().json;\nif(!a.id||a.md5Checksum!==e.md5||Number(a.size)!==e.bytes) throw new Error('No se pudo verificar el puntero vigente.');\nreturn [{json:{...e.vigente,id_vigente:a.id,enlace_vigente:a.webViewLink,estado:'publicado_en_drive'}}];"
+      }
+    },
+    {
+      "name": "Confirmar lote en TACCtico local",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "id": "aaca39e1-9d6d-529b-9c32-2e9bd63a53a4",
+      "position": [
+        3120,
+        0
+      ],
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "from tacctico_etl import confirmar_publicacion\nreturn [{\"json\":confirmar_publicacion(_items[0][\"json\"])}] "
+      }
+    },
+    {
+      "name": "Guía del flujo",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "id": "a2d3aa44-8831-5e1b-8496-f659241560cb",
+      "position": [
+        300,
+        380
+      ],
+      "parameters": {
+        "content": "## Actualización controlada\nEjecutá este flujo con Docker abierto. Descarga el crudo, genera el CSV, las métricas y el dashboard de Kiara y publica los archivos verificados. El vigente se actualiza al final.\n\nSi un control falla, se conserva el vigente anterior. Repetir un lote reutiliza los archivos. No ejecutar corridas simultáneas.\n\nLa lectura pública de los resultados requiere autorización del equipo; la carpeta conserva sus permisos.",
+        "width": 950,
+        "height": 270
+      }
+    }
+  ],
+  "connections": {
+    "Iniciar limpieza desde Drive": {
+      "main": [
+        [
+          {
+            "node": "Descargar CSV crudo de Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Descargar CSV crudo de Drive": {
+      "main": [
+        [
+          {
+            "node": "Leer publicaciones",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer publicaciones": {
+      "main": [
+        [
+          {
+            "node": "Validar archivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar archivo": {
+      "main": [
+        [
+          {
+            "node": "Limpiar y guardar lote",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpiar y guardar lote": {
+      "main": [
+        [
+          {
+            "node": "Preparar archivos del lote",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar archivos del lote": {
+      "main": [
+        [
+          {
+            "node": "Guardar archivos verificados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar archivos verificados": {
+      "main": [
+        [
+          {
+            "node": "Preparar vigente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar vigente": {
+      "main": [
+        [
+          {
+            "node": "Buscar puntero vigente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar puntero vigente": {
+      "main": [
+        [
+          {
+            "node": "Preparar actualización del vigente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar actualización del vigente": {
+      "main": [
+        [
+          {
+            "node": "¿Existe vigente?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Existe vigente?": {
+      "main": [
+        [
+          {
+            "node": "Actualizar vigente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Crear vigente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar vigente": {
+      "main": [
+        [
+          {
+            "node": "Verificar vigente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear vigente": {
+      "main": [
+        [
+          {
+            "node": "Verificar vigente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar vigente": {
+      "main": [
+        [
+          {
+            "node": "Confirmar lote en TACCtico local",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "pinData": {}
+}

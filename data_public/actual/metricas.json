@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "lote": "c2b2b5035a542182725e285430f8d1e6beb8f7ebc9f07713c1abd036bd3d6ea5",
+  "version_reglas": "kiara-etl-1-tacctico-2-analisis",
+  "moneda": "ARS",
+  "captura_desde": "2026-11-14T13:28:56.101000+00:00",
+  "captura_hasta": "2026-11-14T17:31:51.498000+00:00",
+  "catalogo": 372,
+  "base_util": 347,
+  "base_sin_atipicos": 330,
+  "atipicos_excluidos": 17,
+  "vendedores": 90,
+  "por_insumo": [
+    {
+      "insumo": "chips_chocolate",
+      "categoria": "Chips de chocolate",
+      "publicaciones": 40,
+      "vendedores": 17,
+      "min_kg": 13400.0,
+      "p25_kg": 15875.0,
+      "mediana_kg": 21517.833333333336,
+      "media_kg": 24178.65,
+      "p75_kg": 26059.5,
+      "max_kg": 55396.0,
+      "cv": 0.45528740636551684,
+      "mejor_accesible_kg": 13400.0,
+      "mejor_confiable_kg": 13400.0,
+      "brecha_mejor_vs_mediana": 0.3772607217269397
+    },
+    {
+      "insumo": "levadura",
+      "categoria": "Levadura",
+      "publicaciones": 36,
+      "vendedores": 16,
+      "min_kg": 16200.0,
+      "p25_kg": 25297.5,
+      "mediana_kg": 29000.0,
+      "media_kg": 35359.38497150997,
+      "p75_kg": 42795.0,
+      "max_kg": 101507.69230769231,
+      "cv": 0.4828295359852288,
+      "mejor_accesible_kg": 16200.0,
+      "mejor_confiable_kg": 16200.0,
+      "brecha_mejor_vs_mediana": 0.4413793103448276
+    },
+    {
+      "insumo": "polvo_hornear",
+      "categoria": "Polvo de hornear",
+      "publicaciones": 54,
+      "vendedores": 34,
+      "min_kg": 6639.0,
+      "p25_kg": 9099.25,
+      "mediana_kg": 17998.25,
+      "media_kg": 26249.47787575936,
+      "p75_kg": 32356.250000000004,
+      "max_kg": 130660.0,
+      "cv": 0.9437590899249787,
+      "mejor_accesible_kg": 6639.0,
+      "mejor_confiable_kg": 6639.0,
+      "brecha_mejor_vs_mediana": 0.6311308043837596
+    },
+    {
+      "insumo": "premezcla_budin",
+      "categoria": "Premezcla budín",
+      "publicaciones": 37,
+      "vendedores": 21,
+      "min_kg": 8632.666666666668,
+      "p25_kg": 12940.0,
+      "mediana_kg": 15462.222222222223,
+      "media_kg": 15653.829257829257,
+      "p75_kg": 18194.0,
+      "max_kg": 27000.0,
+      "cv": 0.2884760481336806,
+      "mejor_accesible_kg": 8632.666666666668,
+      "mejor_confiable_kg": 8632.666666666668,
+      "brecha_mejor_vs_mediana": 0.44169301523426263
+    },
+    {
+      "insumo": "premezcla_pan",
+      "categoria": "Premezcla pan",
+      "publicaciones": 53,
+      "vendedores": 26,
+      "min_kg": 5675.555555555556,
+      "p25_kg": 9272.222222222223,
+      "mediana_kg": 10553.333333333332,
+      "media_kg": 11415.699580712786,
+      "p75_kg": 14179.166666666668,
+      "max_kg": 18293.333333333332,
+      "cv": 0.28682160546930086,
+      "mejor_accesible_kg": 6930.0,
+      "mejor_confiable_kg": 6930.0,
+      "brecha_mejor_vs_mediana": 0.3433354390397978
+    },
+    {
+      "insumo": "premezcla_pizza",
+      "categoria": "Premezcla pizza",
+      "publicaciones": 80,
+      "vendedores": 37,
+      "min_kg": 5495.0,
+      "p25_kg": 9654.0,
+      "mediana_kg": 11637.777777777777,
+      "media_kg": 11760.830591931217,
+      "p75_kg": 13727.187499999998,
+      "max_kg": 20468.0,
+      "cv": 0.28683216556935337,
+      "mejor_accesible_kg": 6020.555555555556,
+      "mejor_confiable_kg": 6020.555555555556,
+      "brecha_mejor_vs_mediana": 0.4826713767424098
+    },
+    {
+      "insumo": "premezcla_universal",
+      "categoria": "Premezcla universal",
+      "publicaciones": 30,
+      "vendedores": 16,
+      "min_kg": 6666.666666666668,
+      "p25_kg": 9535.000000000002,
+      "mediana_kg": 10926.666666666666,
+      "media_kg": 11577.434370370373,
+      "p75_kg": 13969.166666666668,
+      "max_kg": 17702.222222222223,
+      "cv": 0.24456700733908643,
+      "mejor_accesible_kg": 6666.666666666668,
+      "mejor_confiable_kg": 6666.666666666668,
+      "brecha_mejor_vs_mediana": 0.3898718730933495
+    }
+  ],
+  "lote_recetas": {
+    "Pan": {
+      "med": 5566.666666666666,
+      "best": 3627.0,
+      "ah": 1939.666666666666
+    },
+    "Pizza": {
+      "med": 2909.4444444444443,
+      "best": 1505.138888888889,
+      "ah": 1404.3055555555554
+    },
+    "Budin": {
+      "med": 3865.5555555555557,
+      "best": 2158.166666666667,
+      "ah": 1707.3888888888887
+    }
+  },
+  "supuestos": {
+    "tope_accesible_gramos": 5000,
+    "gramos_por_receta": {
+      "Pan": {
+        "premezcla_pan": 500,
+        "levadura": 10
+      },
+      "Pizza": {
+        "premezcla_pizza": 250
+      },
+      "Budin": {
+        "premezcla_budin": 250
+      }
+    },
+    "lotes_mensuales": {
+      "bajo": 40,
+      "medio": 120,
+      "alto": 300
+    },
+    "minutos_manuales_por_insumo": 15,
+    "minutos_herramienta_por_insumo": 2,
+    "insumos_por_compra": 4,
+    "compras_por_mes": 4,
+    "referencias_equipo_ars_hora": [
+      1994,
+      6529
+    ]
+  },
+  "metodo": "Notebook ETL/EDA de Kiara y dashboard final entregado el 19/11/2026. Base útil sin outliers; mediana frente a mejor publicación de hasta 5 kg.",
+  "limitaciones": [
+    "Precios de la captura, sin actualización comercial en tiempo real.",
+    "Las brechas son estimaciones estadísticas y no un ahorro observado.",
+    "Las recetas, frecuencia, tiempos y valor de la hora son supuestos editables.",
+    "Arma tu presupuesto verifica presentaciones y cargos para una compra concreta.",
+    "No se estima una tendencia temporal con una sola captura."
+  ]
+}

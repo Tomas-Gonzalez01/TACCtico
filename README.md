@@ -1,87 +1,82 @@
 # TACCtico
 
-TACCtico es un proyecto de Capstone B2B para planificar compras de insumos sin TACC. Permite consultar publicaciones de Mercado Libre Argentina, comparar cuánto cuesta cubrir una cantidad con presentaciones enteras y exportar una lista de compras como presupuesto PDF.
+Compará ofertas de insumos sin TACC y armá el presupuesto de tu negocio con presentaciones completas, cantidades y precios de Mercado Libre Argentina. Incluye catálogo, lista de compras, PDF y el dashboard de abastecimiento de Kiara.
 
 [Abrir TACCtico online](https://tacctico-portafolio-ucn4pkoeemkzx9fowx7ktt.streamlit.app/)
 
-La demo tiene acceso público desde el navegador. Usa 363 publicaciones reales de Kiara, con precios de la captura del 14/11/2026.
+Se puede consultar sin cuenta. La versión procesada el **19/11/2026** tiene **372 publicaciones reales**, con precios de la captura del **14/11/2026**. El análisis estadístico usa **330** publicaciones útiles sin precios atípicos. La fecha de procesamiento no actualiza los precios de la captura.
 
-## Ejecutar la demo
+## Probarlo
 
-Con Python 3.12, abrí PowerShell en la carpeta del proyecto y prepará el entorno:
+1. En **Catálogo**, comprobá las 372 publicaciones. Buscá por título o insumo y escribí un mínimo o máximo de precio. Un extremo vacío no impone límite. Abrí la publicación original para revisar su detalle.
+2. En **Arma tu presupuesto → Por cantidad → Peso (kg o g)**, elegí **Polvo hornear**. En **Acotar ofertas → Publicaciones para comparar**, seleccioná `MLA3573151270`, `MLA1824200300` y `MLA3325209494`.
+3. En gramos, con `250` se recomienda la presentación de **ARS 3.509,00**. Con `1.000` se recomienda la de **ARS 6.639,00** para cubrir 1 kg. Los importes corresponden a mercadería de la captura.
+4. Pulsá **Agregar a la lista** o hacé doble clic en una oferta. Revisá cantidades, presentaciones enteras, peso recibido y sobrante. Completá IVA y envío solo si están confirmados. Descargá el **presupuesto PDF**, con logo, detalle por proveedor, cantidades, importes y enlaces. Si falta un cargo, muestra **Importe conocido** y los pendientes.
+5. En **Dashboard**, probá los filtros de insumo, formato, vendedor y envío. Revisá los ejemplos de pan, pizza y budín. Las brechas frente a la mediana son estimaciones, no ahorros observados. Los tiempos, frecuencia y valor por hora son supuestos editables.
+6. **Actualizar datos** consulta el último lote completo. Si cambió, comienza una lista vacía para usar sus precios. Si falla, conserva la versión disponible y el presupuesto. La barra lateral muestra la fecha de captura y la versión.
+
+Para cantidades usá formato argentino: `1` = un kilo; `1.000` = mil; `1,5` = uno y medio. Las presentaciones sin confirmar no se usan en comparaciones de cantidades. Los precios atípicos quedan fuera de las recomendaciones automáticas. El envío anunciado en la captura no garantiza el costo de envío de un pedido actual.
+
+## Ejecutar en tu computadora
+
+Desde la raíz del repositorio, con Python 3.12:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-```
-
-La demo carga automáticamente el [CSV validado de Kiara](../data_public/mercadolibre_validado_2026-11-14.csv) con **363 publicaciones reales** de Mercado Libre Argentina. Los precios corresponden a la captura del **14/11/2026**. Para probar otro lote en tu computadora, guardá una copia validada en `data_real/mercadolibre_validado.csv`.
-
-Iniciá Streamlit desde la raíz del proyecto y mantené abierta la terminal. En macOS o Linux, el intérprete del entorno es `.venv/bin/python`.
-
-```powershell
 .\.venv\Scripts\python.exe -m streamlit run app/streamlit_app.py --server.address 127.0.0.1
 ```
 
-[Abrir la demo local en el navegador](http://127.0.0.1:8501)
+[Abrir demo local](http://127.0.0.1:8501). Mantené abierta la terminal; Ctrl+C la detiene. En macOS/Linux usá `.venv/bin/python`.
 
-1. En **Catálogo**, comprobá que aparezcan 363 publicaciones y filtrá por insumo o título.
-2. En **Arma tu presupuesto → Por cantidad → Peso (kg o g)**, elegí **Polvo hornear**. En **Acotar ofertas → Publicaciones para comparar**, seleccioná `MLA3573151270`, `MLA1824200300` y `MLA3325209494`.
-3. Seleccioná gramos. Con `250` debería recomendar la presentación de **ARS 3.509,00**. Con `1.000` debería recomendar la de **ARS 6.639,00** para cubrir 1 kg. Los importes representan la mercadería de la captura.
-4. Agregá la oferta a la lista y descargá el PDF. El presupuesto incluye el logo de TACCtico, un resumen de mercadería, IVA y envío, y el detalle por proveedor con cantidades, precios y enlaces a las publicaciones. Si el IVA y el envío siguen pendientes, muestra el **Importe conocido** y los conceptos por confirmar. Las listas largas repiten el encabezado y numeran sus páginas.
+La app consulta el puntero público configurado en `data_public/conexion.json` (o `TACCTICO_MANIFEST_ID`) y verifica la huella del paquete antes de usarlo. `data_public/actual/` conserva el mismo lote como respaldo si Drive no responde. No requiere claves de Google, n8n, Apify ni Make. El CSV anterior de 363 publicaciones permanece como referencia histórica y no alimenta el lote actual.
 
-Al agregar, actualizar, conservar, reemplazar o quitar una oferta aparece una confirmación breve. Cambiar cantidades, IVA o envío no repite avisos anteriores. Los botones responden al mouse o al toque con una pulsación suave y respetan la preferencia de movimiento reducido. También se pueden usar con teclado.
-
-## Esquema del CSV
-
-El archivo está en UTF-8, separado por comas, con una fila por publicación.
-
-| Campos | Uso |
-| --- | --- |
-| `id_publicacion`, `titulo`, `url`, `fuente` | Identificación, título, enlace original y origen de la publicación. |
-| `precio_publicado`, `moneda`, `capturado_en` | Importe publicado en ARS y fecha de captura en UTC con formato ISO 8601. |
-| `insumo`, `marca`, `vendedor`, `tipo_vendedor`, `vendedor_id` | Clasificación para buscar y comparar. |
-| `gramos_unidad`, `unidades`, `es_pack`, `gramos_totales`, `precio_100g` | Contenido de la presentación y referencia de precio. |
-| `fuente_peso`, `peso_discrepa`, `outlier_precio`, `revision_presentacion` | Origen de la medida y alertas de validación. |
-| `tiene_promo`, `descuento_pct`, `precio_anterior`, `envio`, `promocion` | Condiciones de referencia en la captura. |
-| `categoria`, `nombre_ficha`, `linea`, `sabor`, `rnpa` | Datos complementarios de la ficha del producto. |
-
-Las primeras dos filas de la tabla reúnen las siete columnas obligatorias. Para comparar por peso se necesita el peso total de una presentación válida. Por unidades se necesita la cantidad por presentación. La calculadora excluye los precios atípicos de las recomendaciones automáticas. IVA y envío se anotan en el presupuesto cuando se cuenta con valores confirmados.
-
-## Flujo de datos
+## Cómo se actualizan los datos
 
 ```mermaid
 flowchart LR
-    A[Publicaciones de Mercado Libre Argentina] --> B[Captura CSV y depuración]
-    B --> C[Validación en Python]
-    C --> D[Webhook de Make a pedido]
-    D --> E[Google Drive]
-    E --> F[Copia local en Streamlit]
-    C --> G[Historial local en SQLite]
+    A[CSV crudo en Drive] --> B[n8n: limpieza de Kiara]
+    B --> C[CSV + métricas + dashboard]
+    C --> D[Subir o reutilizar y verificar]
+    D --> E[Actualizar vigente]
+    E --> F[Catálogo, presupuesto y dashboard]
 ```
 
-La captura del 14/11/2026 tenía 591 publicaciones. La corrida documentada guardó en Drive un CSV con 591 identificadores únicos. La descarga coincidió byte por byte con el CSV validado local. La selección posterior de 363 publicaciones se validó localmente y alimenta la demo. Su nueva carga a Drive queda por verificar. La base SQLite permite guardar varias capturas y Streamlit abre la copia local del CSV.
+n8n descarga las 591 publicaciones originales. La selección útil produce 347 filas; 25 publicaciones relevantes sin presentación resoluble se conservan en el catálogo: 372. El análisis excluye 17 atípicos de la selección útil: 330. El catálogo marca 37 presentaciones para revisión. No se fuerza un conteo fijo para futuras capturas.
 
-Apify puede exportar el dataset de una corrida para preparar la captura de entrada. El escenario probado comienza con un CSV ya validado. La bitácora disponible acredita el tramo desde la validación hasta Drive, y la versión de la demo se verifica con el CSV local. [Documentación de exportación en Apify](https://docs.apify.com/platform/storage/dataset)
+El lote reúne CSV, métricas y HTML con una identidad común. Los archivos de cada lote son inmutables y se verifica tamaño/MD5 en Drive y SHA-256 en la app. El puntero vigente se actualiza al final. Repetir una ejecución reutiliza los archivos. La ejecución real de subida, repetición y lectura sin cuenta se comprobó el 19/11/2026.
 
-Para reproducir el tramo de Make con una cuenta propia:
+La página consulta resultados ya generados; no ejecuta scraping ni n8n al abrirse. La captura puede provenir de una exportación de Apify. Make corresponde a una etapa anterior reemplazada por este flujo. No se calcula una tendencia con una sola captura. El historial recibido se conserva localmente en el proceso de ingesta.
 
-1. Agregá **Webhooks → Custom webhook** y configurá la autenticación por API key. El cuerpo JSON tiene los campos de texto `lote` y `csv_validado`. Pasá la clave mediante el encabezado `x-make-apikey`.
-2. Agregá **Google Drive → Upload a File**. Elegí una carpeta de tu cuenta. En el nombre del archivo, combiná `mercadolibre_`, el token `lote` y `.csv`. En **Data** aplicá `toBinary()` al token `csv_validado`.
-3. Ejecutá **Run once** y enviá el CSV validado como texto UTF-8 en el campo `csv_validado`. Descargá el resultado de Drive y verificá que su SHA-256 sea igual al del archivo enviado. Si exportás un blueprint para compartir, revisá primero los módulos, valores mapeados y referencias a recursos privados. [Documentación de blueprints de Make](https://help.make.com/blueprints)
+## Esquema y procedencia
+
+El [CSV del lote incluido](data_public/actual/mercadolibre_validado.csv) usa UTF-8, comas y una fila por publicación, con 31 columnas:
+
+| Campos | Uso |
+| --- | --- |
+| `id_publicacion`, `titulo`, `url`, `fuente` | Identificación, título, enlace y origen. |
+| `precio_publicado`, `moneda`, `capturado_en` | Importe publicado en ARS y captura UTC ISO 8601. |
+| `insumo`, `marca`, `vendedor`, `tipo_vendedor`, `vendedor_id` | Clasificación e identificación comercial. |
+| `gramos_unidad`, `unidades`, `es_pack`, `gramos_totales`, `precio_100g` | Presentación y referencia de precio. |
+| `fuente_peso`, `peso_discrepa`, `outlier_precio`, `revision_presentacion` | Procedencia de la medida y alertas. |
+| `tiene_promo`, `descuento_pct`, `precio_anterior`, `envio`, `promocion` | Condiciones de referencia de la captura. |
+| `categoria`, `nombre_ficha`, `linea`, `sabor`, `rnpa` | Datos complementarios de la ficha. |
+
+Los archivos `metricas.json`, `calidad.json` y `manifest.json` documentan métodos, supuestos, conteos e integridad. El dashboard conserva el diseño final de Kiara y recalcula sus datos sobre el mismo lote. Sus estadísticas normalizadas no sustituyen la comprobación de presentación, disponibilidad y cargos para un pedido concreto.
+
+El equipo autorizó publicar estos resultados finales del Capstone. El dataset crudo, rechazos, credenciales y carpetas privadas no forman parte de esta distribución. Las referencias por hora se identifican como supuestos del equipo; no como valores salariales oficiales.
 
 ## Verificar la instalación
 
 ```powershell
-.\.venv\Scripts\python.exe scripts/test_purchase_engine.py
-.\.venv\Scripts\python.exe scripts/test_budget_interactions.py
+.\.venv\Scripts\python.exe -m unittest discover -s scripts -p "test_*.py"
 .\.venv\Scripts\python.exe scripts/validar_demo.py
 ```
 
-Los comandos comprueban los cálculos, las acciones de la lista y la carga del catálogo con su búsqueda. Requieren el CSV real incluido en el repositorio o una copia local validada. En la demo, contrastá el precio por kg con el importe del pedido y descargá el PDF con la misma cantidad seleccionada.
+Los casos comprueban cálculos, acciones de la lista, cambio de lote, conservación del presupuesto ante un fallo y carga del catálogo con búsqueda. Las interacciones reales del dashboard y del selector de ofertas también se revisaron en el navegador. Los datos artificiales se limitan a pruebas.
 
 ## Fuentes y licencias
 
-- Las publicaciones provienen de Mercado Libre Argentina. El equipo autorizó este CSV validado para acompañar el portafolio del Capstone. El archivo enlaza a cada publicación y conserva su fecha de captura. [Mercado Libre Argentina](https://www.mercadolibre.com.ar/), [Términos del programa de desarrolladores](https://developers.mercadolibre.com.ar/es_ar/es-ar-terminos-y-condiciones)
-- Streamlit se distribuye bajo Apache 2.0. Pandas usa BSD de tres cláusulas y ReportLab usa BSD. [Streamlit](https://streamlit.io/terms-of-use), [pandas](https://github.com/pandas-dev/pandas/blob/v2.3.3/LICENSE), [ReportLab](https://pypi.org/project/reportlab/5.1.0/)
-- El equipo debe confirmar la licencia de su código antes de agregar un archivo `LICENSE` con permisos de reutilización.
+- Publicaciones de [Mercado Libre Argentina](https://www.mercadolibre.com.ar/), con sus enlaces y fecha de captura. [Términos del programa de desarrolladores](https://developers.mercadolibre.com.ar/es_ar/es-ar-terminos-y-condiciones).
+- [Streamlit](https://streamlit.io/terms-of-use) usa Apache 2.0; [pandas](https://github.com/pandas-dev/pandas/blob/v2.3.3/LICENSE) y [ReportLab](https://pypi.org/project/reportlab/5.1.0/) usan licencias BSD.
+- El equipo debe confirmar la licencia de su código antes de agregar un `LICENSE` con permisos de reutilización.

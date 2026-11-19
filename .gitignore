@@ -9,6 +9,10 @@ __pycache__/
 *.pem
 *.key
 credentials*.json
+/n8n/storage/
+/n8n/backups/
+/n8n/python/*.egg-info/
+/n8n/python/build/
 secrets*.json
 /data/
 /data_real/
@@ -16,4 +20,6 @@ secrets*.json
 /make/*
 !/make/README.md
 *.csv
+!/data_sample/datos_mock.csv
 !/data_public/mercadolibre_validado_2026-11-14.csv
+!/data_public/actual/mercadolibre_validado.csv

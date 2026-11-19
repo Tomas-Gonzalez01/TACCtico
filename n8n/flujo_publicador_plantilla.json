@@ -1,0 +1,243 @@
+{
+  "name": "TACCtico — Guardar archivo verificado",
+  "active": false,
+  "nodes": [
+    {
+      "name": "Archivo a publicar",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "id": "d80fc754-1107-57d8-9487-69f925db8bde",
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "inputSource": "passthrough"
+      }
+    },
+    {
+      "name": "Buscar archivo del lote",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "id": "8bfb1074-fe50-51b9-a44c-9d740958edb8",
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "resource": "fileFolder",
+        "operation": "search",
+        "searchMethod": "query",
+        "queryString": "=name = '{{ $json.nombre }}' and 'ID_CARPETA_SALIDA' in parents and trashed = false",
+        "limit": 2,
+        "filter": {},
+        "options": {
+          "fields": [
+            "*"
+          ]
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "name": "Verificar si existe",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "id": "75b91a48-b207-596e-87dd-0ed021ec5bd6",
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const esperado=$('Archivo a publicar').first().json;\nconst files=$input.all().filter(x=>x.json.id);\nif(files.length>1) throw new Error('Hay más de un archivo con el nombre del lote. No se modifica ninguno.');\nif(files.length && (files[0].json.md5Checksum!==esperado.md5 || Number(files[0].json.size)!==esperado.bytes))\n  throw new Error('El archivo existente no coincide con el contenido esperado.');\nreturn [{json:{...esperado,existe:!!files.length,...(files.length?{drive_id:files[0].json.id,enlace:files[0].json.webViewLink}:{})}}];"
+      }
+    },
+    {
+      "name": "¿Archivo existente?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "id": "118bd48e-6924-5b4d-a6ee-4c8b93fa5315",
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "exists",
+              "leftValue": "={{ $json.existe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "name": "Archivo reutilizado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "id": "80559b9d-643f-50ea-bf6e-2caa3d5c89fb",
+      "position": [
+        960,
+        -120
+      ],
+      "parameters": {
+        "jsCode": "return $input.all();"
+      }
+    },
+    {
+      "name": "Leer salida local",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "id": "7b360fd8-95c0-5e82-ae10-38992b2896f6",
+      "position": [
+        960,
+        140
+      ],
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.ruta }}",
+        "options": {
+          "fileName": "={{ $json.nombre }}",
+          "mimeType": "={{ $json.mime }}",
+          "dataPropertyName": "archivo"
+        }
+      }
+    },
+    {
+      "name": "Subir archivo nuevo",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "id": "260fe56b-13d3-59d1-a48a-37069324d21f",
+      "position": [
+        1200,
+        140
+      ],
+      "parameters": {
+        "resource": "file",
+        "operation": "upload",
+        "inputDataFieldName": "archivo",
+        "name": "={{ $('Archivo a publicar').first().json.nombre }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ID_CARPETA_SALIDA"
+        },
+        "options": {
+          "simplifyOutput": false
+        }
+      }
+    },
+    {
+      "name": "Archivo subido verificado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "id": "b2926e5b-79be-52f9-ba7d-868a1ae6b82d",
+      "position": [
+        1440,
+        140
+      ],
+      "parameters": {
+        "jsCode": "const e=$('Archivo a publicar').first().json,a=$input.first().json;\nif(!a.id||a.name!==e.nombre||a.md5Checksum!==e.md5||Number(a.size)!==e.bytes) throw new Error('La subida no superó el control de integridad.');\nreturn [{json:{...e,existe:false,drive_id:a.id,enlace:a.webViewLink}}];"
+      }
+    }
+  ],
+  "connections": {
+    "Archivo a publicar": {
+      "main": [
+        [
+          {
+            "node": "Buscar archivo del lote",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar archivo del lote": {
+      "main": [
+        [
+          {
+            "node": "Verificar si existe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar si existe": {
+      "main": [
+        [
+          {
+            "node": "¿Archivo existente?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Archivo existente?": {
+      "main": [
+        [
+          {
+            "node": "Archivo reutilizado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Leer salida local",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer salida local": {
+      "main": [
+        [
+          {
+            "node": "Subir archivo nuevo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Subir archivo nuevo": {
+      "main": [
+        [
+          {
+            "node": "Archivo subido verificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "pinData": {}
+}

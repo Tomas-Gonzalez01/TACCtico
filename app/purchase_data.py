@@ -11,6 +11,13 @@ from purchase_engine import Offer, Supplier
 
 
 def market_csv(root: Path) -> Path:
+    from data_release import load_local
+    try:
+        release = load_local(root)
+        if release:
+            return Path(release["folder"]) / "mercadolibre_validado.csv"
+    except (OSError, ValueError, KeyError, TypeError):
+        pass
     local = root / "data_real" / "mercadolibre_validado.csv"
     if local.is_file():
         return local

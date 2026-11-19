@@ -19,7 +19,10 @@ html, body {
     grid-template-columns: 4rem minmax(0, 1fr);
     align-items: center;
     gap: var(--space-md);
-    padding-block: .25rem;
+    padding: var(--space-md) 1.25rem;
+    border-radius: var(--radius-card);
+    color: var(--color-banner-ink);
+    background: linear-gradient(110deg, var(--color-banner-start), var(--color-banner-middle) 60%, var(--color-banner-end));
 }
 .tacctico-header img { width: 4rem; height: 4rem; object-fit: contain; }
 .tacctico-header h1 {
@@ -27,12 +30,12 @@ html, body {
     padding: 0;
     font-size: clamp(1.25rem, 2.2vw, 1.75rem);
     line-height: 1.2;
-    color: var(--color-ink);
+    color: var(--color-banner-ink);
     overflow-wrap: break-word;
     min-width: 0;
     text-wrap: balance;
 }
-.tacctico-header p { margin: .25rem 0 0; font-size: .9375rem; color: var(--color-muted); }
+.tacctico-header p { margin: .25rem 0 0; font-size: .9375rem; color: var(--color-banner-muted); }
 [data-testid="stCaptionContainer"] { opacity: 1; }
 [data-testid="stCaptionContainer"] p { color: var(--color-muted); font-size: .875rem; line-height: 1.5; }
 .st-key-datos_captura { padding-block: .25rem; }
@@ -60,20 +63,52 @@ html, body {
     padding: .25rem .5rem;
     border-radius: .375rem;
     white-space: nowrap;
+    cursor: pointer;
 }
 .st-key-seccion label[data-baseweb="radio"] > div:first-child { display: none; }
 .st-key-seccion [role="radiogroup"] label:has(input:checked) {
-    background: var(--color-selected);
-    color: var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
 }
+.st-key-seccion label:has(input:checked) [data-testid="stMarkdownContainer"] p { color: var(--color-accent-ink); }
 .st-key-seccion [role="radiogroup"] label:has(input:focus-visible) {
-    outline: 2px solid var(--color-focus);
-    outline-offset: -2px;
+    outline: 2px solid var(--color-ink);
+    outline-offset: 1px;
 }
 :is(a, button, input, select, textarea):focus-visible {
     outline: 2px solid var(--color-focus);
     outline-offset: 2px;
 }
+/* El foco pertenece al selector completo, no a su entrada interna de búsqueda. */
+:is([data-testid="stSelectbox"], [data-testid="stMultiSelect"]) [data-baseweb="select"],
+:is([data-testid="stSelectbox"], [data-testid="stMultiSelect"]) input { cursor: pointer; }
+:is([data-testid="stSelectbox"], [data-testid="stMultiSelect"]) input {
+    caret-color: transparent;
+    outline: none;
+}
+:is([data-testid="stSelectbox"], [data-testid="stMultiSelect"]) [data-baseweb="select"]:has(input:focus-visible) {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+}
+/* Las transiciones se retoman desde la opacidad actual si se navega rápido. */
+:is(.st-key-contenido_catalogo, .st-key-contenido_presupuesto, .st-key-contenido_dashboard) {
+    opacity: 1;
+    transition: opacity var(--tacctico-swap-duration) var(--tacctico-ease-out);
+}
+.tacctico-switching :is(.st-key-contenido_catalogo, .st-key-contenido_presupuesto, .st-key-contenido_dashboard) { opacity: .55; }
+[data-testid="stElementContainer"]:has(.tacctico-section-ready),
+[data-testid="stElementContainer"]:has([data-testid="stHtml"] > script:only-child) { display: none; }
+[data-baseweb="popover"]:has([role="option"]), [data-testid="stExpanderDetails"] {
+    opacity: 1;
+    transition: opacity var(--tacctico-menu-duration) var(--tacctico-ease-out);
+}
+@starting-style {
+    [data-baseweb="popover"]:has([role="option"]), [data-testid="stExpanderDetails"] { opacity: .4; }
+}
+/* La navegación por teclado y el foco responden de inmediato. */
+:root[data-tacctico-input="keyboard"] :is(.st-key-contenido_catalogo, .st-key-contenido_presupuesto, .st-key-contenido_dashboard),
+:root[data-tacctico-input="keyboard"] [data-baseweb="popover"]:has([role="option"]),
+:root[data-tacctico-input="keyboard"] [data-testid="stExpanderDetails"] { transition: none; }
 [data-testid="stButton"] button, [data-testid="stDownloadButton"] button { min-height: 2.75rem; }
 .st-key-catalogo_resumen [data-testid="stMetric"] { font-variant-numeric: tabular-nums; }
 .st-key-catalogo_resumen [data-testid="stMetricValue"] { font-size: 1.75rem; }
@@ -174,4 +209,10 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
     .st-key-presupuesto button { transition: none; }
     .st-key-presupuesto button:active:not(:focus-visible):not(:disabled) { transform: none; }
+    :is(.st-key-contenido_catalogo, .st-key-contenido_presupuesto, .st-key-contenido_dashboard),
+    [data-baseweb="popover"]:has([role="option"]), [data-testid="stExpanderDetails"] { transition-duration: 80ms; }
+    @starting-style {
+        [data-baseweb="popover"]:has([role="option"]), [data-testid="stExpanderDetails"] { opacity: .85; }
+    }
+    .tacctico-switching :is(.st-key-contenido_catalogo, .st-key-contenido_presupuesto, .st-key-contenido_dashboard) { opacity: .85; }
 }

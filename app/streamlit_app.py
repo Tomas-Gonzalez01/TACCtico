@@ -100,18 +100,16 @@ def show_market_offers():
 st.set_page_config(page_title="TACCtico", page_icon=str(LOGO), layout="wide", initial_sidebar_state="collapsed")
 st.html(ASSETS / "tokens.css")
 st.html(ASSETS / "theme.css")
+# Solo código estático del repositorio; ningún dato del CSV se ejecuta como JavaScript.
+st.html(f'<script>{(ASSETS / "navigation.js").read_text(encoding="utf-8")}</script>', unsafe_allow_javascript=True)
 with st.container(key="app_navigation"):
-    if st.session_state.get("seccion", "Catálogo") != "Dashboard":
-        brand, navigation = st.columns([3, 2], vertical_alignment="center")
-        brand.html("""
+    st.html("""
         <header class="tacctico-header">
             <img src="app/static/logo-tacctico.png?v=2" alt="TACCtico" width="64" height="64">
             <div><h1>Compras sin TACC</h1><p>Compará ofertas y armá el presupuesto de tu negocio.</p></div>
         </header>
-        """)
-    else:
-        navigation = st.container()
-    section = navigation.radio(
+    """)
+    section = st.radio(
         "Sección", ["Catálogo", "Arma tu presupuesto", "Dashboard"], horizontal=True,
         key="seccion", label_visibility="collapsed",
     )
@@ -126,12 +124,15 @@ with data_toolbar:
         capture.caption(f"Precios de la captura del {date}", help=f"Fuente: Mercado Libre Argentina. Versión {release['lote'][:8]}.")
 if release:
     MARKET_CSV = Path(release["folder"]) / "mercadolibre_validado.csv"
-if section == "Dashboard":
-    show_dashboard(release)
-elif section == "Arma tu presupuesto":
-    original = next((path for path in (ORIGINAL_CSV, DOWNLOADED_CSV) if path.is_file()), None)
-    show_calculator(MARKET_CSV, original)
-elif MARKET_CSV.is_file():
-    show_market_offers()
-else:
-    st.info("Guardá el CSV validado de Mercado Libre en data_real/mercadolibre_validado.csv.")
+content_keys = {"Catálogo": "contenido_catalogo", "Arma tu presupuesto": "contenido_presupuesto", "Dashboard": "contenido_dashboard"}
+with st.container(key=content_keys[section]):
+    if section == "Dashboard":
+        show_dashboard(release)
+    elif section == "Arma tu presupuesto":
+        original = next((path for path in (ORIGINAL_CSV, DOWNLOADED_CSV) if path.is_file()), None)
+        show_calculator(MARKET_CSV, original)
+    elif MARKET_CSV.is_file():
+        show_market_offers()
+    else:
+        st.info("Guardá el CSV validado de Mercado Libre en data_real/mercadolibre_validado.csv.")
+    st.html(f'<span class="tacctico-section-ready" data-section="{content_keys[section]}" aria-hidden="true"></span>')

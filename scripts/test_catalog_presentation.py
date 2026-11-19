@@ -28,12 +28,13 @@ class CatalogPresentationTests(unittest.TestCase):
         self.assertFalse(app.exception or app.error)
         self.assertTrue(app.dataframe[0].value["precio_publicado"].ge(3600).all())
 
-    def test_dashboard_body_is_preserved_without_the_general_banner(self):
+    def test_dashboard_body_is_preserved_with_the_shared_brand(self):
         app = AppTest.from_file(str(ROOT / "app/streamlit_app.py"), default_timeout=20).run()
         self.assertTrue(any('class="tacctico-header"' in element.proto.body for element in app.get("html")))
         app.radio(key="seccion").set_value("Dashboard").run()
         self.assertFalse(app.exception or app.error)
-        self.assertFalse(any('class="tacctico-header"' in element.proto.body for element in app.get("html")))
+        brand = next(element.proto.body for element in app.get("html") if 'class="tacctico-header"' in element.proto.body)
+        self.assertIn('logo-tacctico.png', brand)
         expected = (Path(app.session_state["lote_datos"]["folder"]) / "dashboard.html").read_text(encoding="utf-8")
         self.assertEqual(app.get("iframe")[0].proto.srcdoc, expected)
 

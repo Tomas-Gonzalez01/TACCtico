@@ -9,6 +9,11 @@
     --color-focus: #176344;
     --color-rule: #D0DACB;
     --color-selected: #DDE8D9;
+    --color-banner-start: #083c31;
+    --color-banner-middle: #165b42;
+    --color-banner-end: #367242;
+    --color-banner-ink: #f8f9f0;
+    --color-banner-muted: #e5efdd;
     --font-body: sans-serif;
     --space-xs: .25rem;
     --space-sm: .5rem;
@@ -17,4 +22,6 @@
     --radius-control: .5rem;
     --radius-card: .75rem;
     --tacctico-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --tacctico-swap-duration: 180ms;
+    --tacctico-menu-duration: 150ms;
 }

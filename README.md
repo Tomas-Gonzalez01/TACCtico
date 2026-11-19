@@ -8,7 +8,7 @@ Se puede consultar sin cuenta. La versión procesada el **19/11/2026** tiene **3
 
 La interfaz muestra precios en formato argentino, nombres de insumos legibles y «Sin dato» cuando falta información. El catálogo usa una tabla en escritorio y tarjetas paginadas en celular. En el presupuesto, la cantidad aparece antes de los filtros opcionales; la lista queda visible en escritorio y una barra de resumen permite volver a ella en celular. Esa barra conserva el aviso de cargos pendientes.
 
-El dashboard de Kiara se mantiene íntegro: al abrirlo solo se oculta el encabezado general de TACCtico para evitar la duplicación de banners. Los datos, gráficos, métricas y cálculos del presupuesto conservan su comportamiento.
+El encabezado verde y el logo permanecen visibles también en **Dashboard**. Las secciones cambian con un fundido breve de 180 ms y los desplegables usan un puntero de selección, conservando la búsqueda por teclado. La navegación por teclado responde de inmediato y se respeta el movimiento reducido. El dashboard de Kiara, sus datos, gráficos y métricas, y los cálculos del presupuesto conservan su comportamiento.
 
 ## Probarlo
 

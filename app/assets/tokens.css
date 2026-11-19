@@ -1,0 +1,20 @@
+/* Hallmark · shape: app screen · genre: modern-minimal · theme: brand · redesign: full · scope: app · v2.0.0 */
+:root {
+    --color-paper: #FBFAF4;
+    --color-soft: #EDF2E8;
+    --color-ink: #173729;
+    --color-muted: #465C4D;
+    --color-accent: #176344;
+    --color-accent-ink: #FBFAF4;
+    --color-focus: #176344;
+    --color-rule: #D0DACB;
+    --color-selected: #DDE8D9;
+    --font-body: sans-serif;
+    --space-xs: .25rem;
+    --space-sm: .5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --radius-control: .5rem;
+    --radius-card: .75rem;
+    --tacctico-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}

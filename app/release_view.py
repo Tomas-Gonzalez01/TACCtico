@@ -7,12 +7,13 @@ import streamlit.components.v1 as components
 from data_release import load_local, load_remote, remote_id
 
 
-def choose_release(root):
+def choose_release(root, *, refresh=False, controls=True):
+    messages = st.sidebar if controls else st
     current = st.session_state.get("lote_datos")
     refresh = st.sidebar.button(
         "Actualizar datos", help="Si hay un lote nuevo, se empieza un presupuesto vacío para usar sus precios.",
         key="actualizar_lote",
-    )
+    ) if controls else refresh
     if current is None or refresh:
         try:
             pointer = remote_id(root)
@@ -26,9 +27,9 @@ def choose_release(root):
                 st.session_state["lote_datos"] = candidate
                 current = candidate
                 if refresh:
-                    st.sidebar.success("Datos actualizados. Podés armar un nuevo presupuesto.")
+                    messages.success("Datos actualizados. Podés armar un nuevo presupuesto.")
             elif refresh:
-                st.sidebar.info("Ya estás usando la última versión disponible.")
+                messages.info("Ya estás usando la última versión disponible.")
         except (OSError, ValueError, KeyError, TypeError) as error:
             if current is None:
                 try:
@@ -37,8 +38,8 @@ def choose_release(root):
                         st.session_state["lote_datos"] = current
                 except (OSError, ValueError, KeyError, TypeError):
                     pass
-            st.sidebar.warning("No se pudo actualizar. Se conserva la última versión disponible.")
-    if current:
+            messages.warning("No se pudo actualizar. Se conserva la última versión disponible.")
+    if current and controls:
         metrics = current["metrics"]
         date = (metrics.get("captura_hasta") or "Sin fecha")[:10]
         st.sidebar.caption(f"Precios capturados: {date} · Versión {current['lote'][:8]}")

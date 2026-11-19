@@ -1,5 +1,6 @@
 .venv/
 __pycache__/
+.hallmark/
 *.py[cod]
 .ipynb_checkpoints/
 .env

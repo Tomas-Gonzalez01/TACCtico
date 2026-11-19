@@ -195,6 +195,7 @@ def show_calculator(snapshot, original):
 
 def select_weight_offers(products, insumos, mode):
     insumo = st.selectbox("Insumo", insumos, format_func=lambda value: value.replace("_", " ").capitalize())
+    quantity_slot = st.container()
     publications = [item for group in products.values() for _, item in group if item.insumo == insumo]
     with st.expander("Acotar ofertas"):
         brand_options = sorted({item.brand or "Marca sin confirmar" for item in publications}, key=str.casefold)
@@ -221,7 +222,7 @@ def select_weight_offers(products, insumos, mode):
         )
         if chosen:
             publications = [item for item in publications if item.offer.listing in chosen]
-    return ("insumo_por_peso", insumo), publications
+    return ("insumo_por_peso", insumo), publications, quantity_slot
 
 
 def select_presentation(products, insumos):
@@ -259,14 +260,16 @@ def show_comparison(products):
     insumos = sorted({item.insumo for group in products.values() for _, item in group if item.insumo})
     compare_sizes = unit == "kg" and bool(insumos)
     if compare_sizes:
-        key, publications = select_weight_offers(products, insumos, mode)
+        key, publications, quantity_slot = select_weight_offers(products, insumos, mode)
     else:
         key, publications = select_presentation(products, insumos)
+        quantity_slot = st.container()
     if not publications:
         st.info("No hay ofertas con los filtros elegidos.")
         return
     try:
-        needed = quantity_input(unit, "cantidad_requerida")
+        with quantity_slot:
+            needed = quantity_input(unit, "cantidad_requerida")
     except ValueError as error:
         st.error(str(error))
         return

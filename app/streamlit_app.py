@@ -6,6 +6,7 @@ import streamlit as st
 from purchase_data import market_csv
 from purchase_view import show_calculator
 from release_view import choose_release, show_dashboard
+from catalog_view import ingredient_label, show_catalog
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,7 +18,7 @@ DOWNLOADED_CSV = Path.home() / "Downloads" / "dataset_final.csv"
 MARKET_COLUMNS = [
     "id_publicacion", "titulo", "precio_publicado", "moneda", "url", "capturado_en", "fuente",
 ]
-OPTIONAL_COLUMNS = ["insumo", "marca", "vendedor", "precio_100g", "revision_presentacion"]
+OPTIONAL_COLUMNS = ["insumo", "marca", "vendedor", "precio_100g", "revision_presentacion", "gramos_totales", "unidades"]
 
 
 def show_market_offers():
@@ -49,26 +50,30 @@ def show_market_offers():
         st.error(f"No se pudo cargar el CSV validado ({MARKET_CSV.name}). {error}")
         return
 
-    st.sidebar.subheader("Filtros del catálogo", anchor=False)
-    query = st.sidebar.text_input("Buscar por título", key="titulo_real").strip()
+    st.header("Catálogo de publicaciones", anchor=False)
+    with st.container(key="filtros_catalogo"):
+        search_col, ingredient_col = st.columns([2, 1])
+        query = search_col.text_input("Buscar por título", key="titulo_real", placeholder="Por ejemplo, premezcla para pan").strip()
+        ingredient_slot = ingredient_col.container()
+        price_filters = st.expander("Filtrar por precio publicado")
     insumo = None
     if "insumo" in offers:
-        insumo = st.sidebar.selectbox(
+        insumo = ingredient_slot.selectbox(
             "Insumo", sorted(offers["insumo"].dropna().unique()),
-            index=None, placeholder="Todos los insumos", format_func=lambda value: value.replace("_", " "),
+            index=None, placeholder="Todos los insumos", format_func=ingredient_label,
             key="insumo_catalogo",
         )
-    minimum = st.sidebar.number_input(
+    min_col, max_col = price_filters.columns(2)
+    minimum = min_col.number_input(
         "Precio mínimo (ARS)", min_value=0.0, value=None, step=1.0,
         format="%.2f", placeholder="Sin mínimo", key="precio_minimo",
     )
-    maximum = st.sidebar.number_input(
+    maximum = max_col.number_input(
         "Precio máximo (ARS)", min_value=0.0, value=None, step=1.0,
         format="%.2f", placeholder="Sin máximo", key="precio_maximo",
     )
     if minimum is not None and maximum is not None and minimum > maximum:
-        st.header("Catálogo de publicaciones", anchor=False)
-        st.sidebar.error("El precio mínimo debe ser menor o igual al máximo.")
+        st.error("El precio mínimo debe ser menor o igual al máximo.")
         return
 
     prices = offers["precio_publicado"]
@@ -82,52 +87,45 @@ def show_market_offers():
     )
 
     with st.container(key="catalogo_resumen"):
-        title, count = st.columns([3, 1], vertical_alignment="center")
-        title.header("Catálogo de publicaciones", anchor=False)
-        title.caption("Mercado Libre Argentina")
+        count, origin = st.columns([1, 3], vertical_alignment="center")
         count.metric("Publicaciones visibles", len(filtered))
+        origin.caption("Mercado Libre Argentina. El precio corresponde a la presentación publicada.")
     if filtered.empty:
         st.info("No hay publicaciones para estos filtros.")
         return
 
-    st.dataframe(
-        filtered.drop(columns=["capturado_en", "revision_presentacion"], errors="ignore"),
-        hide_index=True,
-        column_order=[
-            column for column in (
-                "titulo", "precio_publicado", "insumo", "precio_100g", "marca", "vendedor", "url",
-            ) if column in filtered.columns
-        ],
-        column_config={
-            "insumo": "Insumo",
-            "titulo": "Título",
-            "marca": "Marca",
-            "vendedor": "Vendedor",
-            "precio_publicado": st.column_config.NumberColumn("Precio publicado (ARS)", format="%.2f"),
-            "precio_100g": st.column_config.NumberColumn("Precio por 100 g (ARS)", format="%.2f"),
-            "url": st.column_config.LinkColumn("Publicación", display_text="Abrir en Mercado Libre"),
-        },
-    )
+    show_catalog(filtered)
 
 
-st.set_page_config(page_title="TACCtico", page_icon=str(LOGO), layout="wide")
+st.set_page_config(page_title="TACCtico", page_icon=str(LOGO), layout="wide", initial_sidebar_state="collapsed")
+st.html(ASSETS / "tokens.css")
 st.html(ASSETS / "theme.css")
-st.html("""
-    <header class="tacctico-header">
-        <div>
-            <h1>Compras sin TACC</h1>
-            <p>Compará ofertas y armá el presupuesto de tu negocio.</p>
-        </div>
-        <img src="app/static/logo-tacctico.png?v=2" alt="TACCtico" width="144" height="144">
-    </header>
-""")
-release = choose_release(ROOT)
+with st.container(key="app_navigation"):
+    if st.session_state.get("seccion", "Catálogo") != "Dashboard":
+        brand, navigation = st.columns([3, 2], vertical_alignment="center")
+        brand.html("""
+        <header class="tacctico-header">
+            <img src="app/static/logo-tacctico.png?v=2" alt="TACCtico" width="64" height="64">
+            <div><h1>Compras sin TACC</h1><p>Compará ofertas y armá el presupuesto de tu negocio.</p></div>
+        </header>
+        """)
+    else:
+        navigation = st.container()
+    section = navigation.radio(
+        "Sección", ["Catálogo", "Arma tu presupuesto", "Dashboard"], horizontal=True,
+        key="seccion", label_visibility="collapsed",
+    )
+data_toolbar = st.container(key="datos_captura")
+with data_toolbar:
+    capture, update = st.columns([3, 1], vertical_alignment="center")
+    refresh = update.button("Actualizar datos", key="actualizar_lote", help="Si hay un lote nuevo, empieza un presupuesto vacío.")
+    release = choose_release(ROOT, refresh=refresh, controls=False)
+    if release:
+        date = (release["metrics"].get("captura_hasta") or "")[:10]
+        date = "/".join(reversed(date.split("-"))) if date else "sin fecha"
+        capture.caption(f"Precios de la captura del {date}", help=f"Fuente: Mercado Libre Argentina. Versión {release['lote'][:8]}.")
 if release:
     MARKET_CSV = Path(release["folder"]) / "mercadolibre_validado.csv"
-section = st.radio(
-    "Sección", ["Catálogo", "Arma tu presupuesto", "Dashboard"], horizontal=True,
-    key="seccion", label_visibility="collapsed",
-)
 if section == "Dashboard":
     show_dashboard(release)
 elif section == "Arma tu presupuesto":

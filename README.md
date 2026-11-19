@@ -6,6 +6,10 @@ Compará ofertas de insumos sin TACC y armá el presupuesto de tu negocio con pr
 
 Se puede consultar sin cuenta. La versión procesada el **19/11/2026** tiene **372 publicaciones reales**, con precios de la captura del **14/11/2026**. El análisis estadístico usa **330** publicaciones útiles sin precios atípicos. La fecha de procesamiento no actualiza los precios de la captura.
 
+La interfaz muestra precios en formato argentino, nombres de insumos legibles y «Sin dato» cuando falta información. El catálogo usa una tabla en escritorio y tarjetas paginadas en celular. En el presupuesto, la cantidad aparece antes de los filtros opcionales; la lista queda visible en escritorio y una barra de resumen permite volver a ella en celular. Esa barra conserva el aviso de cargos pendientes.
+
+El dashboard de Kiara se mantiene íntegro: al abrirlo solo se oculta el encabezado general de TACCtico para evitar la duplicación de banners. Los datos, gráficos, métricas y cálculos del presupuesto conservan su comportamiento.
+
 ## Probarlo
 
 1. En **Catálogo**, comprobá las 372 publicaciones. Buscá por título o insumo y escribí un mínimo o máximo de precio. Un extremo vacío no impone límite. Abrí la publicación original para revisar su detalle.

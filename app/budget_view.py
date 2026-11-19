@@ -1,6 +1,7 @@
 from datetime import datetime, timezone, timedelta
 from decimal import Decimal
 from pathlib import Path
+from html import escape
 
 import streamlit as st
 
@@ -18,31 +19,7 @@ OFFER_PICKER = st.components.v2.component(
     "tacctico_offers",
     html='<div class="offer-list"></div>',
     js=Path(__file__).with_name("offer_picker.js").read_text(encoding="utf-8"),
-    css="""
-    .offer-list { display: grid; gap: .65rem; max-height: 31rem; overflow: auto;
-      padding: .2rem .35rem .2rem .15rem; }
-    article { display: grid; gap: .65rem; border: 1px solid var(--st-border-color, #aaa);
-      border-radius: .75rem; padding: .9rem 1rem; overflow-wrap: anywhere; }
-    article:focus-within { border-color: var(--st-primary-color, #126747); }
-    .offer-heading, .offer-actions { display: flex; gap: .5rem 1rem; flex-wrap: wrap; align-items: center; }
-    .offer-heading { justify-content: space-between; }
-    .offer-product { flex: 1 1 15rem; }
-    .offer-price { font-size: 1.06rem; line-height: 1.35; font-variant-numeric: tabular-nums; }
-    .offer-seller, .offer-numbers { display: block; font-size: .86rem; margin-top: .18rem; }
-    .offer-actions { font-size: .88rem; }
-    a { color: var(--st-primary-color, #126747); }
-    button { cursor: pointer; border: 1px solid var(--st-border-color, #aaa); border-radius: .45rem;
-      padding: .38rem .7rem; min-height: 2.45rem; font: inherit; font-weight: 600;
-      background: var(--st-secondary-background-color, #eee); color: var(--st-text-color, #222);
-      transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
-    button:active:not(:focus-visible):not([aria-disabled="true"]) { transform: scale(0.97); }
-    button[aria-disabled="true"] { cursor: wait; }
-    :is(a, button):focus-visible { outline: 2px solid var(--st-primary-color, #126747); outline-offset: 2px; }
-    @media (prefers-reduced-motion: reduce) {
-      button { transition: none; }
-      button:active:not(:focus-visible):not([aria-disabled="true"]) { transform: none; }
-    }
-    """,
+    css=Path(__file__).with_name("assets").joinpath("offers.css").read_text(encoding="utf-8"),
 )
 
 
@@ -152,7 +129,7 @@ def quantity_field(label, key, *, default=None, whole_units=False):
 
 def show_budget():
     cart = st.session_state.setdefault(CART, {})
-    st.subheader("Lista de compras")
+    st.subheader("Lista de compras", anchor="lista-de-compras")
     with st.container(key="avisos_lista"):
         show_notice()
     pending = st.session_state.get(PENDING)
@@ -233,11 +210,12 @@ def show_budget():
 
     orders = budget_orders(lines, shipping)
     complete = all(order.complete for order in orders)
+    known = sum(order.known for order in orders)
     issued_at = datetime.now(timezone(timedelta(hours=-3)))
     with summary:
         st.metric(
             "Total estimado del pedido" if complete else "Importe conocido",
-            ars(sum(order.known for order in orders)),
+            ars(known),
         )
         merchandise = ars(sum(order.merchandise for order in orders))
         st.caption(f"Mercadería estimada · {merchandise}")
@@ -249,6 +227,13 @@ def show_budget():
             file_name=f"tacctico_presupuesto_{issued_at:%Y%m%d_%H%M}.pdf",
             mime="application/pdf", type="primary", width="stretch", on_click="ignore",
         )
+    label = "Total estimado del pedido" if complete else "Importe conocido"
+    pending = "" if complete else "Hay cargos por confirmar"
+    st.html(
+        '<aside class="mobile-budget" aria-label="Resumen del presupuesto">'
+        f'<div><span>{label}</span><strong>{escape(ars(known))}</strong><small>{pending}</small></div>'
+        '<a href="#lista-de-compras">Ver presupuesto</a></aside>'
+    )
     with st.expander("Desglose por proveedor"):
         st.dataframe([
             {

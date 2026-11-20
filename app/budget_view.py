@@ -168,17 +168,22 @@ def quantity_field(label, key, *, default=None, whole_units=False):
 def show_budget():
     restore_pending_offer()
     cart = st.session_state.setdefault(CART, {})
-    st.subheader("Lista de compras", anchor="lista-de-compras")
+    with st.container(
+        horizontal=True,
+        horizontal_alignment="distribute",
+        vertical_alignment="center",
+        key="cabecera_lista",
+    ):
+        st.subheader("Lista de compras", anchor="lista-de-compras", width="content")
+        if cart and st.button("Vaciar lista", key="vaciar_lista", icon=":material/delete_sweep:"):
+            confirm_clear_cart()
     with st.container(key="avisos_lista"):
         show_notice()
     if not cart:
         st.info("Agregá una oferta desde la comparación para empezar tu presupuesto.")
         return
 
-    count, actions = st.columns(2, vertical_alignment="center")
-    count.caption(f"{len(cart)} {'producto' if len(cart) == 1 else 'productos'} en la lista")
-    if actions.button("Vaciar lista", key="vaciar_lista", icon=":material/delete_sweep:"):
-        confirm_clear_cart()
+    st.caption(f"{len(cart)} {'producto' if len(cart) == 1 else 'productos'} en la lista")
     summary = st.container(key="resumen_presupuesto")
     lines = []
     for line_key, initial in cart.items():

@@ -125,8 +125,81 @@ class BudgetInteractionsTest(unittest.TestCase):
         self.assertIn(self.second, self.state[view.CART].values())
         self.assertNotIn(view.LEGACY_PENDING, self.state)
 
+    def test_clearing_resets_only_the_budget_and_keeps_comparison_filters(self):
+        view.add_to_cart(self.first)
+        view.add_to_cart(self.second)
+        self.state.update(
+            {
+                "pedido_linea": "5",
+                "iva_modo_linea": "neto",
+                "iva_tasa_linea": 21.0,
+                "envio_proveedor": 1500.0,
+                view.LEGACY_PENDING: (self.product, self.first),
+                "seccion": "Arma tu presupuesto",
+                "insumo": "chips_chocolate",
+                view.OFFER_REVISION: 4,
+            }
+        )
+        view.clear_cart()
+        self.assertEqual(self.state[view.CART], {})
+        self.assertFalse(
+            any(key.startswith(("pedido_", "iva_modo_", "iva_tasa_", "envio_")) for key in self.state)
+        )
+        self.assertNotIn(view.LEGACY_PENDING, self.state)
+        self.assertEqual(self.state["seccion"], "Arma tu presupuesto")
+        self.assertEqual(self.state["insumo"], "chips_chocolate")
+        self.assertEqual(self.state[view.OFFER_REVISION], 4)
+        self.assertEqual(self.state[view.NOTICE], "Lista de compras vaciada.")
+        view.add_to_cart(self.first)
+        self.assertEqual(list(self.state[view.CART].values()), [self.first])
+
 
 class BudgetScreenTest(unittest.TestCase):
+    def test_clear_requires_confirmation_and_cancel_preserves_the_budget(self):
+        BudgetInteractionsTest.setUpClass()
+        first, second = BudgetInteractionsTest.first, BudgetInteractionsTest.second
+        app = AppTest.from_file(str(ROOT / "app/streamlit_app.py"), default_timeout=20).run()
+        with patch.object(view, "OFFER_PICKER", return_value=SimpleNamespace(add_offer=None)):
+            app.radio(key="seccion").set_value("Arma tu presupuesto").run()
+            self.assertFalse(any(button.key == "vaciar_lista" for button in app.button))
+            app.session_state[view.CART] = {"primera": first, "segunda": second}
+            app.run()
+            quantity_key = next(field.key for field in app.text_input if field.key.startswith("pedido_"))
+            app.text_input(key=quantity_key).set_value("3").run()
+            total = app.metric[-1].value
+            app.button(key="vaciar_lista").click().run()
+            self.assertFalse(app.exception or app.error)
+            self.assertEqual(len(app.session_state[view.CART]), 2)
+            self.assertEqual(app.metric[-1].value, total)
+            self.assertEqual(app.text_input(key=quantity_key).value, "3")
+            self.assertIn("¿Querés continuar?", [text.value for text in app.markdown])
+            app.button(key="cancelar_vaciado").click().run()
+            self.assertFalse(app.exception or app.error)
+            self.assertEqual(len(app.session_state[view.CART]), 2)
+            self.assertEqual(app.metric[-1].value, total)
+            self.assertEqual(app.text_input(key=quantity_key).value, "3")
+            self.assertFalse(any(button.key == "confirmar_vaciado" for button in app.button))
+            app.button(key="vaciar_lista").click().run()
+            app.button(key="confirmar_vaciado").click().run()
+            self.assertFalse(app.exception or app.error)
+            self.assertEqual(app.session_state[view.CART], {})
+            self.assertFalse(any(field.key.startswith("pedido_") for field in app.text_input))
+            self.assertFalse(any(button.key == "vaciar_lista" for button in app.button))
+            self.assertFalse(
+                any(
+                    metric.label in {"Importe conocido", "Total estimado del pedido"} for metric in app.metric
+                )
+            )
+            self.assertIn(
+                "Agregá una oferta desde la comparación para empezar tu presupuesto.",
+                [info.value for info in app.info],
+            )
+            app.session_state[view.CART] = {"primera": first}
+            app.run()
+            self.assertFalse(app.exception or app.error)
+            self.assertEqual(app.text_input(key=quantity_key).value, "1")
+            self.assertEqual(app.metric[-1].value, view.ars(first.merchandise))
+
     def test_same_ingredient_lines_have_independent_quantities_and_totals(self):
         BudgetInteractionsTest.setUpClass()
         first, second = BudgetInteractionsTest.first, BudgetInteractionsTest.second

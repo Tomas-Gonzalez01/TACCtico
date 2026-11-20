@@ -104,6 +104,36 @@ def remove_offer(line_key):
         st.session_state[NOTICE] = "Producto quitado de tu lista."
 
 
+def clear_cart():
+    """Vacía el presupuesto y sus importes editados después de la confirmación."""
+    st.session_state[CART] = {}
+    st.session_state.pop(LEGACY_PENDING, None)
+    # Una lista nueva no debe heredar cantidades, IVA ni envíos del pedido anterior.
+    for key in list(st.session_state):
+        if key.startswith(("pedido_", "iva_modo_", "iva_tasa_", "envio_")):
+            del st.session_state[key]
+    st.session_state[NOTICE] = "Lista de compras vaciada."
+
+
+@st.dialog("¿Vaciar la lista de compras?", on_dismiss="rerun")
+def confirm_clear_cart():
+    count = len(st.session_state.get(CART, {}))
+    products = "el producto" if count == 1 else f"los {count} productos"
+    st.write(f"Se quitarán {products}, sus cantidades y los datos de IVA y envío de este presupuesto.")
+    st.write("¿Querés continuar?")
+    cancel, confirm = st.columns(2)
+    if cancel.button("Cancelar", key="cancelar_vaciado", width="stretch"):
+        st.rerun()
+    if confirm.button(
+        "Sí, vaciar lista",
+        key="confirmar_vaciado",
+        type="primary",
+        width="stretch",
+        on_click=clear_cart,
+    ):
+        st.rerun()
+
+
 def show_notice():
     # Consume the action once so editing quantities, IVA or shipping cannot replay it.
     message = st.session_state.pop(NOTICE, None)
@@ -145,7 +175,10 @@ def show_budget():
         st.info("Agregá una oferta desde la comparación para empezar tu presupuesto.")
         return
 
-    st.caption(f"{len(cart)} {'producto' if len(cart) == 1 else 'productos'} en la lista")
+    count, actions = st.columns(2, vertical_alignment="center")
+    count.caption(f"{len(cart)} {'producto' if len(cart) == 1 else 'productos'} en la lista")
+    if actions.button("Vaciar lista", key="vaciar_lista", icon=":material/delete_sweep:"):
+        confirm_clear_cart()
     summary = st.container(key="resumen_presupuesto")
     lines = []
     for line_key, initial in cart.items():

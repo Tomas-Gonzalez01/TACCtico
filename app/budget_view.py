@@ -119,7 +119,7 @@ def clear_cart():
 def confirm_clear_cart():
     count = len(st.session_state.get(CART, {}))
     products = "el producto" if count == 1 else f"los {count} productos"
-    st.write(f"Se quitarán {products}, sus cantidades y los datos de IVA y envío de este presupuesto.")
+    st.write(f"Vas a quitar {products}, sus cantidades y los datos de IVA y envío de este presupuesto.")
     st.write("¿Querés continuar?")
     cancel, confirm = st.columns(2)
     if cancel.button("Cancelar", key="cancelar_vaciado", width="stretch"):

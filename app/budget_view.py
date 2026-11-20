@@ -12,7 +12,7 @@ from purchase_engine import candidate_quotes
 
 
 CART = "lista_compras"
-PENDING = "reemplazo_lista"
+LEGACY_PENDING = "reemplazo_lista"
 NOTICE = "aviso_lista"
 OFFER_REVISION = "revision_ofertas"
 TAX_OPTIONS = {
@@ -33,7 +33,7 @@ def acknowledge_offer_event():
     st.session_state[OFFER_REVISION] = st.session_state.get(OFFER_REVISION, 0) + 1
 
 
-def choose_offer(quotes, product_key, *, key):
+def choose_offer(quotes, *, key):
     if not quotes:
         return
     records = {}
@@ -69,39 +69,37 @@ def choose_offer(quotes, product_key, *, key):
         on_add_offer_change=acknowledge_offer_event,
     )
     if event.add_offer in records:
-        add_to_cart(product_key, records[event.add_offer])
+        add_to_cart(records[event.add_offer])
 
 
-def add_to_cart(product_key, quote):
+def add_to_cart(quote):
+    """Agrega una publicación; repetirla actualiza solo su cantidad, no otra oferta del insumo."""
     cart = st.session_state.setdefault(CART, {})
-    current = cart.get(product_key)
-    if current is not None and current.offer.listing != quote.offer.listing:
-        st.session_state[PENDING] = (product_key, quote)
-    else:
-        cart[product_key] = quote
-        if st.session_state.get(PENDING, (None,))[0] == product_key:
-            st.session_state.pop(PENDING, None)
-        if current != quote:
-            st.session_state[NOTICE] = (
-                "Producto agregado a tu lista." if current is None else "Cantidad actualizada en tu lista."
-            )
+    # Reutilizar las claves antiguas conserva cantidades e IVA editados en sesiones abiertas.
+    line_key = next(
+        (key for key, line in cart.items() if line.offer.listing == quote.offer.listing),
+        ("publicacion", quote.offer.listing),
+    )
+    current = cart.get(line_key)
+    cart[line_key] = quote
+    st.session_state.pop(LEGACY_PENDING, None)
+    if current != quote:
+        st.session_state[NOTICE] = (
+            "Producto agregado a tu lista." if current is None else "Cantidad actualizada en tu lista."
+        )
 
 
-def replace_offer(product_key, quote):
-    st.session_state[CART][product_key] = quote
-    st.session_state.pop(PENDING, None)
-    st.session_state[NOTICE] = "Oferta reemplazada en tu lista."
+def restore_pending_offer():
+    """Completa una adición que la versión anterior había dejado esperando reemplazo."""
+    pending = st.session_state.pop(LEGACY_PENDING, None)
+    if pending is not None:
+        _, quote = pending
+        add_to_cart(quote)
 
 
-def keep_offer():
-    st.session_state.pop(PENDING, None)
-    st.session_state[NOTICE] = "Conservaste la oferta actual de tu lista."
-
-
-def remove_offer(product_key):
-    removed = st.session_state[CART].pop(product_key, None)
-    if st.session_state.get(PENDING, (None,))[0] == product_key:
-        st.session_state.pop(PENDING, None)
+def remove_offer(line_key):
+    removed = st.session_state[CART].pop(line_key, None)
+    st.session_state.pop(LEGACY_PENDING, None)
     if removed is not None:
         st.session_state[NOTICE] = "Producto quitado de tu lista."
 
@@ -138,28 +136,21 @@ def quantity_field(label, key, *, default=None, whole_units=False):
 
 
 def show_budget():
+    restore_pending_offer()
     cart = st.session_state.setdefault(CART, {})
     st.subheader("Lista de compras", anchor="lista-de-compras")
     with st.container(key="avisos_lista"):
         show_notice()
-    pending = st.session_state.get(PENDING)
-    if pending is not None:
-        product_key, quote = pending
-        with st.container(key="confirmar_reemplazo"):
-            st.info(f"¿Querés reemplazar la oferta actual por la de {quote.offer.supplier.name}?")
-            left, right = st.columns(2)
-            left.button("Reemplazar", on_click=replace_offer, args=(product_key, quote))
-            right.button("Conservar", on_click=keep_offer)
     if not cart:
         st.info("Agregá una oferta desde la comparación para empezar tu presupuesto.")
         return
 
-    st.caption(f"{len(cart)} {'insumo' if len(cart) == 1 else 'insumos'} en la lista")
+    st.caption(f"{len(cart)} {'producto' if len(cart) == 1 else 'productos'} en la lista")
     summary = st.container(key="resumen_presupuesto")
     lines = []
-    for product_key, initial in cart.items():
+    for line_key, initial in cart.items():
         offer = initial.offer
-        widget = f"{product_key}/{offer.listing}/{offer.unit}/{initial.required}/{initial.boxes}"
+        widget = f"{line_key}/{offer.listing}/{offer.unit}/{initial.required}/{initial.boxes}"
         with st.container(border=True):
             st.markdown(f"**{offer.product}**")
             st.caption(offer.supplier.name)
@@ -172,7 +163,7 @@ def show_budget():
                 )
             except ValueError as error:
                 st.error(str(error))
-                st.button("Quitar", key=f"quitar_{widget}", on_click=remove_offer, args=(product_key,))
+                st.button("Quitar", key=f"quitar_{widget}", on_click=remove_offer, args=(line_key,))
                 continue
             quote = (
                 initial
@@ -209,7 +200,7 @@ def show_budget():
                         rate = Decimal(str(entered)) / 100
                 line = BudgetLine(quote, tax_basis, rate)
                 st.caption(line.tax_label)
-            st.button("Quitar", key=f"quitar_{widget}", on_click=remove_offer, args=(product_key,))
+            st.button("Quitar", key=f"quitar_{widget}", on_click=remove_offer, args=(line_key,))
         lines.append(line)
 
     if len(lines) != len(cart):

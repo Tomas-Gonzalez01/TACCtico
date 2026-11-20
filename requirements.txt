@@ -1,4 +1,4 @@
-# Dependencias de la interfaz de catálogo y presupuesto (actualización completa 2026-11-19).
+# Dependencias de TACCtico (publicación 2026-11-20: varias ofertas por insumo).
 streamlit==1.54.0
 pandas==2.3.3
 reportlab==5.1.0

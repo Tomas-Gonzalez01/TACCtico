@@ -103,7 +103,7 @@ def show_quotes(quotes, unit, product_key=None):
         rows.append(row)
 
     if product_key is not None:
-        choose_offer(quotes, product_key, key="seleccionar_oferta")
+        choose_offer(quotes, key="seleccionar_oferta")
     with st.expander("Ver detalle de las ofertas", expanded=product_key is None):
         st.dataframe(rows, hide_index=True, column_config={"Publicación": LINK})
 

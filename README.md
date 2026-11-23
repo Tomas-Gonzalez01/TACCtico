@@ -22,7 +22,7 @@ Captura del editor de n8n del 19/11/2026. El código y las plantillas importable
 
 El prototipo de Make fue reemplazado por n8n. Su captura muestra el escenario inactivo y la ejecución exitosa del 14/11/2026 a las 20:19:47. No se lanzó una corrida nueva.
 
-Se puede consultar sin cuenta. La versión procesada el **19/11/2026** tiene **372 publicaciones reales**, con precios de la captura del **14/11/2026**. El análisis estadístico usa **330** publicaciones útiles sin precios atípicos. La fecha de procesamiento no actualiza los precios de la captura.
+Se puede consultar sin cuenta. La versión procesada el **23/11/2026**, con el ROI actualizado, tiene **372 publicaciones reales**, con precios de la captura del **14/11/2026**. El análisis estadístico usa **330** publicaciones útiles sin precios atípicos. La fecha de procesamiento no actualiza los precios de la captura.
 
 La interfaz muestra precios en formato argentino, nombres de insumos legibles y «Sin dato» cuando falta información. El catálogo usa una tabla en escritorio y tarjetas paginadas en celular. En el presupuesto, la cantidad aparece antes de los filtros opcionales; la lista queda visible en escritorio y una barra de resumen permite volver a ella en celular. Esa barra conserva el aviso de cargos pendientes.
 
@@ -38,6 +38,14 @@ El encabezado verde y el logo permanecen visibles también en **Dashboard**. Las
 6. **Actualizar datos** consulta el último lote completo. Si cambió, comienza una lista vacía para usar sus precios. Si falla, conserva la versión disponible y el presupuesto. La fecha está debajo de la navegación; su ayuda muestra la versión.
 
 Para cantidades usá formato argentino: `1` = un kilo; `1.000` = mil; `1,5` = uno y medio. Las presentaciones sin confirmar no se usan en comparaciones de cantidades. Los precios atípicos quedan fuera de las recomendaciones automáticas. El envío anunciado en la captura no garantiza el costo de envío de un pedido actual.
+
+### ROI del dashboard
+
+El ROI considera el ahorro anual estimado en compras menos el costo anual de datos, dividido por ese costo. Usa el promedio simple del ahorro por lote de las recetas disponibles, multiplicado por los lotes mensuales del escenario y por 12. El ahorro de tiempo se muestra por separado y no aumenta el ROI.
+
+Los valores iniciales son supuestos editables del equipo: **USD 15 por actualización**, **12 actualizaciones al año** y **ARS 1.701 por USD**, equivalentes a **ARS 306.180 anuales**. Los USD 15 provienen del gasto acumulado informado de Apify, incluidas pruebas; usarlos por actualización es un escenario, no un costo recurrente medido. El cambio es una referencia aportada por el equipo, no una cotización en vivo. No se incluyen trabajo, electricidad ni otros costos no cuantificados. Un costo cero muestra el beneficio neto y deja el porcentaje sin calcular; los campos vacíos no se interpretan como cero.
+
+La plantilla de n8n y `metricas.json` conservan los mismos supuestos. Las pruebas de `scripts/test_dashboard_roi.py` comprueban las cuentas, los valores faltantes y la integridad del HTML publicado.
 
 ## Planificar una receta por presupuesto
 

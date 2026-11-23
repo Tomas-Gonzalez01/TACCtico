@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "lote": "c2b2b5035a542182725e285430f8d1e6beb8f7ebc9f07713c1abd036bd3d6ea5",
-  "version_reglas": "kiara-etl-1-tacctico-2-analisis",
+  "lote": "044ada52e4d210770f11ab508c8c7960586b17aa7fff87417da5db9dda89cf60",
+  "version_reglas": "kiara-etl-1-tacctico-3-roi",
   "moneda": "ARS",
   "captura_desde": "2026-11-14T13:28:56.101000+00:00",
   "captura_hasta": "2026-11-14T17:31:51.498000+00:00",
@@ -167,7 +167,16 @@
     "referencias_equipo_ars_hora": [
       1994,
       6529
-    ]
+    ],
+    "roi": {
+      "costo_actualizacion_usd": 15,
+      "actualizaciones_anuales": 12,
+      "tipo_cambio_ars_usd": 1701,
+      "fecha_referencia_equipo": "2026-11-23",
+      "incluye_tiempo": false,
+      "metodo": "Promedio simple del ahorro por lote de las recetas disponibles, anualizado por escenario; solo costo de datos.",
+      "fuente": "Valores aportados por el equipo; gasto acumulado de Apify con pruebas usado como escenario por actualización y cambio de referencia no verificado como cotización en vivo."
+    }
   },
   "metodo": "Notebook ETL/EDA de Kiara y dashboard final entregado el 19/11/2026. Base útil sin outliers; mediana frente a mejor publicación de hasta 5 kg.",
   "limitaciones": [
@@ -175,6 +184,7 @@
     "Las brechas son estimaciones estadísticas y no un ahorro observado.",
     "Las recetas, frecuencia, tiempos y valor de la hora son supuestos editables.",
     "Arma tu presupuesto verifica presentaciones y cargos para una compra concreta.",
-    "No se estima una tendencia temporal con una sola captura."
+    "No se estima una tendencia temporal con una sola captura.",
+    "El ROI usa escenarios de frecuencia, costo de datos y tipo de cambio aportados por el equipo; excluye el valor del tiempo y otros costos no cuantificados."
   ]
 }

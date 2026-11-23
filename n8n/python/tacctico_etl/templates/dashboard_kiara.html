@@ -43,9 +43,14 @@ th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}th{co
 <div class="filters"><label>Lotes por mes, bajo<input type="number" id="s1" value="40" min="0"></label><label>Lotes por mes, medio<input type="number" id="s2" value="120" min="0"></label><label>Lotes por mes, alto<input type="number" id="s3" value="300" min="0"></label></div>
 <div class="tw"><table id="esc"></table></div>
 <h2 style="margin-top:18px">Ahorro de tiempo (estimado)</h2>
-<div class="filters"><label>Min. manuales por insumo<input type="number" id="t1" value="15" min="0"></label><label>Min. con la herramienta<input type="number" id="t2" value="2" min="0"></label><label>Insumos por compra<input type="number" id="t3" value="4" min="0"></label><label>Compras por mes<input type="number" id="t4" value="4" min="0"></label><label>Valor de la hora (referencias supuestas)<select id="t7"><option value="1994">Referencia del equipo A: ARS 1.994/h</option><option value="6529">Referencia del equipo B: ARS 6.529/h</option><option value="">Otro: ingresar valor por hora</option></select></label><label>Valor de la hora personalizado (ARS)<input type="number" id="t5" value="1994" min="0" disabled placeholder="ingresá el valor por hora"></label><label>Costo mensual del sistema (ARS)<input type="number" id="t6" placeholder="completar" min="0"></label></div>
+<div class="filters"><label>Min. manuales por insumo<input type="number" id="t1" value="15" min="0"></label><label>Min. con la herramienta<input type="number" id="t2" value="2" min="0"></label><label>Insumos por compra<input type="number" id="t3" value="4" min="0"></label><label>Compras por mes<input type="number" id="t4" value="4" min="0"></label><label>Valor de la hora (referencias supuestas)<select id="t7"><option value="1994">Referencia del equipo A: ARS 1.994/h</option><option value="6529">Referencia del equipo B: ARS 6.529/h</option><option value="">Otro: ingresar valor por hora</option></select></label><label>Valor de la hora personalizado (ARS)<input type="number" id="t5" value="1994" min="0" disabled placeholder="ingresá el valor por hora"></label></div>
 <div class="kpis" id="tkp"></div>
-<div class="leg">Horas ahorradas por mes = (min. manuales − min. con la herramienta) × insumos por compra × compras por mes ÷ 60. Con valor de la hora y costo del sistema cargados se muestra el ahorro neto del escenario medio, base del ROI.</div></div>
+<div class="leg">Horas ahorradas por mes = (min. manuales − min. con la herramienta) × insumos por compra × compras por mes ÷ 60. El valor del tiempo se muestra aparte y no entra en el ROI.</div>
+<h2 style="margin-top:18px">ROI del proyecto (estimado)</h2>
+<div class="filters"><label>Costo supuesto por actualización (USD)<input type="number" id="r1" value="15" min="0" step="0.01"></label><label>Actualizaciones por año<input type="number" id="r2" value="12" min="0" step="1"></label><label>Dólar MEP de referencia (ARS por USD)<input type="number" id="r3" value="1701" min="0" step="0.01"></label></div>
+<div class="tw"><table id="roi"></table></div>
+<div class="leg" id="roi-aviso" role="status"></div>
+<div class="leg">ROI = (ahorro anual en compras − costo anual de los datos) ÷ costo anual de los datos; se muestra como porcentaje. Costo anual = USD supuestos por actualización × actualizaciones por año × ARS por USD. Los USD 15 son la referencia aportada por el equipo para el gasto acumulado de Apify, incluidas pruebas; repetir ese gasto en cada actualización es un escenario, no un costo recurrente medido. ARS 1.701 por USD es una referencia editable del equipo, no una cotización en tiempo real. Este ROI considera solo el costo de los datos: no incluye horas del equipo, electricidad, equipos ni otros costos no cuantificados. n8n local y el alojamiento Community usados en la demo no tienen cargo de licencia o alojamiento. El valor del tiempo se informa aparte. Los lotes por mes son escenarios y el ahorro por lote es una brecha de precios, no un ahorro observado.</div></div>
 <div class="card" style="margin-bottom:16px"><h2>Resumen estadístico por insumo</h2><div class="tw"><table id="est"></table></div><div class="leg">Precios por kg sin outliers. CV = desviación estándar ÷ promedio (qué tan dispersos están los precios). Mejor accesible = la más barata de hasta 5 kg. Mejor confiable = la más barata de hasta 5 kg entre vendedores platinum o gold. Brecha = 1 − mejor accesible ÷ mediana.</div></div>
 <div class="grid"><div class="card"><h2>Precio por kg: mediana y mejor opción</h2><div id="ch1"></div><div class="leg">Barra: mediana. <b style="color:var(--b)">|</b> Mejor publicación de hasta 5 kg por compra (sin outliers). Brecha = qué tanto más barata es la mejor que la mediana.</div></div>
 <div class="card"><h2>Vendedores con precio más bajo</h2><div id="ch2"></div><div class="leg">Vendedores con 2 o más publicaciones. Índice = mediana de (precio por kg ÷ mediana de su insumo); menor a 1 es más barato. Entre paréntesis, el nivel del vendedor.</div></div>
@@ -63,13 +68,55 @@ const ids=['fc','ff','fn','fe'];ids.forEach(i=>$(i).onchange=render);$('rs').onc
 $('lote').innerHTML=Object.entries(META.lote).map(([k,v])=>'<div><span>'+k+'</span><b>'+fmt(v.ah)+'</b><small>ahorro por lote ('+fmt(v.med)+' → '+fmt(v.best)+')</small></div>').join('');countUp($('lote'));
 
 const num=i=>{const v=parseFloat($(i).value);return isFinite(v)?v:null};
+// Cálculo puro: también se prueba sin navegador con los datos del lote publicado.
+function calcularROI(ahorros, lotes, usd, actualizaciones, cambio){
+  const valido = n => Number.isFinite(n) && n >= 0;
+  const importe = n => Number.isFinite(n) ? n : null;
+  const promedio = ahorros.length && ahorros.every(Number.isFinite)
+    ? importe(ahorros.reduce((a,b)=>a+b,0)/ahorros.length) : null;
+  const costoUSD = valido(usd) && valido(actualizaciones) && Number.isInteger(actualizaciones)
+    ? importe(usd*actualizaciones) : null;
+  const costoARS = costoUSD !== null && valido(cambio) && cambio > 0
+    ? importe(costoUSD*cambio) : null;
+  const beneficios = lotes.map(l=>promedio !== null && valido(l) ? importe(promedio*l*12) : null);
+  const netos = beneficios.map(b=>b !== null && costoARS !== null ? importe(b-costoARS) : null);
+  const porcentajes = netos.map(n=>n !== null && costoARS > 0 ? importe(n/costoARS*100) : null);
+  return {costoUSD,costoARS,beneficios,netos,porcentajes};
+}
+
+function mostrarROI(L,h,vh){
+  const resultado = calcularROI(Object.values(META.lote).map(v=>v.ah),L,num('r1'),num('r2'),num('r3'));
+  const valor = n => n === null ? 's/d' : fmt(n);
+  const fila = (nombre,valores) => '<tr><td>'+nombre+'</td>'+valores.map(v=>'<td class="num">'+v+'</td>').join('')+'</tr>';
+  const costo = resultado.costoUSD === null ? 's/d' : resultado.costoUSD.toLocaleString('es-AR');
+  const tiempo = Number.isFinite(vh) && vh >= 0 ? h*vh*12 : null;
+  $('roi').innerHTML = '<thead><tr><th>Concepto (por año)</th>'
+    + ['bajo','medio','alto'].map((n,i)=>'<th class="num">'+n+' ('+L[i]+' lotes/mes)</th>').join('')
+    + '</tr></thead><tbody>'
+    + fila('Ahorro en compras (promedio de las recetas disponibles)',resultado.beneficios.map(valor))
+    + fila('Costo de los datos: USD '+costo,L.map(()=>valor(resultado.costoARS)))
+    + fila('Ahorro neto',resultado.netos.map(valor))
+    + fila('<b>ROI</b>',resultado.porcentajes.map(r=>'<b>'+(r === null ? 's/d' : Math.round(r).toLocaleString('es-AR')+'%')+'</b>'))
+    + fila('Valor del tiempo ahorrado (aparte, no incluido)',L.map(()=>valor(tiempo)))
+    + '</tbody>';
+  $('roi-aviso').textContent = resultado.costoARS === null
+    ? 'Completá un costo no negativo, una cantidad entera de actualizaciones y un tipo de cambio mayor que cero.'
+    : resultado.costoARS === 0
+      ? 'Con costo de datos cero se informa el ahorro neto; el ROI porcentual no se puede calcular.'
+      : resultado.beneficios.some(b=>b === null)
+        ? 'Faltan recetas comparables o cantidades válidas para calcular alguno de los escenarios.' : '';
+}
+const referenciaROI = META.roi || {};
+for(const [id,key] of [['r1','costo_actualizacion_usd'],['r2','actualizaciones_anuales'],['r3','tipo_cambio_ars_usd']]){
+  if(Number.isFinite(referenciaROI[key])) $(id).value = referenciaROI[key];
+}
 function esc(){const L=[num('s1')||0,num('s2')||0,num('s3')||0];
 $('esc').innerHTML='<thead><tr><th>Receta</th><th class="num">Ahorro por lote</th>'+['bajo','medio','alto'].map((n,i)=>'<th class="num">'+n+' ('+L[i]+' lotes/mes): mensual · anual</th>').join('')+'</tr></thead><tbody>'+Object.entries(META.lote).map(([k,v])=>'<tr><td>'+k+'</td><td class="num">'+fmt(v.ah)+'</td>'+L.map(l=>'<td class="num">'+fmt(v.ah*l)+' · '+fmt(v.ah*l*12)+'</td>').join('')+'</tr>').join('')+'</tbody>';
-const h=Math.max(0,((num('t1')||0)-(num('t2')||0))*(num('t3')||0)*(num('t4')||0)/60),vh=num('t5'),cs=num('t6');
+const h=Math.max(0,((num('t1')||0)-(num('t2')||0))*(num('t3')||0)*(num('t4')||0)/60),vh=num('t5');
 const k=[[h.toFixed(1)+' h','horas ahorradas por mes'],[vh==null?'falta valor hora':fmt(h*vh),'valor del tiempo ahorrado por mes']];
-if(cs!=null){const med=Object.values(META.lote).reduce((a,v)=>a+v.ah,0)/Object.keys(META.lote).length*L[1];k.push([fmt(med+(vh==null?0:h*vh)-cs,0),'ahorro neto mensual, escenario medio (ahorro promedio de las 3 recetas'+(vh==null?'; sin valor de tiempo':'')+')'])}
-$('tkp').innerHTML=k.map(x=>'<div class="kpi"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('')}
-['s1','s2','s3','t1','t2','t3','t4','t5','t6'].forEach(i=>$(i).oninput=esc);$('t7').onchange=()=>{const o=$('t7').value;if(o){$('t5').value=o;$('t5').disabled=true}else{$('t5').value='';$('t5').disabled=false;if($('t5').focus)$('t5').focus()}esc()};esc();
+$('tkp').innerHTML=k.map(x=>'<div class="kpi"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('');
+mostrarROI(L,h,vh)}
+['s1','s2','s3','t1','t2','t3','t4','t5','r1','r2','r3'].forEach(i=>$(i).oninput=esc);$('t7').onchange=()=>{const o=$('t7').value;if(o){$('t5').value=o;$('t5').disabled=true}else{$('t5').value='';$('t5').disabled=false;if($('t5').focus)$('t5').focus()}esc()};esc();
 
 function countUp(root){if(!root.querySelectorAll)return;root.querySelectorAll('b').forEach(el=>{const t=el.textContent,m=t.match(/^(\$?)([\d.]+)(.*)$/);if(!m)return;const n=parseInt(m[2].replace(/\./g,''),10);if(!isFinite(n)||n<10)return;const fin=m[1]+n.toLocaleString('es-AR')+m[3];if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=fin;return}setTimeout(()=>{el.textContent=fin},780);const st=performance.now();const f=now=>{const k=Math.min(1,(now-st)/700),v=Math.round(n*(1-Math.pow(1-k,3)));el.textContent=m[1]+v.toLocaleString('es-AR')+m[3];if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)})}
 if(typeof IntersectionObserver!=='undefined'&&document.querySelectorAll){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});document.querySelectorAll('.card').forEach(c=>{c.classList.add('reveal');io.observe(c)})}

@@ -41,6 +41,8 @@ Si el lote cambió, la app empieza un presupuesto vacío. Si no cambió, conserv
 
 Se completó una primera subida real con n8n: CSV y paquete ZIP nuevos, verificados por tamaño y MD5 devuelto por Drive. El puntero vigente quedó confirmado. Una repetición reutilizó los mismos archivos. La lectura anónima del puntero y el paquete también pasó el control SHA-256 de la app.
 
+El 23/11/2026 se ejecutó el flujo con la nueva plantilla de ROI y se publicó un lote nuevo. La lectura sin cuenta y la integridad del paquete quedaron verificadas. Los conteos anteriores y el contenido del CSV se mantienen; cambian el dashboard, sus supuestos de ROI y la identidad del lote. La copia de respaldo incluida en GitHub corresponde al mismo resultado de Drive.
+
 El CSV anterior de 363 filas corresponde a otra selección. Las reglas actuales excluyen levadura nutricional y otras premezclas, incorporan dos publicaciones y corrigen dos cajas de chips de 9 kg a 3 kg. No se fuerza un número fijo de salida.
 
 ## Qué guarda cada lote
@@ -58,6 +60,10 @@ Tomás autorizó lectura pública de esos resultados finales para la demo. La ca
 `kiara_etl.py` conserva las funciones del notebook de Kiara y registra su procedencia. `analytics.py` recalcula el análisis del HTML final entregado el 19/11: precio por kg, medianas, dispersión, mejor oferta de hasta 5 kg y ejemplos de pan, pizza y budín. El diseño y las interacciones del HTML se mantienen en `templates/dashboard_kiara.html`.
 
 Las brechas frente a la mediana son estimaciones, no ahorro observado. Recetas, frecuencias, tiempos y valores por hora son supuestos editables; no se presentan las referencias salariales del equipo como valores oficiales vigentes. Con una sola captura no se calcula una tendencia. El presupuesto verifica presentaciones y cargos para una compra concreta y no inventa IVA, envío ni promociones.
+
+El ROI del dashboard usa solo el ahorro anual estimado en compras y el costo anual de datos; el tiempo queda separado. Los valores iniciales (USD 15 por actualización, 12 al año, ARS 1.701 por USD) son referencias editables del equipo, no tarifas ni cotizaciones verificadas. Los USD 15 representan gasto acumulado con pruebas utilizado como supuesto por actualización. No se incluyen otros costos no cuantificados. El costo anual de referencia es ARS 306.180; con costo cero no se calcula un porcentaje de ROI. `analytics.py` exporta estos supuestos a las métricas y a la plantilla.
+
+Al cambiar las reglas, las métricas o la plantilla hay que reconstruir los ejecutores con `docker compose up -d --build task-runners` y ejecutar el flujo. Se crea un lote nuevo aunque el CSV sea idéntico; no se modifica el HTML ni su huella dentro de un lote anterior. La publicación verifica el paquete y actualiza el vigente al final.
 
 ## Instalación nueva
 

@@ -17,7 +17,7 @@ from . import kiara_etl as k
 from .app_adapter import FIELDS, UTIL_FIELDS, DETAIL_FIELDS, SPEC_FIELDS, preparar_csv
 from .analytics import analizar, paquete_publicable
 
-VERSION = "kiara-etl-1-tacctico-2-analisis"
+VERSION = "kiara-etl-1-tacctico-3-roi"
 RULES_SHA = hashlib.sha256(b"".join(
     (Path(__file__).parent / name).read_bytes()
     for name in ("kiara_etl.py", "app_adapter.py", "pipeline.py", "analytics.py", "templates/dashboard_kiara.html")

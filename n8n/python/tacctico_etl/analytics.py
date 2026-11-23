@@ -16,6 +16,15 @@ CATEGORIES = {"levadura": "Levadura", "polvo_hornear": "Polvo de hornear",
 RECETAS = {"Pan": {"premezcla_pan": 500, "levadura": 10},
            "Pizza": {"premezcla_pizza": 250}, "Budin": {"premezcla_budin": 250}}
 TEMPLATE = Path(__file__).with_name("templates") / "dashboard_kiara.html"
+ROI_REFERENCIA = {
+    "costo_actualizacion_usd": 15,
+    "actualizaciones_anuales": 12,
+    "tipo_cambio_ars_usd": 1701,
+    "fecha_referencia_equipo": "2026-11-23",
+    "incluye_tiempo": False,
+    "metodo": "Promedio simple del ahorro por lote de las recetas disponibles, anualizado por escenario; solo costo de datos.",
+    "fuente": "Valores aportados por el equipo; gasto acumulado de Apify con pruebas usado como escenario por actualización y cambio de referencia no verificado como cotización en vivo.",
+}
 
 
 def serializable(value):
@@ -89,14 +98,15 @@ def analizar(util, summary):
             "lotes_mensuales": {"bajo": 40, "medio": 120, "alto": 300},
             "minutos_manuales_por_insumo": 15, "minutos_herramienta_por_insumo": 2,
             "insumos_por_compra": 4, "compras_por_mes": 4,
-            "referencias_equipo_ars_hora": [1994, 6529]},
+            "referencias_equipo_ars_hora": [1994, 6529], "roi": ROI_REFERENCIA},
         "metodo": "Notebook ETL/EDA de Kiara y dashboard final entregado el 19/11/2026. Base útil sin outliers; mediana frente a mejor publicación de hasta 5 kg.",
         "limitaciones": ["Precios de la captura, sin actualización comercial en tiempo real.",
             "Las brechas son estimaciones estadísticas y no un ahorro observado.",
             "Las recetas, frecuencia, tiempos y valor de la hora son supuestos editables.",
             "Arma tu presupuesto verifica presentaciones y cargos para una compra concreta.",
-            "No se estima una tendencia temporal con una sola captura."]}
-    meta = serializable({"n": len(base), "lote": recipes, "id_lote": summary["lote"]})
+            "No se estima una tendencia temporal con una sola captura.",
+            "El ROI usa escenarios de frecuencia, costo de datos y tipo de cambio aportados por el equipo; excluye el valor del tiempo y otros costos no cuantificados."]}
+    meta = serializable({"n": len(base), "lote": recipes, "id_lote": summary["lote"], "roi": ROI_REFERENCIA})
     # Protect the script boundary; text fields are escaped before HTML rendering.
     js_data = json.dumps(records, ensure_ascii=False, allow_nan=False).replace("<", "\\u003c")
     js_meta = json.dumps(meta, ensure_ascii=False, allow_nan=False).replace("<", "\\u003c")

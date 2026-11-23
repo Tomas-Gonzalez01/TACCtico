@@ -25,7 +25,7 @@ class DashboardRoiTests(unittest.TestCase):
                     self.assertIn(element, html)
                 # El costo mensual en pesos fue reemplazado por el costo en dólares del ROI.
                 self.assertNotIn('id="t6"', html)
-                self.assertIn("ROI = (ahorro anual en compras", html)
+                self.assertNotIn("ROI = (ahorro anual en compras", html)
 
     def test_published_dashboard_is_the_template_with_the_batch_data(self):
         template = TEMPLATE.read_text(encoding="utf-8")

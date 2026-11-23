@@ -1,21 +1,21 @@
 {
   "schema_version": 1,
-  "lote": "044ada52e4d210770f11ab508c8c7960586b17aa7fff87417da5db9dda89cf60",
+  "lote": "716be4ec0c69be3bdfbb28d8318f6a3a14168d1344ccde1d562713fbc5c2f3ad",
   "archivos": {
     "mercadolibre_validado.csv": {
       "sha256": "0d2d8a1a155f86b8bedfe91a52b228675bfd6be511be28bf28fadd3ec6db1c10",
       "bytes": 139212
     },
     "metricas.json": {
-      "sha256": "f80dcfe4c3a9df0b8238670c75d2edef81aaa98755c5341724ab4655b3ee693f",
+      "sha256": "57a0998299c8b92848cc63b06fa7f4419d92677168c50173acf58e6e21b79cbc",
       "bytes": 6073
     },
     "dashboard.html": {
-      "sha256": "f46b27320bc87027afbba9e507bd066cf46147df2762b588a5d73e0bf61da3ff",
-      "bytes": 154618
+      "sha256": "177a0f3368d85f36b8af9bd6ee0c93570341179f8ff514dd822d2ab7f840a25b",
+      "bytes": 153728
     },
     "calidad.json": {
-      "sha256": "ebcf098289a4e939375fdd0daa1c71b2427d67af9fb750fede3b72cde428df1c",
+      "sha256": "f90739590b550503153231568ac9b5275cd7d64c8d28b8970bcbb615a6e06e00",
       "bytes": 498
     }
   }

@@ -34,7 +34,7 @@
 | `actor_apify/` | Actor propio de inferencia, contratos y Dockerfile. |
 | `colabs/` | Notebooks portables de análisis y entrenamiento con el CSV público. |
 | `data_public/actual/` | Resultados finales autorizados; no es código de extracción. |
-| `apify/README.md` | Autoría del actor externo y referencia que falta completar. |
+| `apify/README.md` | Scraper de karamelo: referencia confirmada y evidencia histórica pendiente. |
 | `make/README.md` | Antecedente del prototipo reemplazado por n8n. |
 
 ## Criterios de lectura y mantenimiento

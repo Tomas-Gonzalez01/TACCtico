@@ -10,7 +10,7 @@ Compará ofertas de insumos sin TACC y armá el presupuesto de tu negocio con pr
 - [Guía para leer el código](docs/CODIGO.md), responsabilidades y verificación del formato.
 - [Flujos importables de n8n, código Python e instalación](n8n/README.md).
 - [Make: prototipo anterior, captura real e historial](make/README.md).
-- [Apify: autoría externa y datos que falta recuperar](apify/README.md).
+- [Procedencia de Apify](apify/README.md): scraper externo de karamelo identificado; configuración histórica y fuente documentados por separado.
 
 ### Evidencias de automatización
 

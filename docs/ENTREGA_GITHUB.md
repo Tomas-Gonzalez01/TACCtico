@@ -22,11 +22,13 @@ Revisión del **23/11/2026** según los puntos del ejemplo docente. [Aplicación
 
 La corrida terminó con éxito, 372 resultados, 335 evaluados, 37 sin evaluar y 17 señales auxiliares. Usó 512 MB asignados, sin GPU. La consola mostró unos 4 segundos totales y USD 0,002, redondeado a tres decimales. La inferencia midió 0,0846 s. El detalle de mediciones no sustituye el gasto histórico del scraping.
 
-## Pendiente de procedencia externa
+## Procedencia del scraping externo
 
-Falta confirmar nombre, URL, autor, configuración y corrida del scraper que generó el CSV crudo de Kiara. No se atribuye ese scraping al actor propio de inferencia. Tampoco se atribuye la captura de noviembre a una corrida de agosto por coincidencia de servicio. Ver [procedencia de Apify](../apify/README.md).
+Tomás confirmó el 23/11/2026 que el scraper utilizado por Kiara fue [Mercadolibre Scraper (español castellano), de karamelo](https://apify.com/karamelo/mercadolibre-scraper-espanol-castellano). Su identificador público es `karamelo/mercadolibre-scraper-espanol-castellano`. Quedan documentados el proveedor y el [esquema de entrada](https://apify.com/karamelo/mercadolibre-scraper-espanol-castellano/input-schema).
 
-Si la docente exige el fuente de un scraper externo que no está publicado, corresponde aclarar esa condición. Se entrega íntegramente el código propio de ETL e inferencia. El crudo y las credenciales permanecen privados. Juan conserva a su cargo la captura final del dashboard y el video funcional.
+Todavía no se recibieron la configuración histórica ni el enlace a la ejecución de Kiara. La ficha actual no prueba esos parámetros ni incluye el fuente del scraper en esta entrega. Ver [procedencia y evidencia pendiente](../apify/README.md).
+
+Se entrega íntegramente el código propio de ETL e inferencia, distinto del scraper externo. Si la docente requiere también su fuente, corresponde aclarar la disponibilidad y licencia con el proveedor. El crudo y las credenciales permanecen privados. Juan conserva a su cargo la captura final del dashboard y el video funcional.
 
 ## Verificación
 

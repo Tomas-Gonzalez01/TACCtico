@@ -1,24 +1,30 @@
 # Apify: procedencia de la captura
 
-La captura de Mercado Libre fue obtenida por Kiara con un **actor de un tercero**, según la confirmación de Tomás del 19/11/2026. No fue desarrollado por el equipo. El nombre, enlace y autor exactos todavía no están disponibles en el material recibido.
+Para la extracción en Apify que Kiara aportó al dataset se utilizó **Mercadolibre Scraper (español castellano)**, del desarrollador **karamelo**. Tomás confirmó la referencia el **23/11/2026** y se verificaron el nombre y la autoría en la ficha pública. Es un actor de un tercero; no fue desarrollado por el equipo.
+
+- [Ficha del scraper](https://apify.com/karamelo/mercadolibre-scraper-espanol-castellano).
+- [Esquema de entrada del proveedor](https://apify.com/karamelo/mercadolibre-scraper-espanol-castellano/input-schema).
+- Identificador público: `karamelo/mercadolibre-scraper-espanol-castellano`.
 
 ## Estado para la entrega
 
 | Elemento | Estado |
 | --- | --- |
 | Servicio y fuente | Apify; publicaciones de Mercado Libre Argentina. |
-| Autoría | Actor externo; proveedor pendiente de identificar. |
-| Nombre, URL e identificador del actor | Pendientes de recuperar de la cuenta de Kiara. |
-| Configuración de entrada y enlace a una ejecución | Pendientes. Deben excluir tokens y credenciales. |
-| Código fuente del actor | No disponible en este repositorio. No se afirma que el equipo lo haya escrito. |
+| Autoría | Actor externo del desarrollador karamelo, identificado el 23/11/2026. |
+| Nombre, URL e identificador del actor | Confirmados; se enlazan arriba. |
+| Configuración histórica y enlace a la ejecución de Kiara | Todavía no recibidos. Deben excluir tokens y credenciales. |
+| Código fuente del scraper | No incluido en este repositorio. No se localizó un enlace al fuente público en la ficha revisada. |
 
-Para cerrar el requisito de «subir el código de Apify», Kiara debe recuperar la ficha del actor y comprobar si su fuente está publicada y permite redistribución. Si el proveedor no entrega el código, corresponde aclararlo con la docente y presentar la referencia y la configuración autorizada. **Una referencia al servicio no equivale al código fuente solicitado.**
+La identificación del scraper queda confirmada. El esquema enlazado describe su entrada actual; **no demuestra qué parámetros, versión ni ejecución usó Kiara para la captura histórica**. Esos datos deben recuperarse del registro original, sin atribuirle otras corridas de la cuenta.
+
+La ficha del proveedor no sustituye el código fuente solicitado para la entrega. Si se obtiene el fuente externo, hay que comprobar su licencia antes de redistribuirlo. Mientras tanto se documenta la dependencia externa y se entrega íntegramente el código propio de ETL e inferencia.
 
 La prueba prevista con *Shopify & WooCommerce Products Scraper – Any Store* fue cancelada. No se presenta ese actor como origen del dataset real.
 
 ## Código propio que sí se entrega
 
-Desde el 23/11 también se entrega el [actor propio de inferencia ML](../actor_apify/README.md), con fuente, Dockerfile, esquemas y modelo entrenado. Ese código cubre la inferencia del equipo; **no se presenta como el scraper histórico de Kiara**. El nombre y procedencia exactos de aquel scraper siguen pendientes de confirmar.
+Desde el 23/11 también se entrega el [actor propio de inferencia ML](../actor_apify/README.md), con fuente, Dockerfile, esquemas y modelo entrenado. Ese código cubre la inferencia del equipo; **es distinto del scraper de karamelo** y no se presenta como su código fuente.
 
 La limpieza y el análisis se ejecutan en n8n con estos archivos del equipo:
 

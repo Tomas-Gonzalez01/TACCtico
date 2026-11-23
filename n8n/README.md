@@ -11,7 +11,7 @@ flowchart LR
     E --> F[TACCtico: catálogo, presupuesto y dashboard]
 ```
 
-No se ejecuta scraping ni Make en este recorrido. Apify puede producir la captura de entrada; la conexión actual usa el CSV crudo ya disponible. Los precios siguen correspondiendo a su fecha de captura.
+No se ejecuta scraping ni Make en este recorrido. La extracción en Apify aportada por Kiara usó el [scraper externo de karamelo](../apify/README.md); la conexión actual usa el CSV crudo ya disponible. Los precios siguen correspondiendo a su fecha de captura.
 
 ## Usarlo en esta computadora
 

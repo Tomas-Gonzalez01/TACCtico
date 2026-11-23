@@ -1,7 +1,7 @@
 {
-  "version_reglas": "kiara-etl-1-tacctico-3-roi",
-  "sha256_reglas": "72bb7bc40ed2fa12f79c8a4970d603a62814d7430445edf9629f67ae2fa4c69a",
-  "lote": "716be4ec0c69be3bdfbb28d8318f6a3a14168d1344ccde1d562713fbc5c2f3ad",
+  "version_reglas": "kiara-etl-1-tacctico-4-ml",
+  "sha256_reglas": "728b832a9dc4c42827be3e417b10af50285199c3aece6f38b2e05114d39ecbdf",
+  "lote": "f12b87f24aa27366fde7fc29d6938977025385719e0d8449ba92065ca70fc1c3",
   "entrada": 591,
   "capturas_validas": 591,
   "filas_rechazadas": 0,

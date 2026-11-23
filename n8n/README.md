@@ -100,3 +100,7 @@ Desde la raíz del repositorio:
 ```
 
 Los casos de control comprueban captura, moneda, pesos y packs, historial, duplicados, rechazos, publicación por etapas, archivos permitidos, integridad, cambio de versión y conservación del presupuesto si la actualización falla. Los datos artificiales se limitan a las pruebas; la app muestra los datos reales.
+
+## Inferencia ML incorporada el 23/11
+
+El ejecutor utiliza los árboles entrenados y verificados después de la limpieza, sin reentrenar en cada corrida. Añade señales a metricas.json y conserva el CSV y el HTML de Kiara. El mismo código se ofrece como actor propio en Apify. Ver [modelo y evaluación](../docs/MODELO_ML.md) y [contrato del actor](../actor_apify/README.md). La ruta instalada usa inferencia local y no necesita un token de Apify para actualizar la web.

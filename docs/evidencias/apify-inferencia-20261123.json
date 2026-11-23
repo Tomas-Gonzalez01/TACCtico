@@ -1,0 +1,31 @@
+{
+  "fecha": "2026-11-23",
+  "actor_id": "vrPmjPvnGdcnclUDA",
+  "run_id": "j4iEFhMD3Bq6LQha9",
+  "url": "https://console.apify.com/actors/vrPmjPvnGdcnclUDA/runs/j4iEFhMD3Bq6LQha9",
+  "estado": "SUCCEEDED",
+  "modelo_id": "tacctico-precios-1-026c5bce9355",
+  "evaluadas": 335,
+  "sin_evaluar": 37,
+  "para_revisar": 17,
+  "ejecucion": {
+    "segundos_inferencia": 0.08461302000068827,
+    "cpu_segundos": 0.07000000000000006,
+    "rss_proceso_mib": 119.359375,
+    "gpu": "No utilizada",
+    "cpu_logicas_disponibles": 16,
+    "plataforma": "Linux",
+    "costo_apify_usd": null,
+    "nota_costo": "El costo real se consulta en usageTotalUsd de esta ejecución, no se estima desde el gasto histórico."
+  },
+  "duracion_total_consola_segundos": 4,
+  "costo_consola_usd_redondeado": 0.002,
+  "nota_costo": "Valor mostrado con tres decimales por la consola; no es usageTotalUsd exacto.",
+  "memoria_asignada_mb": 512,
+  "memoria_pico_consola_mb": 93.2,
+  "cpu_promedio_consola_pct": 25.69,
+  "cpu_maximo_consola_pct": 63.23,
+  "maximo_costo_configurado_usd": 0.05,
+  "prorrateo_orientativo_usd_por_1000_publicaciones_recibidas": 0.005376,
+  "nota_prorrateo": "Estimación lineal desde un importe redondeado. No es una medición de 1000 casos ni una tarifa; el arranque y almacenamiento pueden impedir proporcionalidad."
+}

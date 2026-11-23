@@ -1,41 +1,39 @@
-# Revisión de la entrega en GitHub
+# Entrega de TACCtico: pipeline, modelo y aplicación
 
-Fecha de revisión: **19/11/2026**. Repositorio público: [TACCtico portafolio](https://github.com/Tomas-Gonzalez01/tacctico-portafolio). [Abrir la aplicación](https://tacctico-portafolio-ucn4pkoeemkzx9fowx7ktt.streamlit.app/).
+Revisión del **23/11/2026** según los puntos del ejemplo docente. [Aplicación pública](https://tacctico-portafolio-ucn4pkoeemkzx9fowx7ktt.streamlit.app/) · [Repositorio público](https://github.com/Tomas-Gonzalez01/tacctico-portafolio).
 
-## Contra la consigna
-
-| Requisito | Evidencia y estado |
+| Punto | Evidencia entregada |
 | --- | --- |
-| Proyecto actualizado en GitHub | Aplicación, dependencias, instrucciones, resultados autorizados y pruebas. |
-| Código n8n | [Flujo principal importable](../n8n/flujo_drive_plantilla.json), [subflujo de publicación](../n8n/flujo_publicador_plantilla.json), [alternativa por formulario](../n8n/flujo_dataset_limpio.json). |
-| Código que ejecutan los nodos | [Paquete Python del ETL](../n8n/python/tacctico_etl/) y generadores `n8n/generar_*.py`; no depende de una captura de pantalla para revisarlo. |
-| Instalación de n8n y conexión | [Docker y uso del flujo](../n8n/README.md), [conectar Drive](../n8n/CONECTAR_DRIVE.md), [compose](../n8n/compose.yaml). Las plantillas requieren conexiones y destinos propios. |
-| Legibilidad | [Mapa del código](CODIGO.md), funciones separadas por responsabilidad, formato uniforme y comandos de verificación. |
-| Make, como etapa anterior | [Registro del prototipo y captura real](../make/README.md), con el historial exitoso del 14/11. |
-| Código y procedencia de Apify | [Estado de Apify](../apify/README.md). **Pendiente identificar el actor externo y comprobar si su fuente está disponible para entregar.** |
+| Arquitectura y flujo | [n8n](../n8n/README.md): Drive crudo → limpieza de Kiara → inferencia local → resultados verificados → Drive → TACCtico. Trigger manual y alternativa por formulario. |
+| Repositorio legible | [Mapa de código](CODIGO.md), módulos separados, dependencias, pruebas e instrucciones. |
+| Actor propio | [Inferencia](../actor_apify/README.md), fuente, `.actor/actor.json`, Dockerfile, esquemas y modelo entrenado. Construido y ejecutado en Apify. |
+| ETL y preparación | Validación de precios, moneda, presentaciones y duplicados; conserva las funciones de Kiara. |
+| Entrenamiento | [Código](../scripts/train_ml.py), modelos guardados y notebooks en `colabs/analytics/` y `colabs/training/`. |
+| Modelo y alternativas | [Informe ML](MODELO_ML.md): Ridge frente a Random Forest, selección interna, prueba por grupos y baseline. Isolation Forest auxiliar con límites explícitos. |
+| Contrato de inferencia | [Entrada y salida](../actor_apify/README.md#entrada-y-salida). El puntaje de anomalía no se presenta como probabilidad. |
+| Métricas del modelo | MAE, mediana del error porcentual y R² sobre 55 publicaciones reservadas; predicciones guardadas para comprobarlas. |
+| Métricas del negocio | Dashboard de Kiara y escenarios de ROI; no se confunden brechas estimadas con ahorro observado. |
+| Costo computacional | Benchmark local y [corrida real de Apify](evidencias/apify-inferencia-20261123.json): CPU, memoria, duración y costo mostrado por consola. |
+| Reproducción | [App](../README.md), [n8n](../n8n/README.md), [ML](MODELO_ML.md#reproducir-y-revisar) y [actor](../actor_apify/README.md#ejecutar). |
 
-**Queda un pendiente frente a la consigna:** identificar el actor externo de Apify y comprobar si su fuente puede entregarse. El código propio, los flujos de n8n y la captura real de Make están disponibles. Las capturas muestran configuraciones reales y no se atribuye al equipo el código de un actor de terceros.
+## Ejecución real del actor
 
-## Qué debe aportar el equipo para cerrar los pendientes
+[Actor propio en la cuenta del equipo](https://console.apify.com/actors/vrPmjPvnGdcnclUDA) · [Run verificado](https://console.apify.com/actors/vrPmjPvnGdcnclUDA/runs/j4iEFhMD3Bq6LQha9). Estos enlaces requieren acceso a la cuenta propietaria; el código y los resultados incluidos en GitHub son públicos.
 
-1. Kiara debe abrir la captura de Apify y copiar nombre, URL, autor del actor, configuración de entrada sin secretos y referencia a la ejecución original.
-2. Si el proveedor publica su fuente, revisar sus permisos e incluir el enlace o el código permitido. Si no ofrece la fuente, consultar a la docente cómo documentar el uso de un actor externo frente al requisito de «subir el código de Apify».
-3. Juan mantiene a su cargo la captura final del dashboard y el video funcional.
+La corrida terminó con éxito, 372 resultados, 335 evaluados, 37 sin evaluar y 17 señales auxiliares. Usó 512 MB asignados, sin GPU. La consola mostró unos 4 segundos totales y USD 0,002, redondeado a tres decimales. La inferencia midió 0,0846 s. El detalle de mediciones no sustituye el gasto histórico del scraping.
 
-## Capturas de automatización
+## Pendiente de procedencia externa
 
-![Flujo instalado de n8n](evidencias/n8n-flujo-real.jpg)
+Falta confirmar nombre, URL, autor, configuración y corrida del scraper que generó el CSV crudo de Kiara. No se atribuye ese scraping al actor propio de inferencia. Tampoco se atribuye la captura de noviembre a una corrida de agosto por coincidencia de servicio. Ver [procedencia de Apify](../apify/README.md).
 
-Editor del flujo n8n instalado, capturado el 19/11/2026. Esta revisión de la configuración no ejecutó el flujo ni publicó otro lote. Los JSON portables omiten conexiones personales y la habilitación automática de lectura pública; requieren configuración propia, tal como explica el README de n8n.
+Si la docente exige el fuente de un scraper externo que no está publicado, corresponde aclarar esa condición. Se entrega íntegramente el código propio de ETL e inferencia. El crudo y las credenciales permanecen privados. Juan conserva a su cargo la captura final del dashboard y el video funcional.
 
-![Make: prototipo anterior e historial](evidencias/make-escenario-historico.jpg)
+## Verificación
 
-La captura de Make muestra el escenario real y el historial de éxito del 14/11; permanece inactivo después de la migración a n8n.
+Pasaron **73 pruebas de aplicación/ML y 14 de n8n** en ambos repositorios. Cubren presupuesto, IVA, envío, packs, sobrantes, lista, ingesta, historial, integridad, conservación del vigente, validación del modelo, exclusión de presentaciones dudosas, inferencia determinista y equivalencia del JSON portable con scikit-learn sobre las 335 publicaciones. También se comprueba la partición sin grupos compartidos y se recalcula el MAE desde las predicciones reservadas.
 
-## Qué se verifica sin usar créditos
+El lote publicado conserva **372** publicaciones y **330** en el análisis, y añade **335** evaluaciones ML y **37** casos sin evaluar. La lectura sin cuenta del paquete de Drive pasó su control de integridad.
 
-Las pruebas locales cubren presupuesto, IVA, envío, packs, sobrantes, lista de compras, importación, historial, publicación de lotes e integridad. Revisan el catálogo real y que el dashboard conserve el HTML de Kiara. El formateo se comprueba con Ruff y comparando la estructura de Python antes y después.
+![Flujo de n8n, evidencia histórica del 19/11](evidencias/n8n-flujo-real.jpg)
 
-En la revisión del 19/11 pasaron **30 pruebas de aplicación/importación y 14 de n8n** en ambos repositorios. El catálogo validó sus 372 publicaciones reales. La estructura de los 25 archivos Python revisados antes del formateo se conservó; los datos publicados y el código de reglas ETL original no se modificaron.
-
-No hace falta ejecutar Make ni volver a scrapear para revisar el código. Las pruebas de publicación usan destinos simulados y no suben archivos reales a Drive. El CSV crudo, las credenciales y el almacenamiento privado de n8n quedan excluidos.
+El mismo flujo fue actualizado con ML el 23/11. Make queda como [antecedente documentado](../make/README.md), no como recorrido vigente.

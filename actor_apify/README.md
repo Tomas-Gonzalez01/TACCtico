@@ -39,3 +39,5 @@ Cada publicación requiere `id_publicacion`, `insumo`, `moneda: "ARS"`, `precio_
 Ver [modelo, evaluación y límites](../docs/MODELO_ML.md). Las métricas de regresión se calculan sobre 55 publicaciones de prueba reservadas por grupos. No se atribuye accuracy al detector sin etiquetas humanas. La prueba de perturbaciones controladas se informa por separado y no equivale a precisión sobre ofertas reales.
 
 El gasto histórico de scraping no es costo de inferencia. El costo de una ejecución en Apify se toma de `usageTotalUsd` y la duración total de su registro, incluidos arranque y almacenamiento. Las mediciones locales no se presentan como costos de la nube. No se activa una suscripción ni se hacen scraping o llamadas a actores externos desde este actor.
+
+Como referencia orientativa para la consigna, prorratear USD 0,002 entre 372 publicaciones recibidas da aproximadamente **USD 0,0054 por 1000 publicaciones** con la misma proporción de evaluables. Es una extrapolación desde un valor redondeado, no una medición de 1000 casos ni una tarifa: arranque y almacenamiento pueden impedir proporcionalidad.

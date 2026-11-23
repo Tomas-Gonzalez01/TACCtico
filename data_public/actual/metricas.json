@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "lote": "716be4ec0c69be3bdfbb28d8318f6a3a14168d1344ccde1d562713fbc5c2f3ad",
-  "version_reglas": "kiara-etl-1-tacctico-3-roi",
+  "lote": "f12b87f24aa27366fde7fc29d6938977025385719e0d8449ba92065ca70fc1c3",
+  "version_reglas": "kiara-etl-1-tacctico-4-ml",
   "moneda": "ARS",
   "captura_desde": "2026-11-14T13:28:56.101000+00:00",
   "captura_hasta": "2026-11-14T17:31:51.498000+00:00",
@@ -186,5 +186,2869 @@
     "Arma tu presupuesto verifica presentaciones y cargos para una compra concreta.",
     "No se estima una tendencia temporal con una sola captura.",
     "El ROI usa escenarios de frecuencia, costo de datos y tipo de cambio aportados por el equipo; excluye el valor del tiempo y otros costos no cuantificados."
-  ]
+  ],
+  "ml": {
+    "schema_version": 1,
+    "modelo_id": "tacctico-precios-1-026c5bce9355",
+    "sha256_modelo": "026c5bce9355bb4c5366b8533075024056c258b3708849ef06cc0ce4933d153e",
+    "captura_entrenamiento": [
+      "2026-11-14"
+    ],
+    "publicaciones_evaluadas": 335,
+    "sin_evaluar": 37,
+    "para_revisar": 17,
+    "metodo": "Isolation Forest; referencia de precio supervisada. El puntaje no es una probabilidad.",
+    "evaluacion": {
+      "seleccionado": "random_forest",
+      "validacion_solo_entrenamiento": {
+        "ridge": {
+          "mae_log_cv": 0.32629924024399803
+        },
+        "random_forest": {
+          "mae_log_cv": 0.27820716517855965
+        }
+      },
+      "prueba_reservada": {
+        "mae_ars_por_kg": 7465.528954503614,
+        "mediana_error_porcentual": 19.842376635411053,
+        "r2": 0.5271643878144325
+      },
+      "baseline_mediana_por_insumo": {
+        "mae_ars_por_kg": 11824.983830367168,
+        "mediana_error_porcentual": 23.277161254966437,
+        "r2": -0.16617960441240687
+      },
+      "mejora_mae_vs_baseline_pct": 36.86647642314951
+    },
+    "predicciones": {
+      "MLA1130106854": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA1460308199": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA1473068907": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA1473146119": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA1511601398": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA1606756347": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA1655665855": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA1716885693": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA1790590817": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA1886680241": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA2059989433": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA2121013759": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA2149412463": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA2161058562": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA2308232800": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA2308557078": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA2564404308": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA2797663000": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA3096027622": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA3099828218": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA3104997616": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA3202388790": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA3232817712": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA3359609204": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA3419277500": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA3420020290": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA3811390792": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA3834890942": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA3931239036": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA3983120598": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA4015121076": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA4018364584": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA4055364826": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA4064086922": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA4069113250": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA635057574": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA921458830": {
+        "estado": "sin_evaluar",
+        "motivo": "presentacion_sin_confirmar"
+      },
+      "MLA1105960623": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.12194486,
+        "precio_referencia_kg": 14938.74,
+        "precio_publicado_kg": 19941.9,
+        "diferencia_referencia_pct": 33.49
+      },
+      "MLA1106486964": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.15755806,
+        "precio_referencia_kg": 8321.99,
+        "precio_publicado_kg": 7599.0,
+        "diferencia_referencia_pct": -8.69
+      },
+      "MLA1118967487": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26081778,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 25980.0,
+        "diferencia_referencia_pct": 32.87
+      },
+      "MLA1127688426": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24571014,
+        "precio_referencia_kg": 18171.35,
+        "precio_publicado_kg": 15398.0,
+        "diferencia_referencia_pct": -15.26
+      },
+      "MLA1130088687": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24859644,
+        "precio_referencia_kg": 23773.08,
+        "precio_publicado_kg": 21580.0,
+        "diferencia_referencia_pct": -9.23
+      },
+      "MLA1130131428": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25642716,
+        "precio_referencia_kg": 23773.08,
+        "precio_publicado_kg": 22980.0,
+        "diferencia_referencia_pct": -3.34
+      },
+      "MLA1130427374": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.22400259,
+        "precio_referencia_kg": 12956.21,
+        "precio_publicado_kg": 19584.0,
+        "diferencia_referencia_pct": 51.16
+      },
+      "MLA1133956416": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.19086992,
+        "precio_referencia_kg": 21106.34,
+        "precio_publicado_kg": 25424.0,
+        "diferencia_referencia_pct": 20.46
+      },
+      "MLA1139541244": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2466335,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 15800.0,
+        "diferencia_referencia_pct": -19.19
+      },
+      "MLA1139590608": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.23288345,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 14300.0,
+        "diferencia_referencia_pct": -26.86
+      },
+      "MLA1140049903": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25784707,
+        "precio_referencia_kg": 12742.45,
+        "precio_publicado_kg": 9672.0,
+        "diferencia_referencia_pct": -24.1
+      },
+      "MLA1144780107": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2420132,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 14978.0,
+        "diferencia_referencia_pct": -23.4
+      },
+      "MLA1145342511": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.0715138,
+        "precio_referencia_kg": 9064.53,
+        "precio_publicado_kg": 18627.67,
+        "diferencia_referencia_pct": 105.5
+      },
+      "MLA1150725745": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.00979842,
+        "precio_referencia_kg": 6406.26,
+        "precio_publicado_kg": 5495.0,
+        "diferencia_referencia_pct": -14.22
+      },
+      "MLA1153832918": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.07287997,
+        "precio_referencia_kg": 12367.06,
+        "precio_publicado_kg": 13159.4,
+        "diferencia_referencia_pct": 6.41
+      },
+      "MLA1222716803": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2523866,
+        "precio_referencia_kg": 13508.84,
+        "precio_publicado_kg": 16134.0,
+        "diferencia_referencia_pct": 19.43
+      },
+      "MLA1227759136": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.07287997,
+        "precio_referencia_kg": 12367.06,
+        "precio_publicado_kg": 13159.4,
+        "diferencia_referencia_pct": 6.41
+      },
+      "MLA1260001982": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.07567544,
+        "precio_referencia_kg": 8385.2,
+        "precio_publicado_kg": 9690.8,
+        "diferencia_referencia_pct": 15.57
+      },
+      "MLA1284305069": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.15471064,
+        "precio_referencia_kg": 12522.64,
+        "precio_publicado_kg": 14152.0,
+        "diferencia_referencia_pct": 13.01
+      },
+      "MLA1347197771": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24535407,
+        "precio_referencia_kg": 11540.33,
+        "precio_publicado_kg": 14880.0,
+        "diferencia_referencia_pct": 28.94
+      },
+      "MLA1374679159": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16234596,
+        "precio_referencia_kg": 12356.73,
+        "precio_publicado_kg": 12710.0,
+        "diferencia_referencia_pct": 2.86
+      },
+      "MLA1374692079": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.0715138,
+        "precio_referencia_kg": 9415.94,
+        "precio_publicado_kg": 18627.67,
+        "diferencia_referencia_pct": 97.83
+      },
+      "MLA1374764487": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.17214633,
+        "precio_referencia_kg": 12714.11,
+        "precio_publicado_kg": 11988.0,
+        "diferencia_referencia_pct": -5.71
+      },
+      "MLA1379402303": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25578044,
+        "precio_referencia_kg": 20862.93,
+        "precio_publicado_kg": 11108.89,
+        "diferencia_referencia_pct": -46.75
+      },
+      "MLA1381239690": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25264047,
+        "precio_referencia_kg": 13529.05,
+        "precio_publicado_kg": 11108.89,
+        "diferencia_referencia_pct": -17.89
+      },
+      "MLA1383776319": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.20035101,
+        "precio_referencia_kg": 27841.72,
+        "precio_publicado_kg": 16200.0,
+        "diferencia_referencia_pct": -41.81
+      },
+      "MLA1390410535": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.00141497,
+        "precio_referencia_kg": 45283.23,
+        "precio_publicado_kg": 66425.0,
+        "diferencia_referencia_pct": 46.69
+      },
+      "MLA1397900737": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.13524901,
+        "precio_referencia_kg": 38500.45,
+        "precio_publicado_kg": 39900.0,
+        "diferencia_referencia_pct": 3.64
+      },
+      "MLA1398397821": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25604023,
+        "precio_referencia_kg": 12181.56,
+        "precio_publicado_kg": 13970.0,
+        "diferencia_referencia_pct": 14.68
+      },
+      "MLA1403388547": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.09420693,
+        "precio_referencia_kg": 9151.82,
+        "precio_publicado_kg": 9460.0,
+        "diferencia_referencia_pct": 3.37
+      },
+      "MLA1406016656": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26214803,
+        "precio_referencia_kg": 12771.99,
+        "precio_publicado_kg": 14028.0,
+        "diferencia_referencia_pct": 9.83
+      },
+      "MLA1411433029": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.09821806,
+        "precio_referencia_kg": 6507.78,
+        "precio_publicado_kg": 13781.75,
+        "diferencia_referencia_pct": 111.77
+      },
+      "MLA1415967284": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26202687,
+        "precio_referencia_kg": 15925.07,
+        "precio_publicado_kg": 13560.0,
+        "diferencia_referencia_pct": -14.85
+      },
+      "MLA1419888705": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.04742612,
+        "precio_referencia_kg": 76188.88,
+        "precio_publicado_kg": 110210.0,
+        "diferencia_referencia_pct": 44.65
+      },
+      "MLA1424497905": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.09319921,
+        "precio_referencia_kg": 36770.07,
+        "precio_publicado_kg": 47995.0,
+        "diferencia_referencia_pct": 30.53
+      },
+      "MLA1424510971": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.11260173,
+        "precio_referencia_kg": 35598.28,
+        "precio_publicado_kg": 39997.5,
+        "diferencia_referencia_pct": 12.36
+      },
+      "MLA1438929571": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.10449048,
+        "precio_referencia_kg": 10579.15,
+        "precio_publicado_kg": 13966.67,
+        "diferencia_referencia_pct": 32.02
+      },
+      "MLA1438955331": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.11289025,
+        "precio_referencia_kg": 10413.14,
+        "precio_publicado_kg": 14816.67,
+        "diferencia_referencia_pct": 42.29
+      },
+      "MLA1442758619": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.19706205,
+        "precio_referencia_kg": 21106.34,
+        "precio_publicado_kg": 18436.0,
+        "diferencia_referencia_pct": -12.65
+      },
+      "MLA1443004861": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.19706205,
+        "precio_referencia_kg": 21106.34,
+        "precio_publicado_kg": 18436.0,
+        "diferencia_referencia_pct": -12.65
+      },
+      "MLA1443799855": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.0919466,
+        "precio_referencia_kg": 5466.58,
+        "precio_publicado_kg": 6224.81,
+        "diferencia_referencia_pct": 13.87
+      },
+      "MLA1444435461": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.21649902,
+        "precio_referencia_kg": 12742.45,
+        "precio_publicado_kg": 20468.0,
+        "diferencia_referencia_pct": 60.63
+      },
+      "MLA1447472865": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18148094,
+        "precio_referencia_kg": 10404.25,
+        "precio_publicado_kg": 9272.22,
+        "diferencia_referencia_pct": -10.88
+      },
+      "MLA1450416941": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.22845146,
+        "precio_referencia_kg": 15498.81,
+        "precio_publicado_kg": 13834.0,
+        "diferencia_referencia_pct": -10.74
+      },
+      "MLA1450468089": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.19628039,
+        "precio_referencia_kg": 13798.96,
+        "precio_publicado_kg": 11216.0,
+        "diferencia_referencia_pct": -18.72
+      },
+      "MLA1453033785": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.22118363,
+        "precio_referencia_kg": 11526.65,
+        "precio_publicado_kg": 8362.22,
+        "diferencia_referencia_pct": -27.45
+      },
+      "MLA1455393917": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25335595,
+        "precio_referencia_kg": 12605.5,
+        "precio_publicado_kg": 10426.67,
+        "diferencia_referencia_pct": -17.28
+      },
+      "MLA1455393957": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25053296,
+        "precio_referencia_kg": 11526.65,
+        "precio_publicado_kg": 10871.11,
+        "diferencia_referencia_pct": -5.69
+      },
+      "MLA1455967911": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14492458,
+        "precio_referencia_kg": 10579.15,
+        "precio_publicado_kg": 10170.0,
+        "diferencia_referencia_pct": -3.87
+      },
+      "MLA1455980587": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.1229318,
+        "precio_referencia_kg": 9246.68,
+        "precio_publicado_kg": 9966.33,
+        "diferencia_referencia_pct": 7.78
+      },
+      "MLA1455980755": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.12553649,
+        "precio_referencia_kg": 9251.95,
+        "precio_publicado_kg": 10440.0,
+        "diferencia_referencia_pct": 12.84
+      },
+      "MLA1455980769": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.15667093,
+        "precio_referencia_kg": 9251.65,
+        "precio_publicado_kg": 10036.67,
+        "diferencia_referencia_pct": 8.49
+      },
+      "MLA1455980915": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25129298,
+        "precio_referencia_kg": 11540.33,
+        "precio_publicado_kg": 14430.0,
+        "diferencia_referencia_pct": 25.04
+      },
+      "MLA1455993267": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26515754,
+        "precio_referencia_kg": 11764.0,
+        "precio_publicado_kg": 14430.0,
+        "diferencia_referencia_pct": 22.66
+      },
+      "MLA1456006733": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26013901,
+        "precio_referencia_kg": 12054.6,
+        "precio_publicado_kg": 14430.0,
+        "diferencia_referencia_pct": 19.71
+      },
+      "MLA1456019771": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14526263,
+        "precio_referencia_kg": 10168.54,
+        "precio_publicado_kg": 9873.33,
+        "diferencia_referencia_pct": -2.9
+      },
+      "MLA1456032961": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.11949551,
+        "precio_referencia_kg": 9259.49,
+        "precio_publicado_kg": 10496.67,
+        "diferencia_referencia_pct": 13.36
+      },
+      "MLA1456053083": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14689983,
+        "precio_referencia_kg": 10413.14,
+        "precio_publicado_kg": 10740.0,
+        "diferencia_referencia_pct": 3.14
+      },
+      "MLA1457754453": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.23171345,
+        "precio_referencia_kg": 23773.08,
+        "precio_publicado_kg": 18566.0,
+        "diferencia_referencia_pct": -21.9
+      },
+      "MLA1461962123": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24373606,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 8644.44,
+        "diferencia_referencia_pct": -26.8
+      },
+      "MLA1462770239": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.11121787,
+        "precio_referencia_kg": 8321.99,
+        "precio_publicado_kg": 6807.0,
+        "diferencia_referencia_pct": -18.2
+      },
+      "MLA1464044105": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.13754244,
+        "precio_referencia_kg": 9067.07,
+        "precio_publicado_kg": 6930.0,
+        "diferencia_referencia_pct": -23.57
+      },
+      "MLA1464056999": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25847526,
+        "precio_referencia_kg": 11540.33,
+        "precio_publicado_kg": 8790.0,
+        "diferencia_referencia_pct": -23.83
+      },
+      "MLA1464109369": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24869908,
+        "precio_referencia_kg": 12054.6,
+        "precio_publicado_kg": 8790.0,
+        "diferencia_referencia_pct": -27.08
+      },
+      "MLA1464135557": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.12880288,
+        "precio_referencia_kg": 9251.65,
+        "precio_publicado_kg": 6930.0,
+        "diferencia_referencia_pct": -25.09
+      },
+      "MLA1472847278": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16234596,
+        "precio_referencia_kg": 12356.73,
+        "precio_publicado_kg": 12710.0,
+        "diferencia_referencia_pct": 2.86
+      },
+      "MLA1473210392": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14774536,
+        "precio_referencia_kg": 13512.28,
+        "precio_publicado_kg": 14816.67,
+        "diferencia_referencia_pct": 9.65
+      },
+      "MLA1477773549": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2591511,
+        "precio_referencia_kg": 12742.45,
+        "precio_publicado_kg": 9972.0,
+        "diferencia_referencia_pct": -21.74
+      },
+      "MLA1477916183": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.02613553,
+        "precio_referencia_kg": 83687.81,
+        "precio_publicado_kg": 70240.0,
+        "diferencia_referencia_pct": -16.07
+      },
+      "MLA1486399269": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24869908,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 15900.0,
+        "diferencia_referencia_pct": -18.68
+      },
+      "MLA1486871683": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14501536,
+        "precio_referencia_kg": 10168.54,
+        "precio_publicado_kg": 9800.0,
+        "diferencia_referencia_pct": -3.62
+      },
+      "MLA1488114531": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.1813576,
+        "precio_referencia_kg": 9590.95,
+        "precio_publicado_kg": 9272.22,
+        "diferencia_referencia_pct": -3.32
+      },
+      "MLA1488841363": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26434126,
+        "precio_referencia_kg": 15925.07,
+        "precio_publicado_kg": 14922.0,
+        "diferencia_referencia_pct": -6.3
+      },
+      "MLA1491161223": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26776794,
+        "precio_referencia_kg": 28636.64,
+        "precio_publicado_kg": 29000.0,
+        "diferencia_referencia_pct": 1.27
+      },
+      "MLA1496961759": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16221386,
+        "precio_referencia_kg": 45777.21,
+        "precio_publicado_kg": 32700.0,
+        "diferencia_referencia_pct": -28.57
+      },
+      "MLA1500297093": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.162422,
+        "precio_referencia_kg": 29635.35,
+        "precio_publicado_kg": 30186.67,
+        "diferencia_referencia_pct": 1.86
+      },
+      "MLA1500335791": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.1717389,
+        "precio_referencia_kg": 30155.85,
+        "precio_publicado_kg": 30310.0,
+        "diferencia_referencia_pct": 0.51
+      },
+      "MLA1500473529": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.10277416,
+        "precio_referencia_kg": 29362.1,
+        "precio_publicado_kg": 28356.0,
+        "diferencia_referencia_pct": -3.43
+      },
+      "MLA1504148339": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.21444351,
+        "precio_referencia_kg": 13798.96,
+        "precio_publicado_kg": 17999.0,
+        "diferencia_referencia_pct": 30.44
+      },
+      "MLA1508693352": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.07872874,
+        "precio_referencia_kg": 60957.33,
+        "precio_publicado_kg": 48800.0,
+        "diferencia_referencia_pct": -19.94
+      },
+      "MLA1511428477": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26505231,
+        "precio_referencia_kg": 27365.82,
+        "precio_publicado_kg": 26800.0,
+        "diferencia_referencia_pct": -2.07
+      },
+      "MLA1511474665": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26324471,
+        "precio_referencia_kg": 23773.08,
+        "precio_publicado_kg": 25800.0,
+        "diferencia_referencia_pct": 8.53
+      },
+      "MLA1511498121": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.06292149,
+        "precio_referencia_kg": 36643.61,
+        "precio_publicado_kg": 51600.0,
+        "diferencia_referencia_pct": 40.82
+      },
+      "MLA1511513155": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26324471,
+        "precio_referencia_kg": 23773.08,
+        "precio_publicado_kg": 25800.0,
+        "diferencia_referencia_pct": 8.53
+      },
+      "MLA1511518011": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26505231,
+        "precio_referencia_kg": 27365.82,
+        "precio_publicado_kg": 26800.0,
+        "diferencia_referencia_pct": -2.07
+      },
+      "MLA1517623835": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18567195,
+        "precio_referencia_kg": 23681.79,
+        "precio_publicado_kg": 27428.0,
+        "diferencia_referencia_pct": 15.82
+      },
+      "MLA1518270223": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18037026,
+        "precio_referencia_kg": 9590.95,
+        "precio_publicado_kg": 9760.0,
+        "diferencia_referencia_pct": 1.76
+      },
+      "MLA1518323295": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18085734,
+        "precio_referencia_kg": 10404.25,
+        "precio_publicado_kg": 10173.33,
+        "diferencia_referencia_pct": -2.22
+      },
+      "MLA1518451775": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.09368202,
+        "precio_referencia_kg": 8495.71,
+        "precio_publicado_kg": 8834.0,
+        "diferencia_referencia_pct": 3.98
+      },
+      "MLA1520539527": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26041968,
+        "precio_referencia_kg": 11540.33,
+        "precio_publicado_kg": 9000.0,
+        "diferencia_referencia_pct": -22.01
+      },
+      "MLA1528408517": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18513337,
+        "precio_referencia_kg": 8940.18,
+        "precio_publicado_kg": 9400.0,
+        "diferencia_referencia_pct": 5.14
+      },
+      "MLA1528421483": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.0682376,
+        "precio_referencia_kg": 12436.58,
+        "precio_publicado_kg": 8840.0,
+        "diferencia_referencia_pct": -28.92
+      },
+      "MLA1528550681": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.10167242,
+        "precio_referencia_kg": 8501.51,
+        "precio_publicado_kg": 9450.0,
+        "diferencia_referencia_pct": 11.16
+      },
+      "MLA1530032457": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.00979842,
+        "precio_referencia_kg": 6872.79,
+        "precio_publicado_kg": 5495.0,
+        "diferencia_referencia_pct": -20.05
+      },
+      "MLA1535159386": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.13913128,
+        "precio_referencia_kg": 12372.64,
+        "precio_publicado_kg": 15979.5,
+        "diferencia_referencia_pct": 29.15
+      },
+      "MLA1538232869": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18339921,
+        "precio_referencia_kg": 8321.99,
+        "precio_publicado_kg": 8999.0,
+        "diferencia_referencia_pct": 8.14
+      },
+      "MLA1564380547": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.06997258,
+        "precio_referencia_kg": 6340.2,
+        "precio_publicado_kg": 6020.56,
+        "diferencia_referencia_pct": -5.04
+      },
+      "MLA1566919566": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16010187,
+        "precio_referencia_kg": 38500.45,
+        "precio_publicado_kg": 31325.0,
+        "diferencia_referencia_pct": -18.64
+      },
+      "MLA1581865232": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2414857,
+        "precio_referencia_kg": 23773.08,
+        "precio_publicado_kg": 19980.0,
+        "diferencia_referencia_pct": -15.96
+      },
+      "MLA1589478987": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.19523126,
+        "precio_referencia_kg": 19547.49,
+        "precio_publicado_kg": 14600.0,
+        "diferencia_referencia_pct": -25.31
+      },
+      "MLA1589505089": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.03047279,
+        "precio_referencia_kg": 29131.23,
+        "precio_publicado_kg": 24990.0,
+        "diferencia_referencia_pct": -14.22
+      },
+      "MLA1616499121": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26685873,
+        "precio_referencia_kg": 11540.33,
+        "precio_publicado_kg": 10778.0,
+        "diferencia_referencia_pct": -6.61
+      },
+      "MLA1636586172": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18022107,
+        "precio_referencia_kg": 8321.99,
+        "precio_publicado_kg": 8834.0,
+        "diferencia_referencia_pct": 6.15
+      },
+      "MLA1641994431": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26776794,
+        "precio_referencia_kg": 12956.21,
+        "precio_publicado_kg": 11998.0,
+        "diferencia_referencia_pct": -7.4
+      },
+      "MLA1650148991": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25668053,
+        "precio_referencia_kg": 15925.07,
+        "precio_publicado_kg": 20570.0,
+        "diferencia_referencia_pct": 29.17
+      },
+      "MLA1664664202": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26427235,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 20360.0,
+        "diferencia_referencia_pct": 4.13
+      },
+      "MLA1692036855": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.09257921,
+        "precio_referencia_kg": 5392.02,
+        "precio_publicado_kg": 5861.67,
+        "diferencia_referencia_pct": 8.71
+      },
+      "MLA1711575959": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.23310549,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 13984.0,
+        "diferencia_referencia_pct": -28.48
+      },
+      "MLA1752038809": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25828072,
+        "precio_referencia_kg": 12605.5,
+        "precio_publicado_kg": 10964.44,
+        "diferencia_referencia_pct": -13.02
+      },
+      "MLA1753677602": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25865132,
+        "precio_referencia_kg": 27841.72,
+        "precio_publicado_kg": 24000.0,
+        "diferencia_referencia_pct": -13.8
+      },
+      "MLA1756954217": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24440559,
+        "precio_referencia_kg": 12605.5,
+        "precio_publicado_kg": 14566.67,
+        "diferencia_referencia_pct": 15.56
+      },
+      "MLA1756954225": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.23930233,
+        "precio_referencia_kg": 11526.65,
+        "precio_publicado_kg": 9333.33,
+        "diferencia_referencia_pct": -19.03
+      },
+      "MLA1756964813": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25768019,
+        "precio_referencia_kg": 12605.5,
+        "precio_publicado_kg": 10888.89,
+        "diferencia_referencia_pct": -13.62
+      },
+      "MLA1756964815": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.23295313,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 15333.33,
+        "diferencia_referencia_pct": 29.84
+      },
+      "MLA1757023533": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25038356,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 9333.33,
+        "diferencia_referencia_pct": -20.97
+      },
+      "MLA1769698513": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16086608,
+        "precio_referencia_kg": 13349.01,
+        "precio_publicado_kg": 14310.0,
+        "diferencia_referencia_pct": 7.2
+      },
+      "MLA1774823967": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.00462577,
+        "precio_referencia_kg": 5940.0,
+        "precio_publicado_kg": 6239.8,
+        "diferencia_referencia_pct": 5.05
+      },
+      "MLA1779919574": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.11707726,
+        "precio_referencia_kg": 9609.53,
+        "precio_publicado_kg": 8632.67,
+        "diferencia_referencia_pct": -10.17
+      },
+      "MLA1781929245": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.21589241,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 17706.67,
+        "diferencia_referencia_pct": 49.94
+      },
+      "MLA1781942383": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.21678491,
+        "precio_referencia_kg": 12605.5,
+        "precio_publicado_kg": 17702.22,
+        "diferencia_referencia_pct": 40.43
+      },
+      "MLA1781943287": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25792834,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 10864.44,
+        "diferencia_referencia_pct": -8.0
+      },
+      "MLA1786032933": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26685779,
+        "precio_referencia_kg": 12956.21,
+        "precio_publicado_kg": 11800.0,
+        "diferencia_referencia_pct": -8.92
+      },
+      "MLA1793688863": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.04992051,
+        "precio_referencia_kg": 18508.05,
+        "precio_publicado_kg": 38756.61,
+        "diferencia_referencia_pct": 109.4
+      },
+      "MLA1793721731": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14857363,
+        "precio_referencia_kg": 33819.7,
+        "precio_publicado_kg": 38408.29,
+        "diferencia_referencia_pct": 13.57
+      },
+      "MLA1797701309": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26776794,
+        "precio_referencia_kg": 34487.9,
+        "precio_publicado_kg": 29000.0,
+        "diferencia_referencia_pct": -15.91
+      },
+      "MLA1799242641": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14554248,
+        "precio_referencia_kg": 10168.54,
+        "precio_publicado_kg": 9576.5,
+        "diferencia_referencia_pct": -5.82
+      },
+      "MLA1814260982": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26041968,
+        "precio_referencia_kg": 15925.07,
+        "precio_publicado_kg": 13186.0,
+        "diferencia_referencia_pct": -17.2
+      },
+      "MLA1824200300": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.15188548,
+        "precio_referencia_kg": 22817.72,
+        "precio_publicado_kg": 14036.0,
+        "diferencia_referencia_pct": -38.49
+      },
+      "MLA1825235157": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.02998559,
+        "precio_referencia_kg": 29802.81,
+        "precio_publicado_kg": 24570.0,
+        "diferencia_referencia_pct": -17.56
+      },
+      "MLA1843425143": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26262516,
+        "precio_referencia_kg": 12054.6,
+        "precio_publicado_kg": 13800.0,
+        "diferencia_referencia_pct": 14.48
+      },
+      "MLA1843437911": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25759891,
+        "precio_referencia_kg": 11540.33,
+        "precio_publicado_kg": 13800.0,
+        "diferencia_referencia_pct": 19.58
+      },
+      "MLA1843451385": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26385718,
+        "precio_referencia_kg": 11764.0,
+        "precio_publicado_kg": 13800.0,
+        "diferencia_referencia_pct": 17.31
+      },
+      "MLA1850362977": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.13362285,
+        "precio_referencia_kg": 10579.15,
+        "precio_publicado_kg": 11600.0,
+        "diferencia_referencia_pct": 9.65
+      },
+      "MLA1859501956": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2518476,
+        "precio_referencia_kg": 16929.27,
+        "precio_publicado_kg": 21000.0,
+        "diferencia_referencia_pct": 24.05
+      },
+      "MLA1859553530": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.21649902,
+        "precio_referencia_kg": 16929.27,
+        "precio_publicado_kg": 27000.0,
+        "diferencia_referencia_pct": 59.49
+      },
+      "MLA1859554050": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25979822,
+        "precio_referencia_kg": 16929.27,
+        "precio_publicado_kg": 19000.0,
+        "diferencia_referencia_pct": 12.23
+      },
+      "MLA1871118297": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26663936,
+        "precio_referencia_kg": 23773.08,
+        "precio_publicado_kg": 29670.0,
+        "diferencia_referencia_pct": 24.81
+      },
+      "MLA1876069257": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25496004,
+        "precio_referencia_kg": 11526.65,
+        "precio_publicado_kg": 12488.89,
+        "diferencia_referencia_pct": 8.35
+      },
+      "MLA1876069305": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18037026,
+        "precio_referencia_kg": 10404.25,
+        "precio_publicado_kg": 9760.0,
+        "diferencia_referencia_pct": -6.19
+      },
+      "MLA1876081573": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14182222,
+        "precio_referencia_kg": 10404.25,
+        "precio_publicado_kg": 16025.56,
+        "diferencia_referencia_pct": 54.03
+      },
+      "MLA1876081851": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.21120088,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 18293.33,
+        "diferencia_referencia_pct": 54.91
+      },
+      "MLA1876081909": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18796154,
+        "precio_referencia_kg": 23681.79,
+        "precio_publicado_kg": 26660.0,
+        "diferencia_referencia_pct": 12.58
+      },
+      "MLA1876081983": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18082872,
+        "precio_referencia_kg": 9764.05,
+        "precio_publicado_kg": 10221.11,
+        "diferencia_referencia_pct": 4.68
+      },
+      "MLA1884129320": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.23486902,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 8097.78,
+        "diferencia_referencia_pct": -31.43
+      },
+      "MLA1887258005": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.1106732,
+        "precio_referencia_kg": 10413.14,
+        "precio_publicado_kg": 8120.0,
+        "diferencia_referencia_pct": -22.02
+      },
+      "MLA1887259253": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26546895,
+        "precio_referencia_kg": 12054.6,
+        "precio_publicado_kg": 11700.0,
+        "diferencia_referencia_pct": -2.94
+      },
+      "MLA1888372327": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26312774,
+        "precio_referencia_kg": 11540.33,
+        "precio_publicado_kg": 11250.0,
+        "diferencia_referencia_pct": -2.52
+      },
+      "MLA1897468411": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.0711833,
+        "precio_referencia_kg": 5466.58,
+        "precio_publicado_kg": 5870.74,
+        "diferencia_referencia_pct": 7.39
+      },
+      "MLA1910602195": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25933214,
+        "precio_referencia_kg": 15925.07,
+        "precio_publicado_kg": 13000.0,
+        "diferencia_referencia_pct": -18.37
+      },
+      "MLA1932324595": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16117158,
+        "precio_referencia_kg": 8321.99,
+        "precio_publicado_kg": 7822.0,
+        "diferencia_referencia_pct": -6.01
+      },
+      "MLA1933150923": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26776794,
+        "precio_referencia_kg": 11540.33,
+        "precio_publicado_kg": 10740.0,
+        "diferencia_referencia_pct": -6.94
+      },
+      "MLA1935970138": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25527404,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 10426.67,
+        "diferencia_referencia_pct": -11.71
+      },
+      "MLA1958355534": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26477154,
+        "precio_referencia_kg": 18171.35,
+        "precio_publicado_kg": 20016.0,
+        "diferencia_referencia_pct": 10.15
+      },
+      "MLA1962643112": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.13528065,
+        "precio_referencia_kg": 9590.95,
+        "precio_publicado_kg": 6666.67,
+        "diferencia_referencia_pct": -30.49
+      },
+      "MLA1962681602": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.22945154,
+        "precio_referencia_kg": 11526.65,
+        "precio_publicado_kg": 8777.78,
+        "diferencia_referencia_pct": -23.85
+      },
+      "MLA1965896206": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.07582038,
+        "precio_referencia_kg": 7889.07,
+        "precio_publicado_kg": 991.33,
+        "diferencia_referencia_pct": -87.43
+      },
+      "MLA1976437402": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.23732444,
+        "precio_referencia_kg": 34487.9,
+        "precio_publicado_kg": 42000.0,
+        "diferencia_referencia_pct": 21.78
+      },
+      "MLA1976528374": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.15755806,
+        "precio_referencia_kg": 8321.99,
+        "precio_publicado_kg": 7591.0,
+        "diferencia_referencia_pct": -8.78
+      },
+      "MLA1976967372": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25707347,
+        "precio_referencia_kg": 12054.6,
+        "precio_publicado_kg": 15392.0,
+        "diferencia_referencia_pct": 27.69
+      },
+      "MLA1979498258": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.03602825,
+        "precio_referencia_kg": 44438.32,
+        "precio_publicado_kg": 41380.0,
+        "diferencia_referencia_pct": -6.88
+      },
+      "MLA1982357027": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.23759787,
+        "precio_referencia_kg": 13529.05,
+        "precio_publicado_kg": 16666.67,
+        "diferencia_referencia_pct": 23.19
+      },
+      "MLA1983258114": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25879816,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 26498.0,
+        "diferencia_referencia_pct": 35.52
+      },
+      "MLA1992397025": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.10224614,
+        "precio_referencia_kg": 7889.07,
+        "precio_publicado_kg": 9509.5,
+        "diferencia_referencia_pct": 20.54
+      },
+      "MLA1992397027": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.13491631,
+        "precio_referencia_kg": 7889.07,
+        "precio_publicado_kg": 12312.0,
+        "diferencia_referencia_pct": 56.06
+      },
+      "MLA1993067598": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.20329003,
+        "precio_referencia_kg": 14894.51,
+        "precio_publicado_kg": 13333.33,
+        "diferencia_referencia_pct": -10.48
+      },
+      "MLA1995635955": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.22052134,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 17035.56,
+        "diferencia_referencia_pct": 44.26
+      },
+      "MLA1995661927": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26386948,
+        "precio_referencia_kg": 12742.45,
+        "precio_publicado_kg": 12496.0,
+        "diferencia_referencia_pct": -1.93
+      },
+      "MLA2000542090": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25267436,
+        "precio_referencia_kg": 11526.65,
+        "precio_publicado_kg": 12928.89,
+        "diferencia_referencia_pct": 12.17
+      },
+      "MLA2000593902": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25448315,
+        "precio_referencia_kg": 12605.5,
+        "precio_publicado_kg": 12026.67,
+        "diferencia_referencia_pct": -4.59
+      },
+      "MLA2000604676": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.02613553,
+        "precio_referencia_kg": 83687.81,
+        "precio_publicado_kg": 70240.0,
+        "diferencia_referencia_pct": -16.07
+      },
+      "MLA2017592756": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2122728,
+        "precio_referencia_kg": 34487.9,
+        "precio_publicado_kg": 50000.0,
+        "diferencia_referencia_pct": 44.98
+      },
+      "MLA2017618934": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2122728,
+        "precio_referencia_kg": 27841.72,
+        "precio_publicado_kg": 50000.0,
+        "diferencia_referencia_pct": 79.59
+      },
+      "MLA2027162695": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25469309,
+        "precio_referencia_kg": 12956.21,
+        "precio_publicado_kg": 9434.0,
+        "diferencia_referencia_pct": -27.19
+      },
+      "MLA2034818350": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26386948,
+        "precio_referencia_kg": 12742.45,
+        "precio_publicado_kg": 12532.0,
+        "diferencia_referencia_pct": -1.65
+      },
+      "MLA2049011942": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16840112,
+        "precio_referencia_kg": 8321.99,
+        "precio_publicado_kg": 8399.0,
+        "diferencia_referencia_pct": 0.93
+      },
+      "MLA2049102382": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14631281,
+        "precio_referencia_kg": 13593.72,
+        "precio_publicado_kg": 13536.67,
+        "diferencia_referencia_pct": -0.42
+      },
+      "MLA2051365867": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.0033016,
+        "precio_referencia_kg": 20862.93,
+        "precio_publicado_kg": 81357.78,
+        "diferencia_referencia_pct": 289.96
+      },
+      "MLA2051836235": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24401765,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 14273.33,
+        "diferencia_referencia_pct": 20.87
+      },
+      "MLA2051883961": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24388835,
+        "precio_referencia_kg": 12605.5,
+        "precio_publicado_kg": 14273.33,
+        "diferencia_referencia_pct": 13.23
+      },
+      "MLA2054924038": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26325153,
+        "precio_referencia_kg": 28636.64,
+        "precio_publicado_kg": 31800.0,
+        "diferencia_referencia_pct": 11.05
+      },
+      "MLA2055113879": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.01175349,
+        "precio_referencia_kg": 5966.47,
+        "precio_publicado_kg": 7483.92,
+        "diferencia_referencia_pct": 25.43
+      },
+      "MLA2058544276": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26546895,
+        "precio_referencia_kg": 18171.35,
+        "precio_publicado_kg": 21216.0,
+        "diferencia_referencia_pct": 16.76
+      },
+      "MLA2060758531": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16459056,
+        "precio_referencia_kg": 31317.18,
+        "precio_publicado_kg": 39960.0,
+        "diferencia_referencia_pct": 27.6
+      },
+      "MLA2063184525": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26325153,
+        "precio_referencia_kg": 11540.33,
+        "precio_publicado_kg": 11754.0,
+        "diferencia_referencia_pct": 1.85
+      },
+      "MLA2093422528": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25692576,
+        "precio_referencia_kg": 13508.84,
+        "precio_publicado_kg": 15328.0,
+        "diferencia_referencia_pct": 13.47
+      },
+      "MLA2102549918": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26348536,
+        "precio_referencia_kg": 34487.9,
+        "precio_publicado_kg": 25400.0,
+        "diferencia_referencia_pct": -26.35
+      },
+      "MLA2103692818": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.025562,
+        "precio_referencia_kg": 7651.25,
+        "precio_publicado_kg": 2139.6,
+        "diferencia_referencia_pct": -72.04
+      },
+      "MLA2103718793": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.19241313,
+        "precio_referencia_kg": 21106.34,
+        "precio_publicado_kg": 22800.0,
+        "diferencia_referencia_pct": 8.02
+      },
+      "MLA2123706929": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.22036532,
+        "precio_referencia_kg": 20862.93,
+        "precio_publicado_kg": 17140.0,
+        "diferencia_referencia_pct": -17.84
+      },
+      "MLA2124222111": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24373606,
+        "precio_referencia_kg": 12605.5,
+        "precio_publicado_kg": 8666.67,
+        "diferencia_referencia_pct": -31.25
+      },
+      "MLA2131045332": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.09292848,
+        "precio_referencia_kg": 12584.23,
+        "precio_publicado_kg": 19732.0,
+        "diferencia_referencia_pct": 56.8
+      },
+      "MLA2134886394": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16103323,
+        "precio_referencia_kg": 8321.99,
+        "precio_publicado_kg": 7877.0,
+        "diferencia_referencia_pct": -5.35
+      },
+      "MLA2135777902": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.08304436,
+        "precio_referencia_kg": 8495.71,
+        "precio_publicado_kg": 8330.0,
+        "diferencia_referencia_pct": -1.95
+      },
+      "MLA2143693281": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.17986322,
+        "precio_referencia_kg": 21106.34,
+        "precio_publicado_kg": 17160.0,
+        "diferencia_referencia_pct": -18.7
+      },
+      "MLA2145276281": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24957666,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 9664.44,
+        "diferencia_referencia_pct": -18.16
+      },
+      "MLA2145292145": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24149613,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 8422.22,
+        "diferencia_referencia_pct": -28.68
+      },
+      "MLA2152032981": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25156936,
+        "precio_referencia_kg": 12956.21,
+        "precio_publicado_kg": 16294.0,
+        "diferencia_referencia_pct": 25.76
+      },
+      "MLA2161128889": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26441695,
+        "precio_referencia_kg": 12054.6,
+        "precio_publicado_kg": 11200.0,
+        "diferencia_referencia_pct": -7.09
+      },
+      "MLA2191861907": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.17016057,
+        "precio_referencia_kg": 13798.96,
+        "precio_publicado_kg": 26900.0,
+        "diferencia_referencia_pct": 94.94
+      },
+      "MLA2192998324": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24881263,
+        "precio_referencia_kg": 12054.6,
+        "precio_publicado_kg": 16400.0,
+        "diferencia_referencia_pct": 36.05
+      },
+      "MLA2194886130": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.17049373,
+        "precio_referencia_kg": 14195.17,
+        "precio_publicado_kg": 17644.0,
+        "diferencia_referencia_pct": 24.3
+      },
+      "MLA2196033217": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.17853226,
+        "precio_referencia_kg": 14623.0,
+        "precio_publicado_kg": 12167.78,
+        "diferencia_referencia_pct": -16.79
+      },
+      "MLA2203761276": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26350426,
+        "precio_referencia_kg": 12054.6,
+        "precio_publicado_kg": 10638.0,
+        "diferencia_referencia_pct": -11.75
+      },
+      "MLA2216728275": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14906285,
+        "precio_referencia_kg": 10404.25,
+        "precio_publicado_kg": 7222.22,
+        "diferencia_referencia_pct": -30.58
+      },
+      "MLA2220248512": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.22611103,
+        "precio_referencia_kg": 29172.4,
+        "precio_publicado_kg": 11355.0,
+        "diferencia_referencia_pct": -61.08
+      },
+      "MLA2220876810": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26064879,
+        "precio_referencia_kg": 13508.84,
+        "precio_publicado_kg": 14598.0,
+        "diferencia_referencia_pct": 8.06
+      },
+      "MLA2227367931": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14099514,
+        "precio_referencia_kg": 22554.62,
+        "precio_publicado_kg": 25491.33,
+        "diferencia_referencia_pct": 13.02
+      },
+      "MLA2227485617": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14504002,
+        "precio_referencia_kg": 21488.6,
+        "precio_publicado_kg": 24763.33,
+        "diferencia_referencia_pct": 15.24
+      },
+      "MLA2236594559": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2569416,
+        "precio_referencia_kg": 34487.9,
+        "precio_publicado_kg": 36352.0,
+        "diferencia_referencia_pct": 5.41
+      },
+      "MLA2248892348": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26346833,
+        "precio_referencia_kg": 15925.07,
+        "precio_publicado_kg": 17980.0,
+        "diferencia_referencia_pct": 12.9
+      },
+      "MLA2312925430": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.20923445,
+        "precio_referencia_kg": 15760.63,
+        "precio_publicado_kg": 9004.0,
+        "diferencia_referencia_pct": -42.87
+      },
+      "MLA2316227934": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16010187,
+        "precio_referencia_kg": 38500.45,
+        "precio_publicado_kg": 31210.0,
+        "diferencia_referencia_pct": -18.94
+      },
+      "MLA2317006928": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26374378,
+        "precio_referencia_kg": 15751.78,
+        "precio_publicado_kg": 17580.0,
+        "diferencia_referencia_pct": 11.61
+      },
+      "MLA2374295992": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18337601,
+        "precio_referencia_kg": 8321.99,
+        "precio_publicado_kg": 9555.0,
+        "diferencia_referencia_pct": 14.82
+      },
+      "MLA2402488750": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26449338,
+        "precio_referencia_kg": 12956.21,
+        "precio_publicado_kg": 13300.0,
+        "diferencia_referencia_pct": 2.65
+      },
+      "MLA2442572284": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25352423,
+        "precio_referencia_kg": 11526.65,
+        "precio_publicado_kg": 12688.89,
+        "diferencia_referencia_pct": 10.08
+      },
+      "MLA2442624350": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16482384,
+        "precio_referencia_kg": 9764.05,
+        "precio_publicado_kg": 9222.22,
+        "diferencia_referencia_pct": -5.55
+      },
+      "MLA2442702296": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.11854032,
+        "precio_referencia_kg": 8690.28,
+        "precio_publicado_kg": 7781.48,
+        "diferencia_referencia_pct": -10.46
+      },
+      "MLA2442715374": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.13621375,
+        "precio_referencia_kg": 15574.06,
+        "precio_publicado_kg": 19370.0,
+        "diferencia_referencia_pct": 24.37
+      },
+      "MLA2470978050": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.13296743,
+        "precio_referencia_kg": 10168.54,
+        "precio_publicado_kg": 11733.33,
+        "diferencia_referencia_pct": 15.39
+      },
+      "MLA2471740230": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.07287997,
+        "precio_referencia_kg": 12367.06,
+        "precio_publicado_kg": 13159.4,
+        "diferencia_referencia_pct": 6.41
+      },
+      "MLA2578656956": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25528432,
+        "precio_referencia_kg": 16414.75,
+        "precio_publicado_kg": 15462.22,
+        "diferencia_referencia_pct": -5.8
+      },
+      "MLA2582808634": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2587693,
+        "precio_referencia_kg": 19003.28,
+        "precio_publicado_kg": 17820.0,
+        "diferencia_referencia_pct": -6.23
+      },
+      "MLA2604620652": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.1659019,
+        "precio_referencia_kg": 14623.0,
+        "precio_publicado_kg": 14008.89,
+        "diferencia_referencia_pct": -4.2
+      },
+      "MLA2666096074": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25151695,
+        "precio_referencia_kg": 12605.5,
+        "precio_publicado_kg": 12577.78,
+        "diferencia_referencia_pct": -0.22
+      },
+      "MLA2676603572": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24267915,
+        "precio_referencia_kg": 12605.5,
+        "precio_publicado_kg": 14444.44,
+        "diferencia_referencia_pct": 14.59
+      },
+      "MLA2710469150": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.22569636,
+        "precio_referencia_kg": 12605.5,
+        "precio_publicado_kg": 16204.44,
+        "diferencia_referencia_pct": 28.55
+      },
+      "MLA2735985922": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.07888948,
+        "precio_referencia_kg": 6519.03,
+        "precio_publicado_kg": 10101.6,
+        "diferencia_referencia_pct": 54.96
+      },
+      "MLA2768242350": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.15469063,
+        "precio_referencia_kg": 9439.42,
+        "precio_publicado_kg": 8100.0,
+        "diferencia_referencia_pct": -14.19
+      },
+      "MLA2797598124": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14182222,
+        "precio_referencia_kg": 10404.25,
+        "precio_publicado_kg": 16025.56,
+        "diferencia_referencia_pct": 54.03
+      },
+      "MLA2806818728": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26262516,
+        "precio_referencia_kg": 15925.07,
+        "precio_publicado_kg": 18194.0,
+        "diferencia_referencia_pct": 14.25
+      },
+      "MLA2807065298": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.13573926,
+        "precio_referencia_kg": 7889.07,
+        "precio_publicado_kg": 15802.0,
+        "diferencia_referencia_pct": 100.3
+      },
+      "MLA2807077958": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2263283,
+        "precio_referencia_kg": 15925.07,
+        "precio_publicado_kg": 24708.0,
+        "diferencia_referencia_pct": 55.15
+      },
+      "MLA2807104088": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.0790739,
+        "precio_referencia_kg": 7889.07,
+        "precio_publicado_kg": 22685.67,
+        "diferencia_referencia_pct": 187.56
+      },
+      "MLA2826805146": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2655255,
+        "precio_referencia_kg": 12956.21,
+        "precio_publicado_kg": 11172.0,
+        "diferencia_referencia_pct": -13.77
+      },
+      "MLA2866690246": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25151695,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 12577.78,
+        "diferencia_referencia_pct": 6.51
+      },
+      "MLA3013071328": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.1734643,
+        "precio_referencia_kg": 9764.05,
+        "precio_publicado_kg": 9710.0,
+        "diferencia_referencia_pct": -0.55
+      },
+      "MLA3025566882": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.15399435,
+        "precio_referencia_kg": 8321.99,
+        "precio_publicado_kg": 7500.0,
+        "diferencia_referencia_pct": -9.88
+      },
+      "MLA3074826122": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.23310549,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 13984.0,
+        "diferencia_referencia_pct": -28.48
+      },
+      "MLA3099223044": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.23310549,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 13984.0,
+        "diferencia_referencia_pct": -28.48
+      },
+      "MLA3158171068": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25527404,
+        "precio_referencia_kg": 12605.5,
+        "precio_publicado_kg": 10464.44,
+        "diferencia_referencia_pct": -16.99
+      },
+      "MLA3159340948": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.1239818,
+        "precio_referencia_kg": 31002.67,
+        "precio_publicado_kg": 17997.5,
+        "diferencia_referencia_pct": -41.95
+      },
+      "MLA3219606396": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2655255,
+        "precio_referencia_kg": 18171.35,
+        "precio_publicado_kg": 20220.0,
+        "diferencia_referencia_pct": 11.27
+      },
+      "MLA3238164658": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.04118488,
+        "precio_referencia_kg": 83687.81,
+        "precio_publicado_kg": 130660.0,
+        "diferencia_referencia_pct": 56.13
+      },
+      "MLA3250901572": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16886096,
+        "precio_referencia_kg": 13001.56,
+        "precio_publicado_kg": 13709.0,
+        "diferencia_referencia_pct": 5.44
+      },
+      "MLA3250908884": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.1545904,
+        "precio_referencia_kg": 14527.38,
+        "precio_publicado_kg": 14179.17,
+        "diferencia_referencia_pct": -2.4
+      },
+      "MLA3250919442": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.22184799,
+        "precio_referencia_kg": 18617.47,
+        "precio_publicado_kg": 16304.17,
+        "diferencia_referencia_pct": -12.43
+      },
+      "MLA3295040608": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25350516,
+        "precio_referencia_kg": 11526.65,
+        "precio_publicado_kg": 11575.56,
+        "diferencia_referencia_pct": 0.42
+      },
+      "MLA3325209494": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.1004429,
+        "precio_referencia_kg": 8940.18,
+        "precio_publicado_kg": 6639.0,
+        "diferencia_referencia_pct": -25.74
+      },
+      "MLA3341419422": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.20094356,
+        "precio_referencia_kg": 11764.0,
+        "precio_publicado_kg": 8790.0,
+        "diferencia_referencia_pct": -25.28
+      },
+      "MLA3341471072": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.20094356,
+        "precio_referencia_kg": 11764.0,
+        "precio_publicado_kg": 8790.0,
+        "diferencia_referencia_pct": -25.28
+      },
+      "MLA3342451372": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.15311918,
+        "precio_referencia_kg": 11783.83,
+        "precio_publicado_kg": 12666.67,
+        "diferencia_referencia_pct": 7.49
+      },
+      "MLA3383047660": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2170296,
+        "precio_referencia_kg": 13798.96,
+        "precio_publicado_kg": 16000.0,
+        "diferencia_referencia_pct": 15.95
+      },
+      "MLA3414468130": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.08636404,
+        "precio_referencia_kg": 10740.79,
+        "precio_publicado_kg": 12000.0,
+        "diferencia_referencia_pct": 11.72
+      },
+      "MLA3421454946": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.10935166,
+        "precio_referencia_kg": 31317.18,
+        "precio_publicado_kg": 55396.0,
+        "diferencia_referencia_pct": 76.89
+      },
+      "MLA3467404410": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26477154,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 20020.0,
+        "diferencia_referencia_pct": 2.39
+      },
+      "MLA3467978322": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2655255,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 20220.0,
+        "diferencia_referencia_pct": 3.41
+      },
+      "MLA3494847754": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.1603973,
+        "precio_referencia_kg": 9067.07,
+        "precio_publicado_kg": 9533.33,
+        "diferencia_referencia_pct": 5.14
+      },
+      "MLA3510124856": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.13117892,
+        "precio_referencia_kg": 8940.18,
+        "precio_publicado_kg": 7189.0,
+        "diferencia_referencia_pct": -19.59
+      },
+      "MLA3516892522": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.0946022,
+        "precio_referencia_kg": 5392.02,
+        "precio_publicado_kg": 5675.56,
+        "diferencia_referencia_pct": 5.26
+      },
+      "MLA3519082854": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.00237969,
+        "precio_referencia_kg": 8548.46,
+        "precio_publicado_kg": 7750.0,
+        "diferencia_referencia_pct": -9.34
+      },
+      "MLA3550881774": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26792266,
+        "precio_referencia_kg": 23773.08,
+        "precio_publicado_kg": 28768.0,
+        "diferencia_referencia_pct": 21.01
+      },
+      "MLA3564610398": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26374378,
+        "precio_referencia_kg": 15751.78,
+        "precio_publicado_kg": 17580.0,
+        "diferencia_referencia_pct": 11.61
+      },
+      "MLA3564613796": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.07287997,
+        "precio_referencia_kg": 12367.06,
+        "precio_publicado_kg": 13159.4,
+        "diferencia_referencia_pct": 6.41
+      },
+      "MLA3564614892": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.05295747,
+        "precio_referencia_kg": 69082.94,
+        "precio_publicado_kg": 63890.0,
+        "diferencia_referencia_pct": -7.52
+      },
+      "MLA3564635268": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25637981,
+        "precio_referencia_kg": 16414.75,
+        "precio_publicado_kg": 16275.56,
+        "diferencia_referencia_pct": -0.85
+      },
+      "MLA3564639148": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16234596,
+        "precio_referencia_kg": 12356.73,
+        "precio_publicado_kg": 12710.0,
+        "diferencia_referencia_pct": 2.86
+      },
+      "MLA3564641210": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.00141497,
+        "precio_referencia_kg": 45283.23,
+        "precio_publicado_kg": 66425.0,
+        "diferencia_referencia_pct": 46.69
+      },
+      "MLA3567181720": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.11710989,
+        "precio_referencia_kg": 4262.55,
+        "precio_publicado_kg": 913.58,
+        "diferencia_referencia_pct": -78.57
+      },
+      "MLA3573151270": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.00491075,
+        "precio_referencia_kg": 81191.04,
+        "precio_publicado_kg": 70000.0,
+        "diferencia_referencia_pct": -13.78
+      },
+      "MLA3606976214": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.02084878,
+        "precio_referencia_kg": 6170.27,
+        "precio_publicado_kg": 5199.8,
+        "diferencia_referencia_pct": -15.73
+      },
+      "MLA3642344488": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26064879,
+        "precio_referencia_kg": 15925.07,
+        "precio_publicado_kg": 19200.0,
+        "diferencia_referencia_pct": 20.56
+      },
+      "MLA3699111868": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25847526,
+        "precio_referencia_kg": 11764.0,
+        "precio_publicado_kg": 12940.0,
+        "diferencia_referencia_pct": 10.0
+      },
+      "MLA3704736146": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25671466,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 10553.33,
+        "diferencia_referencia_pct": -10.63
+      },
+      "MLA3749737032": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.22505936,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 13400.0,
+        "diferencia_referencia_pct": -31.47
+      },
+      "MLA3749750030": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2420132,
+        "precio_referencia_kg": 18171.35,
+        "precio_publicado_kg": 15000.0,
+        "diferencia_referencia_pct": -17.45
+      },
+      "MLA3770877202": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26368723,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 24642.0,
+        "diferencia_referencia_pct": 26.03
+      },
+      "MLA3770975756": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25879816,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 26562.0,
+        "diferencia_referencia_pct": 35.85
+      },
+      "MLA3770976252": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26383208,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 24680.0,
+        "diferencia_referencia_pct": 26.22
+      },
+      "MLA3792139716": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.12461969,
+        "precio_referencia_kg": 10168.54,
+        "precio_publicado_kg": 12550.0,
+        "diferencia_referencia_pct": 23.42
+      },
+      "MLA3795959924": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.09639778,
+        "precio_referencia_kg": 38500.45,
+        "precio_publicado_kg": 49495.0,
+        "diferencia_referencia_pct": 28.56
+      },
+      "MLA3795960090": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25405779,
+        "precio_referencia_kg": 11526.65,
+        "precio_publicado_kg": 12615.56,
+        "diferencia_referencia_pct": 9.45
+      },
+      "MLA3795960142": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25264047,
+        "precio_referencia_kg": 11809.16,
+        "precio_publicado_kg": 9944.44,
+        "diferencia_referencia_pct": -15.79
+      },
+      "MLA3795960164": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.09358386,
+        "precio_referencia_kg": 57045.4,
+        "precio_publicado_kg": 43786.67,
+        "diferencia_referencia_pct": -23.24
+      },
+      "MLA3795960188": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18443534,
+        "precio_referencia_kg": 21106.34,
+        "precio_publicado_kg": 28120.0,
+        "diferencia_referencia_pct": 33.23
+      },
+      "MLA3800739638": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25668053,
+        "precio_referencia_kg": 12181.56,
+        "precio_publicado_kg": 14000.0,
+        "diferencia_referencia_pct": 14.93
+      },
+      "MLA3849320362": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.17909366,
+        "precio_referencia_kg": 32427.42,
+        "precio_publicado_kg": 19628.0,
+        "diferencia_referencia_pct": -39.47
+      },
+      "MLA3882153332": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25890826,
+        "precio_referencia_kg": 12181.56,
+        "precio_publicado_kg": 13200.0,
+        "diferencia_referencia_pct": 8.36
+      },
+      "MLA3927925356": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.06000953,
+        "precio_referencia_kg": 77052.26,
+        "precio_publicado_kg": 68305.0,
+        "diferencia_referencia_pct": -11.35
+      },
+      "MLA3928540322": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24004092,
+        "precio_referencia_kg": 11764.0,
+        "precio_publicado_kg": 10778.0,
+        "diferencia_referencia_pct": -8.38
+      },
+      "MLA3951379050": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.15453892,
+        "precio_referencia_kg": 21488.6,
+        "precio_publicado_kg": 22161.0,
+        "diferencia_referencia_pct": 3.13
+      },
+      "MLA3954712188": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26046455,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 26298.0,
+        "diferencia_referencia_pct": 34.5
+      },
+      "MLA3958588870": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26505231,
+        "precio_referencia_kg": 15925.07,
+        "precio_publicado_kg": 14598.0,
+        "diferencia_referencia_pct": -8.33
+      },
+      "MLA4000481502": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.05021908,
+        "precio_referencia_kg": 6500.36,
+        "precio_publicado_kg": 1399.8,
+        "diferencia_referencia_pct": -78.47
+      },
+      "MLA4010066034": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.0903123,
+        "precio_referencia_kg": 90903.46,
+        "precio_publicado_kg": 189500.0,
+        "diferencia_referencia_pct": 108.46
+      },
+      "MLA4032465064": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14466968,
+        "precio_referencia_kg": 34334.5,
+        "precio_publicado_kg": 39792.77,
+        "diferencia_referencia_pct": 15.9
+      },
+      "MLA4035329714": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.02447665,
+        "precio_referencia_kg": 24537.08,
+        "precio_publicado_kg": 21649.0,
+        "diferencia_referencia_pct": -11.77
+      },
+      "MLA4035978344": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.15591189,
+        "precio_referencia_kg": 9067.07,
+        "precio_publicado_kg": 8632.67,
+        "diferencia_referencia_pct": -4.79
+      },
+      "MLA4044144864": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18158885,
+        "precio_referencia_kg": 9764.05,
+        "precio_publicado_kg": 10661.11,
+        "diferencia_referencia_pct": 9.19
+      },
+      "MLA4046831688": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.22036532,
+        "precio_referencia_kg": 20862.93,
+        "precio_publicado_kg": 17140.0,
+        "diferencia_referencia_pct": -17.84
+      },
+      "MLA4054626466": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.02500028,
+        "precio_referencia_kg": 69082.94,
+        "precio_publicado_kg": 91000.0,
+        "diferencia_referencia_pct": 31.73
+      },
+      "MLA4080316550": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26352005,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 18974.0,
+        "diferencia_referencia_pct": -2.96
+      },
+      "MLA4087138606": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.04724996,
+        "precio_referencia_kg": 77052.26,
+        "precio_publicado_kg": 104850.0,
+        "diferencia_referencia_pct": 36.08
+      },
+      "MLA4087293478": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.03276397,
+        "precio_referencia_kg": 49133.0,
+        "precio_publicado_kg": 115150.0,
+        "diferencia_referencia_pct": 134.36
+      },
+      "MLA4100504474": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25707347,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 27800.0,
+        "diferencia_referencia_pct": 42.18
+      },
+      "MLA4116511180": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26284626,
+        "precio_referencia_kg": 19552.46,
+        "precio_publicado_kg": 24838.0,
+        "diferencia_referencia_pct": 27.03
+      },
+      "MLA4120337090": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.02613553,
+        "precio_referencia_kg": 83687.81,
+        "precio_publicado_kg": 70240.0,
+        "diferencia_referencia_pct": -16.07
+      },
+      "MLA4126812616": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.2569416,
+        "precio_referencia_kg": 34487.9,
+        "precio_publicado_kg": 36352.0,
+        "diferencia_referencia_pct": 5.41
+      },
+      "MLA4127489518": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25822637,
+        "precio_referencia_kg": 12742.45,
+        "precio_publicado_kg": 9700.0,
+        "diferencia_referencia_pct": -23.88
+      },
+      "MLA4128338156": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.16090736,
+        "precio_referencia_kg": 12584.23,
+        "precio_publicado_kg": 10620.0,
+        "diferencia_referencia_pct": -15.61
+      },
+      "MLA738292612": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.04617423,
+        "precio_referencia_kg": 58420.22,
+        "precio_publicado_kg": 54900.0,
+        "diferencia_referencia_pct": -6.03
+      },
+      "MLA738293516": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.18100393,
+        "precio_referencia_kg": 30993.36,
+        "precio_publicado_kg": 27960.0,
+        "diferencia_referencia_pct": -9.79
+      },
+      "MLA738293974": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.04617423,
+        "precio_referencia_kg": 58420.22,
+        "precio_publicado_kg": 54900.0,
+        "diferencia_referencia_pct": -6.03
+      },
+      "MLA799478063": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.15515123,
+        "precio_referencia_kg": 22554.62,
+        "precio_publicado_kg": 22330.0,
+        "diferencia_referencia_pct": -1.0
+      },
+      "MLA799479467": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.20304214,
+        "precio_referencia_kg": 21240.85,
+        "precio_publicado_kg": 24990.0,
+        "diferencia_referencia_pct": 17.65
+      },
+      "MLA823018238": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.14788913,
+        "precio_referencia_kg": 38500.45,
+        "precio_publicado_kg": 36115.0,
+        "diferencia_referencia_pct": -6.2
+      },
+      "MLA849255592": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24648138,
+        "precio_referencia_kg": 15925.07,
+        "precio_publicado_kg": 11458.0,
+        "diferencia_referencia_pct": -28.05
+      },
+      "MLA861152323": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.21415919,
+        "precio_referencia_kg": 20661.83,
+        "precio_publicado_kg": 21369.0,
+        "diferencia_referencia_pct": 3.42
+      },
+      "MLA875105868": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.15297323,
+        "precio_referencia_kg": 22554.62,
+        "precio_publicado_kg": 21666.67,
+        "diferencia_referencia_pct": -3.94
+      },
+      "MLA878653874": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26685779,
+        "precio_referencia_kg": 15760.63,
+        "precio_publicado_kg": 15538.0,
+        "diferencia_referencia_pct": -1.41
+      },
+      "MLA885963338": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26478331,
+        "precio_referencia_kg": 23773.08,
+        "precio_publicado_kg": 27068.0,
+        "diferencia_referencia_pct": 13.86
+      },
+      "MLA900491453": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26336758,
+        "precio_referencia_kg": 12054.6,
+        "precio_publicado_kg": 10778.0,
+        "diferencia_referencia_pct": -10.59
+      },
+      "MLA904656372": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.24004092,
+        "precio_referencia_kg": 11764.0,
+        "precio_publicado_kg": 10778.0,
+        "diferencia_referencia_pct": -8.38
+      },
+      "MLA904793209": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.19498015,
+        "precio_referencia_kg": 21106.34,
+        "precio_publicado_kg": 18424.0,
+        "diferencia_referencia_pct": -12.71
+      },
+      "MLA910253650": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.12452352,
+        "precio_referencia_kg": 9259.49,
+        "precio_publicado_kg": 8665.0,
+        "diferencia_referencia_pct": -6.42
+      },
+      "MLA910253755": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.11434261,
+        "precio_referencia_kg": 9251.95,
+        "precio_publicado_kg": 8665.0,
+        "diferencia_referencia_pct": -6.34
+      },
+      "MLA915174735": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.12022765,
+        "precio_referencia_kg": 9246.68,
+        "precio_publicado_kg": 8105.0,
+        "diferencia_referencia_pct": -12.35
+      },
+      "MLA918101233": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.13464529,
+        "precio_referencia_kg": 10168.54,
+        "precio_publicado_kg": 8333.33,
+        "diferencia_referencia_pct": -18.05
+      },
+      "MLA918101541": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25822637,
+        "precio_referencia_kg": 12054.6,
+        "precio_publicado_kg": 9700.0,
+        "diferencia_referencia_pct": -19.53
+      },
+      "MLA918102008": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26384133,
+        "precio_referencia_kg": 11540.33,
+        "precio_publicado_kg": 9700.0,
+        "diferencia_referencia_pct": -15.95
+      },
+      "MLA918105046": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.13686602,
+        "precio_referencia_kg": 10579.15,
+        "precio_publicado_kg": 8933.33,
+        "diferencia_referencia_pct": -15.56
+      },
+      "MLA918105102": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.26477154,
+        "precio_referencia_kg": 12181.56,
+        "precio_publicado_kg": 9900.0,
+        "diferencia_referencia_pct": -18.73
+      },
+      "MLA918645871": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25756172,
+        "precio_referencia_kg": 12771.99,
+        "precio_publicado_kg": 9600.0,
+        "diferencia_referencia_pct": -24.84
+      },
+      "MLA925206710": {
+        "estado": "evaluado",
+        "revisar": false,
+        "puntaje_anomalia": -0.25692576,
+        "precio_referencia_kg": 13508.84,
+        "precio_publicado_kg": 15328.0,
+        "diferencia_referencia_pct": 13.47
+      },
+      "MLA933969264": {
+        "estado": "evaluado",
+        "revisar": true,
+        "puntaje_anomalia": 0.01802535,
+        "precio_referencia_kg": 85990.18,
+        "precio_publicado_kg": 96100.0,
+        "diferencia_referencia_pct": 11.76
+      }
+    }
+  }
 }

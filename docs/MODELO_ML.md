@@ -66,3 +66,13 @@ Los modelos no pronostican precios futuros, no confirman disponibilidad, IVA, en
 - [Validación por grupos, scikit-learn](https://scikit-learn.org/stable/modules/cross_validation.html).
 - [Errores habituales y fuga de datos](https://scikit-learn.org/stable/common_pitfalls.html).
 - [SDK de Apify para Python](https://docs.apify.com/sdk/python/docs/quick-start).
+
+## Prueba en Apify, 23/11/2026
+
+El actor `vrPmjPvnGdcnclUDA` fue construido desde este repositorio y el run `j4iEFhMD3Bq6LQha9` terminó con éxito. Procesó las 372 publicaciones incluidas: 335 evaluadas, 37 sin evaluar y 17 señales auxiliares. La consola mostró unos 4 s de corrida total y un costo redondeado de USD 0,002. La inferencia midió 0,0846 s, con 0,07 segundos de CPU y sin GPU.
+
+Se asignaron 512 MB. La consola observó 93,2 MB de memoria máxima; el RSS informado por el proceso fue 119,36 MiB. Son mediciones de origen y definición distintos, no valores intercambiables. El costo se muestra con tres decimales; no se presenta como el campo exacto `usageTotalUsd`. No se ejecutó un lote real de 1000 publicaciones ni se afirma un costo medido por 1000.
+
+Ver [registro sin credenciales](evidencias/apify-inferencia-20261123.json). El actor permanece privado en la cuenta del equipo; su fuente completo, modelo y contratos se entregan en GitHub.
+
+Como referencia orientativa para la consigna, prorratear USD 0,002 entre 372 publicaciones recibidas da aproximadamente **USD 0,0054 por 1000 publicaciones** con la misma proporción de evaluables. Es una extrapolación desde un valor redondeado, no una medición de 1000 casos ni una tarifa: arranque y almacenamiento pueden impedir proporcionalidad.

@@ -28,6 +28,11 @@
 | `n8n/flujo_publicador_plantilla.json` | Subflujo importable de subida y comprobación de archivos. |
 | `n8n/generar_*.py` | Construcción de los flujos portables a partir de código legible. |
 | `n8n/python/tacctico_etl/` | Limpieza, métricas, adaptación al contrato y almacenamiento. |
+| `n8n/python/tacctico_etl/ml_model.py` | Validación e inferencia sobre los árboles entrenados exportados a JSON; verifica la huella del modelo. |
+| `scripts/train_ml.py` | Separación por grupos, selección de modelos dentro del entrenamiento, evaluación reservada y exportación. |
+| `app/ml_view.py` | Señales del mismo lote y referencia de precios, sin entrenar en la web ni alterar las compras. |
+| `actor_apify/` | Actor propio de inferencia, contratos y Dockerfile. |
+| `colabs/` | Notebooks portables de análisis y entrenamiento con el CSV público. |
 | `data_public/actual/` | Resultados finales autorizados; no es código de extracción. |
 | `apify/README.md` | Autoría del actor externo y referencia que falta completar. |
 | `make/README.md` | Antecedente del prototipo reemplazado por n8n. |

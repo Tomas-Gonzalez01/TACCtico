@@ -5,17 +5,19 @@
 1. [Inicio de Streamlit](../app/streamlit_app.py): configuración, encabezado, navegación y selección del lote.
 2. [Contrato de datos](../app/purchase_data.py): lectura del CSV, publicaciones y presentaciones.
 3. [Motor de comparación](../app/purchase_engine.py): cantidad necesaria, redondeo a presentaciones completas, sobrante y selección de ofertas.
-4. [Presupuesto](../app/budget.py): importes decimales, IVA, envío y cargos pendientes.
-5. [Interacciones de la lista](../app/budget_view.py) y [PDF](../app/budget_pdf.py): selección de productos y generación del documento.
-6. [Lote y actualización](../app/data_release.py): descarga, verificación de integridad y respaldo local.
-7. [Limpieza de n8n](../n8n/python/tacctico_etl/pipeline.py): validación del CSV crudo, selección de Kiara y contrato de salida.
+4. [Plan por presupuesto](../app/recipe_plan.py): cuántos lotes de una receta alcanzan con un presupuesto, eligiendo por insumo la presentación más barata que cubre los gramos necesarios.
+5. [Presupuesto](../app/budget.py): importes decimales, IVA, envío y cargos pendientes.
+6. [Interacciones de la lista](../app/budget_view.py) y [PDF](../app/budget_pdf.py): selección de productos y generación del documento.
+7. [Lote y actualización](../app/data_release.py): descarga, verificación de integridad y respaldo local.
+8. [Limpieza de n8n](../n8n/python/tacctico_etl/pipeline.py): validación del CSV crudo, selección de Kiara y contrato de salida.
 
 ## Responsabilidades
 
 | Carpeta o archivo | Responsabilidad |
 | --- | --- |
 | `app/catalog_view.py` | Presentación de tabla y tarjetas; conserva precios numéricos para ordenar. |
-| `app/purchase_view.py` | Controles para comparar por cantidad o proveedor. |
+| `app/purchase_view.py` | Controles para comparar por cantidad, proveedor o presupuesto de una receta. |
+| `app/recipe_plan.py` | Reglas del plan por presupuesto: ofertas comparables, lotes que alcanzan, sobrante y referencia de la oferta mediana. Sin dependencia de Streamlit. |
 | `app/release_view.py` | Un mismo lote para catálogo, presupuesto y dashboard. |
 | `app/offer_picker.js` | Botón y doble clic para agregar una oferta a la lista. |
 | `app/assets/navigation.js` | Fundido al navegar; manejo de cambios rápidos y teclado. |

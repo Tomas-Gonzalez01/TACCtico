@@ -39,6 +39,26 @@ El encabezado verde y el logo permanecen visibles también en **Dashboard**. Las
 
 Para cantidades usá formato argentino: `1` = un kilo; `1.000` = mil; `1,5` = uno y medio. Las presentaciones sin confirmar no se usan en comparaciones de cantidades. Los precios atípicos quedan fuera de las recomendaciones automáticas. El envío anunciado en la captura no garantiza el costo de envío de un pedido actual.
 
+## Planificar una receta por presupuesto
+
+En **Arma tu presupuesto → ¿Cómo querés calcular? → Por presupuesto**, elegí **Pan**, **Pizza** o **Budín** e ingresá cuánto podés gastar en mercadería. **Ajustar receta** permite cambiar los gramos de cada insumo por lote y el máximo de lotes a planificar (20 inicialmente). Un lote es una preparación con esas cantidades; los ejemplos no son recetas completas validadas. Revisá la etiqueta de la premezcla y tu receta para determinar si requiere otros ingredientes.
+
+El plan elige una publicación por insumo y compra presentaciones completas de hasta 5 kg. Excluye publicaciones sin peso confirmado, en revisión o con precio atípico. Muestra lotes cubiertos, importe de mercadería, costo de compra por lote, dinero restante y sobrantes de producto. No mezcla varias publicaciones del mismo insumo para optimizar una receta. La búsqueda usa costos decimales y evita recorrer uno a uno todos los lotes del límite.
+
+Ejemplos verificados con la captura del **14/11/2026**, usando las cantidades iniciales:
+
+| Receta | Presupuesto | Lotes | Mercadería | Dinero restante |
+| --- | --- | --- | --- | --- |
+| Pan | ARS 40.000,00 | 9 | ARS 37.285,00 | ARS 2.715,00 |
+| Pizza | ARS 20.000,00 | 9 | ARS 18.815,00 | ARS 1.185,00 |
+| Budín | ARS 20.000,00 | 6 | ARS 19.649,00 | ARS 351,00 |
+
+Pan usa 500 g de premezcla y 10 g de levadura por lote; Pizza, 250 g de premezcla; Budín, 250 g de premezcla y 50 g de chips de chocolate. Con ARS 8.000 para Pan, la app avisa que no alcanza y muestra la compra mínima de un lote por ARS 10.495,00, sin permitir agregar ese plan. Con ARS 40.000, la referencia de comprar la oferta central por precio/kg de cada insumo cubriría 4 lotes de Pan. Es una referencia estadística; no es una compra ni un ahorro observado.
+
+**Agregar esta compra a mi lista** incorpora las publicaciones y cantidades al presupuesto y al PDF. Conserva las demás compras y actualiza la cantidad si una publicación ya estaba agregada. El monto ingresado corresponde al plan de esa receta, no al total de una lista que ya tenía otros productos.
+
+Los cálculos cubren solo los insumos listados: no incluyen otros ingredientes ni agregan IVA o envío sin confirmar. Esos cargos se revisan en la lista y pueden cambiar el importe final. El máximo de lotes es un límite de planificación editable; el dataset no contiene vencimientos y el plan no estima conservación, stock ni disponibilidad actual.
+
 ## Ejecutar en tu computadora
 
 Desde la raíz del repositorio, con Python 3.12:

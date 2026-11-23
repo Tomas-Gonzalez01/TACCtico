@@ -5,9 +5,11 @@ from decimal import Decimal, InvalidOperation
 import streamlit as st
 
 from budget import ars, quantity_label, quantity_number
-from budget_view import choose_offer, quantity_field, show_budget
+from budget_view import add_to_cart, choose_offer, quantity_field, show_budget
+from catalog_view import ingredient_label
 from purchase_data import load_publications
 from purchase_engine import best_purchase, candidate_quotes, supplier_options
+from recipe_plan import DEFAULT_MAX_BATCHES, RECIPES, plan_for_budget, typical_batches
 
 
 UNITS = {"kg": "kg", "unidad": "unidades"}
@@ -277,9 +279,98 @@ def select_presentation(products, insumos):
     return key, [item for _, item in products[key]]
 
 
+def recipe_settings(recipe_name):
+    """Gramos por lote y tope de lotes; los valores iniciales son provisorios."""
+    with st.expander("Ajustar receta"):
+        items = tuple(
+            replace(
+                item,
+                grams=Decimal(
+                    str(
+                        st.number_input(
+                            f"{ingredient_label(item.insumo)} por lote (g)",
+                            min_value=1.0,
+                            value=float(item.grams),
+                            step=1.0,
+                            format="%g",
+                            key=f"receta_{list(RECIPES).index(recipe_name)}_{item.insumo}",
+                        )
+                    )
+                ),
+            )
+            for item in RECIPES[recipe_name]
+        )
+        max_batches = st.number_input(
+            "Máximo de lotes a planificar",
+            min_value=1,
+            value=DEFAULT_MAX_BATCHES,
+            step=1,
+            key="receta_tope_lotes",
+        )
+        st.caption(
+            "Un lote usa las cantidades indicadas arriba. Son ejemplos editables: cargá los de tu receta. "
+            "El límite de lotes es una decisión de planificación; no calcula vencimientos."
+        )
+    return items, int(max_batches)
+
+
+def show_recipe_plan(products):
+    publications = [item for group in products.values() for _, item in group]
+    recipe_name = st.selectbox("Receta", list(RECIPES))
+    budget = st.number_input(
+        "Presupuesto para tu receta (ARS)", min_value=0.0, value=None, step=1000.0, key="presupuesto_receta"
+    )
+    items, max_batches = recipe_settings(recipe_name)
+    if budget is None:
+        st.info("Ingresá cuánto querés gastar en mercadería para ver cuántos lotes alcanzan.")
+        return
+    amount = Decimal(str(budget))
+    st.caption(
+        "El monto cubre solo la mercadería de los insumos listados: una publicación por insumo "
+        "y envases de hasta 5 kg. Otros ingredientes quedan fuera; IVA y envío requieren confirmación."
+    )
+    plan = plan_for_budget(publications, items, amount, max_batches=max_batches)
+    if plan is None:
+        st.info("Faltan ofertas comparables de algún insumo de la receta para calcular la compra.")
+        return
+    if plan.batches == 0:
+        st.info(
+            f"Con {ars(amount)} no alcanza para un lote. La compra mínima de un lote cuesta {ars(plan.spend)}."
+        )
+        show_quotes(plan.quotes, "kg")
+        return
+
+    with st.container(border=True, key="plan_receta"):
+        st.metric("Lotes que alcanzan", plan.batches)
+        st.caption(
+            f"Mercadería estimada {ars(plan.spend)} · {ars(plan.cost_per_batch)} por lote"
+            f" · Te sobran {ars(plan.remaining)}"
+        )
+    typical = typical_batches(publications, items, amount, max_batches=max_batches)
+    if typical is not None:
+        st.caption(
+            f"Referencia: comprando la oferta mediana de cada insumo, el mismo presupuesto alcanza "
+            f"para {typical} {'lote' if typical == 1 else 'lotes'}."
+        )
+    if plan.batches == max_batches:
+        st.caption("El plan llegó al máximo de lotes elegido; podés cambiarlo en «Ajustar receta».")
+    if st.button("Agregar esta compra a mi lista", key="agregar_plan_receta"):
+        for quote in plan.quotes:
+            add_to_cart(quote)
+    st.caption(
+        "El resto de tu lista se conserva. Si una publicación ya está agregada, se actualiza su cantidad."
+    )
+    show_quotes(plan.quotes, "kg")
+
+
 def show_comparison(products):
-    mode_column, unit_column = st.columns(2)
-    mode = mode_column.radio("¿Cómo querés calcular?", ["Por cantidad", "Por proveedor"], horizontal=True)
+    mode_column, unit_column = st.columns([3, 2])
+    mode = mode_column.radio(
+        "¿Cómo querés calcular?", ["Por cantidad", "Por proveedor", "Por presupuesto"], horizontal=True
+    )
+    if mode == "Por presupuesto":
+        show_recipe_plan(products)
+        return
     unit = unit_column.radio(
         "Comparar por",
         ["kg", "unidad"],

@@ -1,0 +1,16 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Resultados de inferencia",
+  "properties": {
+    "resultados": {
+      "type": "string",
+      "title": "Predicciones y mediciones",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    },
+    "dataset": {
+      "type": "string",
+      "title": "Publicaciones evaluadas",
+      "template": "{{links.apiDefaultDatasetUrl}}/items"
+    }
+  }
+}

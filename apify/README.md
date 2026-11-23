@@ -18,6 +18,8 @@ La prueba prevista con *Shopify & WooCommerce Products Scraper – Any Store* fu
 
 ## Código propio que sí se entrega
 
+Desde el 23/11 también se entrega el [actor propio de inferencia ML](../actor_apify/README.md), con fuente, Dockerfile, esquemas y modelo entrenado. Ese código cubre la inferencia del equipo; **no se presenta como el scraper histórico de Kiara**. El nombre y procedencia exactos de aquel scraper siguen pendientes de confirmar.
+
 La limpieza y el análisis se ejecutan en n8n con estos archivos del equipo:
 
 - [Entrada del proceso](../n8n/python/tacctico_etl/__init__.py).

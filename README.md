@@ -30,6 +30,10 @@ El encabezado verde y el logo permanecen visibles también en **Dashboard**. Las
 
 ## Probarlo
 
+El catálogo permite desplegar **Ofertas con precio para revisar**. En **Arma tu presupuesto → Detalle e IVA**, aparece la referencia estimada por kg. Son señales del modelo entrenado con la captura real, sin modificar los precios ni descartar compras. El dashboard de Kiara se conserva.
+
+El [informe de ML](docs/MODELO_ML.md) incluye entrenamiento, prueba reservada, comparación de modelos y consumo. También se entregan el [actor propio de inferencia](actor_apify/README.md), modelos versionados y notebooks de análisis y entrenamiento en `colabs/`. No se necesita entrenar ni introducir claves para usar la web.
+
 1. En **Catálogo**, comprobá las 372 publicaciones. Buscá por título o insumo y escribí un mínimo o máximo de precio. Un extremo vacío no impone límite. Abrí la publicación original para revisar su detalle.
 2. En **Arma tu presupuesto → Por cantidad → Peso (kg o g)**, elegí **Polvo hornear**. En **Acotar ofertas → Publicaciones para comparar**, seleccioná `MLA3573151270`, `MLA1824200300` y `MLA3325209494`.
 3. En gramos, con `250` se recomienda la presentación de **ARS 3.509,00**. Con `1.000` se recomienda la de **ARS 6.639,00** para cubrir 1 kg. Los importes corresponden a mercadería de la captura.

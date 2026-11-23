@@ -1,3 +1,4 @@
 -r requirements.txt
 -r n8n/requirements-python.txt
+-r requirements-ml.txt
 ruff==0.17.6

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "modelo_id": "tacctico-precios-1-026c5bce9355",
+  "sha256_modelo": "026c5bce9355bb4c5366b8533075024056c258b3708849ef06cc0ce4933d153e",
+  "sha256_joblib": "de32a1c97de869c5b4a5db86211cc30e50e01091dbe0cd3a0f9531b8119f9108",
+  "dataset_sha256": "0d2d8a1a155f86b8bedfe91a52b228675bfd6be511be28bf28fadd3ec6db1c10",
+  "captura": [
+    "2026-11-14"
+  ],
+  "filas_entrenamiento_final": 335,
+  "evaluacion_resumen": {
+    "seleccionado": "random_forest",
+    "validacion_solo_entrenamiento": {
+      "ridge": {
+        "mae_log_cv": 0.32629924024399803
+      },
+      "random_forest": {
+        "mae_log_cv": 0.27820716517855965
+      }
+    },
+    "prueba_reservada": {
+      "mae_ars_por_kg": 7465.528954503614,
+      "mediana_error_porcentual": 19.842376635411053,
+      "r2": 0.5271643878144325
+    },
+    "baseline_mediana_por_insumo": {
+      "mae_ars_por_kg": 11824.983830367168,
+      "mediana_error_porcentual": 23.277161254966437,
+      "r2": -0.16617960441240687
+    },
+    "mejora_mae_vs_baseline_pct": 36.86647642314951
+  },
+  "versiones": {
+    "sklearn": "1.7.2",
+    "numpy": "2.3.3",
+    "python": "3.12.0"
+  }
+}

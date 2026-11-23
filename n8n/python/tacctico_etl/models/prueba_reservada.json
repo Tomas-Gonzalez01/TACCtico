@@ -1,0 +1,387 @@
+[
+  {
+    "id_publicacion": "MLA1105960623",
+    "insumo": "premezcla_budin",
+    "real_kg": 19941.904761904763,
+    "estimado_kg": 13096.086776589877,
+    "baseline_kg": 15802.0
+  },
+  {
+    "id_publicacion": "MLA1130088687",
+    "insumo": "levadura",
+    "real_kg": 21580.0,
+    "estimado_kg": 24412.04680849945,
+    "baseline_kg": 28562.0
+  },
+  {
+    "id_publicacion": "MLA1379402303",
+    "insumo": "premezcla_pan",
+    "real_kg": 11108.888888888889,
+    "estimado_kg": 14894.125581159997,
+    "baseline_kg": 10496.666666666666
+  },
+  {
+    "id_publicacion": "MLA1381239690",
+    "insumo": "premezcla_pizza",
+    "real_kg": 11108.888888888889,
+    "estimado_kg": 13359.60389409816,
+    "baseline_kg": 11200.0
+  },
+  {
+    "id_publicacion": "MLA1390410535",
+    "insumo": "premezcla_pizza",
+    "real_kg": 66425.0,
+    "estimado_kg": 23874.69888280573,
+    "baseline_kg": 11200.0
+  },
+  {
+    "id_publicacion": "MLA1397900737",
+    "insumo": "polvo_hornear",
+    "real_kg": 39900.0,
+    "estimado_kg": 43983.72670562197,
+    "baseline_kg": 15979.5
+  },
+  {
+    "id_publicacion": "MLA1406016656",
+    "insumo": "premezcla_pizza",
+    "real_kg": 14028.0,
+    "estimado_kg": 12809.7697307184,
+    "baseline_kg": 11200.0
+  },
+  {
+    "id_publicacion": "MLA1411433029",
+    "insumo": "premezcla_pizza",
+    "real_kg": 13781.75,
+    "estimado_kg": 4793.97017448703,
+    "baseline_kg": 11200.0
+  },
+  {
+    "id_publicacion": "MLA1456019771",
+    "insumo": "premezcla_pan",
+    "real_kg": 9873.333333333334,
+    "estimado_kg": 10585.332101130838,
+    "baseline_kg": 10496.666666666666
+  },
+  {
+    "id_publicacion": "MLA1473210392",
+    "insumo": "premezcla_pizza",
+    "real_kg": 14816.666666666666,
+    "estimado_kg": 11558.278221343104,
+    "baseline_kg": 11200.0
+  },
+  {
+    "id_publicacion": "MLA1486399269",
+    "insumo": "chips_chocolate",
+    "real_kg": 15900.0,
+    "estimado_kg": 19709.83181419492,
+    "baseline_kg": 21666.666666666668
+  },
+  {
+    "id_publicacion": "MLA1496961759",
+    "insumo": "polvo_hornear",
+    "real_kg": 32700.0,
+    "estimado_kg": 49215.01863772678,
+    "baseline_kg": 15979.5
+  },
+  {
+    "id_publicacion": "MLA1504148339",
+    "insumo": "polvo_hornear",
+    "real_kg": 17999.0,
+    "estimado_kg": 12309.828656897173,
+    "baseline_kg": 15979.5
+  },
+  {
+    "id_publicacion": "MLA1664664202",
+    "insumo": "chips_chocolate",
+    "real_kg": 20360.0,
+    "estimado_kg": 19709.83181419492,
+    "baseline_kg": 21666.666666666668
+  },
+  {
+    "id_publicacion": "MLA1692036855",
+    "insumo": "premezcla_pan",
+    "real_kg": 5861.666666666667,
+    "estimado_kg": 5782.727345904592,
+    "baseline_kg": 10496.666666666666
+  },
+  {
+    "id_publicacion": "MLA1779919574",
+    "insumo": "premezcla_budin",
+    "real_kg": 8632.666666666666,
+    "estimado_kg": 9783.911414149792,
+    "baseline_kg": 15802.0
+  },
+  {
+    "id_publicacion": "MLA1793721731",
+    "insumo": "polvo_hornear",
+    "real_kg": 38408.28924162257,
+    "estimado_kg": 30781.712282668967,
+    "baseline_kg": 15979.5
+  },
+  {
+    "id_publicacion": "MLA1859554050",
+    "insumo": "premezcla_budin",
+    "real_kg": 19000.0,
+    "estimado_kg": 15993.971391466692,
+    "baseline_kg": 15802.0
+  },
+  {
+    "id_publicacion": "MLA1910602195",
+    "insumo": "premezcla_budin",
+    "real_kg": 13000.0,
+    "estimado_kg": 16467.58586674692,
+    "baseline_kg": 15802.0
+  },
+  {
+    "id_publicacion": "MLA1976437402",
+    "insumo": "levadura",
+    "real_kg": 42000.0,
+    "estimado_kg": 32243.071554347127,
+    "baseline_kg": 28562.0
+  },
+  {
+    "id_publicacion": "MLA1982357027",
+    "insumo": "premezcla_pizza",
+    "real_kg": 16666.666666666668,
+    "estimado_kg": 13359.60389409816,
+    "baseline_kg": 11200.0
+  },
+  {
+    "id_publicacion": "MLA1992397027",
+    "insumo": "premezcla_budin",
+    "real_kg": 12312.0,
+    "estimado_kg": 8069.228504502072,
+    "baseline_kg": 15802.0
+  },
+  {
+    "id_publicacion": "MLA1993067598",
+    "insumo": "polvo_hornear",
+    "real_kg": 13333.333333333334,
+    "estimado_kg": 12777.616542790058,
+    "baseline_kg": 15979.5
+  },
+  {
+    "id_publicacion": "MLA1995635955",
+    "insumo": "premezcla_pan",
+    "real_kg": 17035.555555555555,
+    "estimado_kg": 11316.257695271728,
+    "baseline_kg": 10496.666666666666
+  },
+  {
+    "id_publicacion": "MLA2000593902",
+    "insumo": "premezcla_universal",
+    "real_kg": 12026.666666666666,
+    "estimado_kg": 12458.730782343768,
+    "baseline_kg": 10464.444444444445
+  },
+  {
+    "id_publicacion": "MLA2017618934",
+    "insumo": "levadura",
+    "real_kg": 50000.0,
+    "estimado_kg": 26386.337687486888,
+    "baseline_kg": 28562.0
+  },
+  {
+    "id_publicacion": "MLA2049102382",
+    "insumo": "premezcla_universal",
+    "real_kg": 13536.666666666666,
+    "estimado_kg": 12309.482369960417,
+    "baseline_kg": 10464.444444444445
+  },
+  {
+    "id_publicacion": "MLA2051365867",
+    "insumo": "premezcla_pan",
+    "real_kg": 81357.77777777778,
+    "estimado_kg": 14894.125581159997,
+    "baseline_kg": 10496.666666666666
+  },
+  {
+    "id_publicacion": "MLA2051836235",
+    "insumo": "premezcla_pan",
+    "real_kg": 14273.333333333334,
+    "estimado_kg": 11316.257695271728,
+    "baseline_kg": 10496.666666666666
+  },
+  {
+    "id_publicacion": "MLA2058544276",
+    "insumo": "chips_chocolate",
+    "real_kg": 21216.0,
+    "estimado_kg": 18187.948272436995,
+    "baseline_kg": 21666.666666666668
+  },
+  {
+    "id_publicacion": "MLA2145276281",
+    "insumo": "premezcla_pan",
+    "real_kg": 9664.444444444445,
+    "estimado_kg": 11316.257695271728,
+    "baseline_kg": 10496.666666666666
+  },
+  {
+    "id_publicacion": "MLA2152032981",
+    "insumo": "premezcla_pizza",
+    "real_kg": 16294.0,
+    "estimado_kg": 12829.051252012698,
+    "baseline_kg": 11200.0
+  },
+  {
+    "id_publicacion": "MLA2220876810",
+    "insumo": "premezcla_pizza",
+    "real_kg": 14598.0,
+    "estimado_kg": 13548.117886500824,
+    "baseline_kg": 11200.0
+  },
+  {
+    "id_publicacion": "MLA2442715374",
+    "insumo": "polvo_hornear",
+    "real_kg": 19370.0,
+    "estimado_kg": 13511.488749720458,
+    "baseline_kg": 15979.5
+  },
+  {
+    "id_publicacion": "MLA2578656956",
+    "insumo": "premezcla_budin",
+    "real_kg": 15462.222222222223,
+    "estimado_kg": 16319.959046168997,
+    "baseline_kg": 15802.0
+  },
+  {
+    "id_publicacion": "MLA2582808634",
+    "insumo": "chips_chocolate",
+    "real_kg": 17820.0,
+    "estimado_kg": 19753.173572859676,
+    "baseline_kg": 21666.666666666668
+  },
+  {
+    "id_publicacion": "MLA2604620652",
+    "insumo": "premezcla_pan",
+    "real_kg": 14008.888888888889,
+    "estimado_kg": 12478.141016517535,
+    "baseline_kg": 10496.666666666666
+  },
+  {
+    "id_publicacion": "MLA3238164658",
+    "insumo": "polvo_hornear",
+    "real_kg": 130660.0,
+    "estimado_kg": 73638.26738044582,
+    "baseline_kg": 15979.5
+  },
+  {
+    "id_publicacion": "MLA3250901572",
+    "insumo": "premezcla_pizza",
+    "real_kg": 13709.0,
+    "estimado_kg": 11981.348270437935,
+    "baseline_kg": 11200.0
+  },
+  {
+    "id_publicacion": "MLA3250908884",
+    "insumo": "premezcla_pan",
+    "real_kg": 14179.166666666666,
+    "estimado_kg": 12213.439719212547,
+    "baseline_kg": 10496.666666666666
+  },
+  {
+    "id_publicacion": "MLA3250919442",
+    "insumo": "premezcla_pan",
+    "real_kg": 16304.166666666666,
+    "estimado_kg": 14155.84622551623,
+    "baseline_kg": 10496.666666666666
+  },
+  {
+    "id_publicacion": "MLA3383047660",
+    "insumo": "polvo_hornear",
+    "real_kg": 16000.0,
+    "estimado_kg": 12309.828656897173,
+    "baseline_kg": 15979.5
+  },
+  {
+    "id_publicacion": "MLA3467978322",
+    "insumo": "chips_chocolate",
+    "real_kg": 20220.0,
+    "estimado_kg": 19709.83181419492,
+    "baseline_kg": 21666.666666666668
+  },
+  {
+    "id_publicacion": "MLA3564614892",
+    "insumo": "premezcla_pizza",
+    "real_kg": 63890.0,
+    "estimado_kg": 66224.95570149853,
+    "baseline_kg": 11200.0
+  },
+  {
+    "id_publicacion": "MLA3564635268",
+    "insumo": "premezcla_budin",
+    "real_kg": 16275.555555555555,
+    "estimado_kg": 16319.959046168997,
+    "baseline_kg": 15802.0
+  },
+  {
+    "id_publicacion": "MLA3564641210",
+    "insumo": "premezcla_pizza",
+    "real_kg": 66425.0,
+    "estimado_kg": 23874.69888280573,
+    "baseline_kg": 11200.0
+  },
+  {
+    "id_publicacion": "MLA3704736146",
+    "insumo": "premezcla_pan",
+    "real_kg": 10553.333333333334,
+    "estimado_kg": 11316.257695271728,
+    "baseline_kg": 10496.666666666666
+  },
+  {
+    "id_publicacion": "MLA4116511180",
+    "insumo": "chips_chocolate",
+    "real_kg": 24838.0,
+    "estimado_kg": 19709.83181419492,
+    "baseline_kg": 21666.666666666668
+  },
+  {
+    "id_publicacion": "MLA738292612",
+    "insumo": "chips_chocolate",
+    "real_kg": 54900.0,
+    "estimado_kg": 65696.56496502181,
+    "baseline_kg": 21666.666666666668
+  },
+  {
+    "id_publicacion": "MLA738293974",
+    "insumo": "chips_chocolate",
+    "real_kg": 54900.0,
+    "estimado_kg": 65696.56496502181,
+    "baseline_kg": 21666.666666666668
+  },
+  {
+    "id_publicacion": "MLA799478063",
+    "insumo": "chips_chocolate",
+    "real_kg": 22330.0,
+    "estimado_kg": 22199.133567289602,
+    "baseline_kg": 21666.666666666668
+  },
+  {
+    "id_publicacion": "MLA823018238",
+    "insumo": "polvo_hornear",
+    "real_kg": 36115.0,
+    "estimado_kg": 43983.72670562197,
+    "baseline_kg": 15979.5
+  },
+  {
+    "id_publicacion": "MLA918101233",
+    "insumo": "premezcla_pan",
+    "real_kg": 8333.333333333334,
+    "estimado_kg": 10585.332101130838,
+    "baseline_kg": 10496.666666666666
+  },
+  {
+    "id_publicacion": "MLA918102008",
+    "insumo": "premezcla_pan",
+    "real_kg": 9700.0,
+    "estimado_kg": 11771.361156815492,
+    "baseline_kg": 10496.666666666666
+  },
+  {
+    "id_publicacion": "MLA918105102",
+    "insumo": "premezcla_universal",
+    "real_kg": 9900.0,
+    "estimado_kg": 12534.396992239768,
+    "baseline_kg": 10464.444444444445
+  }
+]

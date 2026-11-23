@@ -1,0 +1,18 @@
+{
+  "modelo_id": "tacctico-precios-1-026c5bce9355",
+  "fecha": "2026-11-23",
+  "entorno": "Windows local; no es una corrida de Apify",
+  "publicaciones": 372,
+  "evaluadas": 335,
+  "repeticiones_calientes": 20,
+  "segundos_carga_e_inferencia": 0.06805649999296293,
+  "mediana_segundos_inferencia": 0.045139850000850856,
+  "p95_segundos_inferencia": 0.04650050000054762,
+  "cpu_segundos_20_repeticiones": 0.890625,
+  "rss_maximo_observado_mib": 83.3359375,
+  "gpu": "No utilizada",
+  "python": "3.12.0",
+  "cpu": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+  "costo_apify_real_usd": null,
+  "nota": "RSS observado entre corridas, no pico garantizado. Costo local de equipo y electricidad no cuantificado."
+}

@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "fecha": "2026-11-23",
+  "semilla": 42,
+  "dataset_sha256": "0d2d8a1a155f86b8bedfe91a52b228675bfd6be511be28bf28fadd3ec6db1c10",
+  "filas_catalogo": 372,
+  "filas_elegibles": 335,
+  "excluidas_por_validacion": 37,
+  "particion": {
+    "entrenamiento": 280,
+    "prueba_reservada": 55,
+    "grupos_entrenamiento": 192,
+    "grupos_prueba": 49,
+    "grupos_compartidos": 0,
+    "regla": "Marca + RNPA/ficha; si faltan, título normalizado.",
+    "ids_prueba": [
+      "MLA1105960623",
+      "MLA1130088687",
+      "MLA1379402303",
+      "MLA1381239690",
+      "MLA1390410535",
+      "MLA1397900737",
+      "MLA1406016656",
+      "MLA1411433029",
+      "MLA1456019771",
+      "MLA1473210392",
+      "MLA1486399269",
+      "MLA1496961759",
+      "MLA1504148339",
+      "MLA1664664202",
+      "MLA1692036855",
+      "MLA1779919574",
+      "MLA1793721731",
+      "MLA1859554050",
+      "MLA1910602195",
+      "MLA1976437402",
+      "MLA1982357027",
+      "MLA1992397027",
+      "MLA1993067598",
+      "MLA1995635955",
+      "MLA2000593902",
+      "MLA2017618934",
+      "MLA2049102382",
+      "MLA2051365867",
+      "MLA2051836235",
+      "MLA2058544276",
+      "MLA2145276281",
+      "MLA2152032981",
+      "MLA2220876810",
+      "MLA2442715374",
+      "MLA2578656956",
+      "MLA2582808634",
+      "MLA2604620652",
+      "MLA3238164658",
+      "MLA3250901572",
+      "MLA3250908884",
+      "MLA3250919442",
+      "MLA3383047660",
+      "MLA3467978322",
+      "MLA3564614892",
+      "MLA3564635268",
+      "MLA3564641210",
+      "MLA3704736146",
+      "MLA4116511180",
+      "MLA738292612",
+      "MLA738293974",
+      "MLA799478063",
+      "MLA823018238",
+      "MLA918101233",
+      "MLA918102008",
+      "MLA918105102"
+    ]
+  },
+  "referencia_precio": {
+    "seleccionado": "random_forest",
+    "validacion_solo_entrenamiento": {
+      "ridge": {
+        "mae_log_cv": 0.32629924024399803
+      },
+      "random_forest": {
+        "mae_log_cv": 0.27820716517855965
+      }
+    },
+    "prueba_reservada": {
+      "mae_ars_por_kg": 7465.528954503614,
+      "mediana_error_porcentual": 19.842376635411053,
+      "r2": 0.5271643878144325
+    },
+    "baseline_mediana_por_insumo": {
+      "mae_ars_por_kg": 11824.983830367168,
+      "mediana_error_porcentual": 23.277161254966437,
+      "r2": -0.16617960441240687
+    },
+    "mejora_mae_vs_baseline_pct": 36.86647642314951
+  },
+  "anomalias": {
+    "algoritmo": "IsolationForest",
+    "contaminacion_operativa": 0.05,
+    "alertas_en_prueba_real": 4,
+    "casos_reales_prueba": 55,
+    "sensibilidad_perturbaciones_controladas": 0.39090909090909093,
+    "casos_perturbados": 110,
+    "factores_precio_prueba": [
+      0.05,
+      20
+    ],
+    "accuracy_real": null,
+    "precision_real": null,
+    "limite": "Sin etiquetas humanas no se informa accuracy ni precisión. La prueba perturbada es de robustez, no exactitud comercial."
+  },
+  "captura": [
+    "2026-11-14"
+  ],
+  "versiones": {
+    "sklearn": "1.7.2",
+    "numpy": "2.3.3",
+    "python": "3.12.0"
+  },
+  "limitaciones": [
+    "Una sola fecha; no pronostica precios futuros.",
+    "No confirma stock, IVA, envío ni condición sin TACC.",
+    "Una alerta puede corresponder a una oferta legítima.",
+    "Los parámetros se seleccionan con CV interna; la prueba reservada se usa una sola vez."
+  ],
+  "entrenamiento_segundos": 1.094003900012467
+}

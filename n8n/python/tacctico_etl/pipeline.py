@@ -17,10 +17,11 @@ from . import kiara_etl as k
 from .app_adapter import FIELDS, UTIL_FIELDS, DETAIL_FIELDS, SPEC_FIELDS, preparar_csv
 from .analytics import analizar, paquete_publicable
 
-VERSION = "kiara-etl-1-tacctico-3-roi"
+VERSION = "kiara-etl-1-tacctico-4-ml"
 RULES_SHA = hashlib.sha256(b"".join(
     (Path(__file__).parent / name).read_bytes()
-    for name in ("kiara_etl.py", "app_adapter.py", "pipeline.py", "analytics.py", "templates/dashboard_kiara.html")
+    for name in ("kiara_etl.py", "app_adapter.py", "pipeline.py", "analytics.py", "ml_model.py",
+                 "models/metadata.json", "models/precios.json", "templates/dashboard_kiara.html")
 )).hexdigest()
 OPTIONAL = ["precioAnterior", "precioDiscount", "cantidadVendida", "Vendedor",
             "productoMarca", "reputacionVendedor", "estadoVendedorPotente",
@@ -177,6 +178,11 @@ def procesar(rows):
         "entrada_normalizada.csv": csv_text(raw, sorted(set().union(*(r.keys() for r in raw)))),
     }
     files.update(analizar(util, summary))
+    # El CSV y el HTML de Kiara se conservan; las señales se adjuntan al mismo lote.
+    from .ml_model import infer_rows
+    metrics = json.loads(files["metricas.json"])
+    metrics["ml"] = infer_rows(app_rows)
+    files["metricas.json"] = json.dumps(metrics, ensure_ascii=False, allow_nan=False, indent=2) + "\n"
     result = {"resumen": summary, "archivos": files}
     files["paquete.zip"] = paquete_publicable(result)
     return result

@@ -12,4 +12,4 @@ dependencies = ["pandas==2.3.3", "numpy==2.3.3"]
 include = ["tacctico_etl*"]
 
 [tool.setuptools.package-data]
-tacctico_etl = ["templates/*.html", "templates/*.json"]
+tacctico_etl = ["templates/*.html", "templates/*.json", "models/*.json"]

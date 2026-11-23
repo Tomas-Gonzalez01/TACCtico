@@ -1,0 +1,20 @@
+{
+  "title": "Inferencia TACCtico",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "usar_dataset_incluido": {
+      "title": "Usar la captura real incluida",
+      "type": "boolean",
+      "description": "Procesa las 372 publicaciones autorizadas del equipo. No realiza una captura nueva.",
+      "default": true
+    },
+    "publicaciones": {
+      "title": "Publicaciones del CSV validado",
+      "type": "array",
+      "description": "Entre 1 y 2000 objetos con id_publicacion, insumo, moneda, precio_publicado, gramos_totales y unidades. Una presentación en revisión queda sin evaluar.",
+      "editor": "json",
+      "items": {"type": "object"}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "actorSpecification": 1,
+  "name": "tacctico-inferencia-precios",
+  "title": "TACCtico — Inferencia de precios",
+  "description": "Modelo propio entrenado con el dataset real de Kiara. No ejecuta scraping ni inventa precios de venta.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "defaultMemoryMbytes": 512,
+  "dockerContextDir": "../",
+  "dockerfile": "../actor_apify/Dockerfile",
+  "input": "../actor_apify/input_schema.json",
+  "output": "../actor_apify/output_schema.json",
+  "readme": "../actor_apify/README.md"
+}

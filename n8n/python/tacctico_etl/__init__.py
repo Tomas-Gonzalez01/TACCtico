@@ -2,6 +2,7 @@
 from .pipeline import procesar
 from .storage import guardar_lote, confirmar_publicacion
 import hashlib
+import json
 
 
 def ejecutar(items, publicar=True):
@@ -20,6 +21,7 @@ def ejecutar(items, publicar=True):
             "md5": hashlib.md5(value).hexdigest(), "sha256": hashlib.sha256(value).hexdigest()})
     return {
         **resumen,
+        "modelo_id": json.loads(resultado["archivos"]["metricas.json"])["ml"]["modelo_id"],
         "archivo_sha256": hashlib.sha256(contenido).hexdigest(),
         "archivo_md5": hashlib.md5(contenido).hexdigest(),
         "archivo_bytes": len(contenido),

@@ -1,4 +1,7 @@
 .venv/
+/storage/
+/tmp/
+/actor_apify/storage/
 __pycache__/
 .hallmark/
 .ruff_cache/

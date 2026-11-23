@@ -9,6 +9,7 @@ import streamlit as st
 from budget import BudgetLine, ars, budget_orders, money, parse_quantity, quantity_label, quantity_number
 from budget_pdf import create_pdf
 from purchase_engine import candidate_quotes
+from ml_view import price_notice, show_price_detail
 
 
 CART = "lista_compras"
@@ -58,6 +59,7 @@ def choose_offer(quotes, *, key):
                 "unit_price": (
                     f"{ars(quote.merchandise / quote.received)} por {measure}"
                     + (" · Precio atípico" if offer.outlier_price else "")
+                    + price_notice(offer.listing)
                 ),
             }
         )
@@ -214,6 +216,7 @@ def show_budget():
                 f" · {ars(quote.merchandise)}"
             )
             with st.expander("Detalle e IVA"):
+                show_price_detail(offer.listing)
                 st.caption(
                     f"Sobrante {quantity_label(quote.surplus, offer.unit)} · "
                     f"{ars(quote.merchandise / quote.received)} por {offer.unit}"

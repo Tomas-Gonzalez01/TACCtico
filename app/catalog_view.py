@@ -8,6 +8,7 @@ import pandas as pd
 import streamlit as st
 
 from budget import ars, quantity_number
+from ml_view import show_catalog_signals
 
 
 INGREDIENTS = {
@@ -59,6 +60,7 @@ def display_frame(offers):
 
 
 def show_catalog(offers):
+    show_catalog_signals(offers)
     frame = display_frame(offers)
     formats = {name: price_label for name in ("precio_publicado", "precio_100g") if name in frame}
     with st.container(key="catalogo_tabla"):

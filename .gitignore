@@ -22,10 +22,8 @@ secrets*.json
 /data/
 /data_real/
 *.sqlite3*
-/make/*
-!/make/README.md
-!/make/actualizacion_mercadolibre.md
 *.csv
 !/data_sample/datos_mock.csv
 !/data_public/mercadolibre_validado_2026-11-14.csv
 !/data_public/actual/mercadolibre_validado.csv
+configuracion_escenario.json

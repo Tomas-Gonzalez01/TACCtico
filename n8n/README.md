@@ -4,14 +4,14 @@ El flujo principal **TACCtico — Drive a dataset limpio** descarga el archivo c
 
 ```mermaid
 flowchart LR
-    A[CSV crudo en Drive] --> B[n8n: validar y limpiar]
+    A[CSV crudo en Drive] --> B[n8n: validar, limpiar y aplicar ML]
     B --> C[CSV + métricas + dashboard]
     C --> D[Subir o reutilizar y verificar]
     D --> E[Actualizar vigente al final]
     E --> F[TACCtico: catálogo, presupuesto y dashboard]
 ```
 
-No se ejecuta scraping ni Make en este recorrido. La extracción en Apify aportada por Kiara usó el [scraper externo de karamelo](../apify/README.md); la conexión actual usa el CSV crudo ya disponible. Los precios siguen correspondiendo a su fecha de captura.
+No se ejecuta scraping en este recorrido. La extracción en Apify aportada por Kiara usó el [scraper externo de karamelo](../apify/README.md); la conexión actual usa el CSV crudo ya disponible. Los precios siguen correspondiendo a su fecha de captura.
 
 ## Usarlo en esta computadora
 

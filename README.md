@@ -9,18 +9,38 @@ Compará ofertas de insumos sin TACC y armá el presupuesto de tu negocio con pr
 - [Checklist contra la consigna de GitHub](docs/ENTREGA_GITHUB.md), con evidencias y pendientes.
 - [Guía para leer el código](docs/CODIGO.md), responsabilidades y verificación del formato.
 - [Flujos importables de n8n, código Python e instalación](n8n/README.md).
-- [Make: prototipo anterior, captura real e historial](make/README.md).
 - [Procedencia de Apify](apify/README.md): scraper externo de karamelo identificado; configuración histórica y fuente documentados por separado.
 
-### Evidencias de automatización
+## Estructura del proyecto
+
+```text
+.
+|-- .actor/                   Configuración del actor propio
+|-- actor_apify/              Inferencia: fuente Python, Dockerfile y esquemas
+|-- apify/                    Procedencia del scraper externo
+|-- app/                      Interfaz, reglas de compra y presupuesto PDF
+|-- colabs/
+|   |-- analytics/            Notebook de análisis
+|   `-- training/             Notebook de entrenamiento
+|-- n8n/
+|   |-- flujo_*.json          Flujos importables sin credenciales
+|   |-- generar_*.py          Generadores legibles de esos flujos
+|   `-- python/tacctico_etl/   Limpieza, métricas, inferencia y modelos
+|-- scripts/                  Entrenamiento, importación y pruebas
+|-- data_public/actual/       CSV y resultados finales autorizados
+|-- data_sample/              Casos artificiales solo para pruebas
+|-- docs/                     Guías de entrega, modelo y evidencias
+|-- requirements*.txt         Dependencias de aplicación, desarrollo y ML
+`-- README.md                 Instalación y recorrido de la demo
+```
+
+La [guía de lectura del código](docs/CODIGO.md) relaciona esta estructura con el ejemplo docente. Los datos crudos y las credenciales se conservan fuera de Git; los resultados públicos están en `data_public/actual/`.
+
+## Evidencias de automatización
 
 ![Flujo real instalado en n8n](docs/evidencias/n8n-flujo-real.jpg)
 
-Captura del editor de n8n del 19/11/2026. El código y las plantillas importables están en `n8n/`; durante esta revisión no se ejecutó el flujo.
-
-![Make: webhook y subida a Drive](docs/evidencias/make-escenario-historico.jpg)
-
-El prototipo de Make fue reemplazado por n8n. Su captura muestra el escenario inactivo y la ejecución exitosa del 14/11/2026 a las 20:19:47. No se lanzó una corrida nueva.
+Captura del editor de n8n del 19/11/2026. Los flujos importables y sus generadores están en `n8n/`. La inferencia ML se incorporó el 23/11; su código, evaluación y corrida en Apify se documentan en [el informe del modelo](docs/MODELO_ML.md).
 
 Se puede consultar sin cuenta. La versión procesada el **23/11/2026**, con el ROI actualizado, tiene **372 publicaciones reales**, con precios de la captura del **14/11/2026**. El análisis estadístico usa **330** publicaciones útiles sin precios atípicos. La fecha de procesamiento no actualiza los precios de la captura.
 
@@ -83,13 +103,13 @@ python -m venv .venv
 
 [Abrir demo local](http://127.0.0.1:8501). Mantené abierta la terminal; Ctrl+C la detiene. En macOS/Linux usá `.venv/bin/python`.
 
-La app consulta el puntero público configurado en `data_public/conexion.json` (o `TACCTICO_MANIFEST_ID`) y verifica la huella del paquete antes de usarlo. `data_public/actual/` conserva el mismo lote como respaldo si Drive no responde. No requiere claves de Google, n8n, Apify ni Make. El CSV anterior de 363 publicaciones permanece como referencia histórica y no alimenta el lote actual.
+La app consulta el puntero público configurado en `data_public/conexion.json` (o `TACCTICO_MANIFEST_ID`) y verifica la huella del paquete antes de usarlo. `data_public/actual/` conserva el mismo lote como respaldo si Drive no responde. No requiere claves de Google, n8n ni Apify. El CSV anterior de 363 publicaciones permanece como referencia histórica y no alimenta el lote actual.
 
 ## Cómo se actualizan los datos
 
 ```mermaid
 flowchart LR
-    A[CSV crudo en Drive] --> B[n8n: limpieza de Kiara]
+    A[CSV crudo en Drive] --> B[n8n: limpieza de Kiara e inferencia ML]
     B --> C[CSV + métricas + dashboard]
     C --> D[Subir o reutilizar y verificar]
     D --> E[Actualizar vigente]
@@ -100,7 +120,7 @@ n8n descarga las 591 publicaciones originales. La selección útil produce 347 f
 
 El lote reúne CSV, métricas y HTML con una identidad común. Los archivos de cada lote son inmutables y se verifica tamaño/MD5 en Drive y SHA-256 en la app. El puntero vigente se actualiza al final. Repetir una ejecución reutiliza los archivos. La ejecución real de subida, repetición y lectura sin cuenta se comprobó el 19/11/2026.
 
-La página consulta resultados ya generados; no ejecuta scraping ni n8n al abrirse. La captura puede provenir de una exportación de Apify. Make corresponde a una etapa anterior reemplazada por este flujo. No se calcula una tendencia con una sola captura. El historial recibido se conserva localmente en el proceso de ingesta.
+La página consulta resultados ya generados; no ejecuta scraping ni n8n al abrirse. La captura puede provenir de una exportación de Apify. No se calcula una tendencia con una sola captura. El historial recibido se conserva localmente en el proceso de ingesta.
 
 ## Esquema y procedencia
 
@@ -123,7 +143,11 @@ El equipo autorizó publicar estos resultados finales del Capstone. El dataset c
 ## Verificar la instalación
 
 ```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+.\.venv\Scripts\python.exe -m ruff format --check app scripts actor_apify n8n
+.\.venv\Scripts\python.exe -m ruff check app scripts actor_apify n8n --select E9,F63,F7,F82
 .\.venv\Scripts\python.exe -m unittest discover -s scripts -p "test_*.py"
+.\.venv\Scripts\python.exe -m unittest discover -s n8n -p "test_*.py"
 .\.venv\Scripts\python.exe scripts/validar_demo.py
 ```
 

@@ -38,4 +38,4 @@ El lote publicado conserva **372** publicaciones y **330** en el análisis, y a�
 
 ![Flujo de n8n, evidencia histórica del 19/11](evidencias/n8n-flujo-real.jpg)
 
-El mismo flujo fue actualizado con ML el 23/11. Make queda como [antecedente documentado](../make/README.md), no como recorrido vigente.
+El mismo flujo fue actualizado con ML el 23/11. Los flujos importables, sus generadores y la conexión con Drive se entregan en [n8n/](../n8n/README.md).

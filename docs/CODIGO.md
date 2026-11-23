@@ -1,5 +1,23 @@
 # Cómo leer el código de TACCtico
 
+## Relación con el ejemplo docente
+
+La estructura conserva las mismas responsabilidades del ejemplo; el actor propio está escrito en Python.
+
+| Elemento del ejemplo | Ubicación en TACCtico |
+| --- | --- |
+| Fuente del actor | [actor_apify/src/main.py](../actor_apify/src/main.py), con entrada en [__main__.py](../actor_apify/src/__main__.py). Es el actor de inferencia; el scraper externo tiene su [referencia separada](../apify/README.md). |
+| Configuración, contenedor y contratos | [.actor/actor.json](../.actor/actor.json), [Dockerfile](../actor_apify/Dockerfile), [entrada](../actor_apify/input_schema.json) y [salida](../actor_apify/output_schema.json). |
+| Dependencias del actor | [actor_apify/requirements.txt](../actor_apify/requirements.txt) y [paquete ETL compartido](../n8n/python/pyproject.toml). |
+| Análisis y entrenamiento | [Análisis](../colabs/analytics/analisis_dataset.ipynb), [entrenamiento](../colabs/training/entrenamiento.ipynb) y [script reproducible](../scripts/train_ml.py). |
+| Datos crudos y procesados | Crudo privado en Drive y almacenamiento local; resultados autorizados en [data_public/actual/](../data_public/actual/). |
+| ETL y preparación | [pipeline.py](../n8n/python/tacctico_etl/pipeline.py), [kiara_etl.py](../n8n/python/tacctico_etl/kiara_etl.py) y [app_adapter.py](../n8n/python/tacctico_etl/app_adapter.py). |
+| Inferencia y evaluación | [ml_model.py](../n8n/python/tacctico_etl/ml_model.py), [modelos y reportes](../n8n/python/tacctico_etl/models/) e [informe ML](MODELO_ML.md). |
+| Automatización | [n8n/README.md](../n8n/README.md), flujos importables y sus generadores. |
+| Instalación, pruebas y consumo | [README principal](../README.md), comandos al final de esta guía y [registro de ejecución](evidencias/apify-inferencia-20261123.json). |
+
+Los archivos de árboles entrenados, flujos JSON, imágenes y resultados son artefactos. Para entender las reglas conviene leer sus módulos y generadores, en lugar de revisar números del modelo o una exportación de n8n línea por línea.
+
 ## Recorrido recomendado
 
 1. [Inicio de Streamlit](../app/streamlit_app.py): configuración, encabezado, navegación y selección del lote.
@@ -10,6 +28,9 @@
 6. [Interacciones de la lista](../app/budget_view.py) y [PDF](../app/budget_pdf.py): selección de productos y generación del documento.
 7. [Lote y actualización](../app/data_release.py): descarga, verificación de integridad y respaldo local.
 8. [Limpieza de n8n](../n8n/python/tacctico_etl/pipeline.py): validación del CSV crudo, selección de Kiara y contrato de salida.
+9. [Entrenamiento](../scripts/train_ml.py): división por grupos, comparación de modelos y evaluación reservada.
+10. [Inferencia compartida](../n8n/python/tacctico_etl/ml_model.py) y [actor de Apify](../actor_apify/src/main.py): aplicar el modelo entrenado y registrar la ejecución.
+11. [Señales en la aplicación](../app/ml_view.py): consultar los resultados del mismo lote desde catálogo y presupuesto.
 
 ## Responsabilidades
 
@@ -35,7 +56,6 @@
 | `colabs/` | Notebooks portables de análisis y entrenamiento con el CSV público. |
 | `data_public/actual/` | Resultados finales autorizados; no es código de extracción. |
 | `apify/README.md` | Scraper de karamelo: referencia confirmada y evidencia histórica pendiente. |
-| `make/README.md` | Antecedente del prototipo reemplazado por n8n. |
 
 ## Criterios de lectura y mantenimiento
 
@@ -53,7 +73,8 @@ Desde la raíz, con Python 3.12:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
-.\.venv\Scripts\python.exe -m ruff format --check app scripts n8n
+.\.venv\Scripts\python.exe -m ruff format --check app scripts actor_apify n8n
+.\.venv\Scripts\python.exe -m ruff check app scripts actor_apify n8n --select E9,F63,F7,F82
 .\.venv\Scripts\python.exe -m unittest discover -s scripts -p "test_*.py"
 .\.venv\Scripts\python.exe -m unittest discover -s n8n -p "test_*.py"
 .\.venv\Scripts\python.exe scripts/validar_demo.py

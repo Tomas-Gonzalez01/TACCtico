@@ -3,9 +3,9 @@
 Estado de esta instalación: conexión de Google autorizada y seleccionada en los
 nodos Drive y consultas de permisos de ambos flujos. Ya se comprobó la descarga,
 limpieza, primera subida, reutilización y lectura pública de los resultados finales.
-Las instrucciones siguientes sirven para
-reproducir la conexión en otra instalación o renovarla; las credenciales del chat
-y de Make no sirven como autorización de n8n.
+Las instrucciones siguientes sirven para reproducir la conexión en otra instalación
+o renovarla. Cada instalación de n8n necesita su propia autorización de Google;
+las conexiones de otras aplicaciones no se transfieren automáticamente.
 
 En la instalación de Tomás ya se creó el proyecto **TACCtico n8n**, se habilitó
 Google Drive API, se configuró la app OAuth en modo de prueba y se creó el cliente

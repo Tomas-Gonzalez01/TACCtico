@@ -123,6 +123,7 @@ html, body {
 .st-key-presupuesto [data-testid="stMetricValue"] { font-variant-numeric: tabular-nums; }
 .st-key-resumen_presupuesto { padding-bottom: .75rem; }
 .st-key-catalogo_tarjetas, .mobile-budget { display: none; }
+.st-key-contenido_catalogo { container: catalogo / inline-size; }
 .catalog-cards { display: grid; gap: var(--space-md); }
 .catalog-card { padding: var(--space-md); border-block-end: 1px solid var(--color-rule); }
 .catalog-card h3 { margin: 0 0 .5rem; font-size: 1.0625rem; line-height: 1.4; overflow-wrap: break-word; }
@@ -188,7 +189,13 @@ html, body {
         text-decoration: none;
     }
 }
-@media (max-width: 48rem) {
+/* El ancho real del catálogo también puede reducirse al abrir un panel lateral. */
+@container catalogo (max-width: 70rem) {
+    .st-key-catalogo_tabla { display: none; }
+    .st-key-catalogo_tarjetas { display: block; }
+}
+/* Respaldo para navegadores que no admiten consultas por contenedor. */
+@media (max-width: 74rem) {
     .st-key-catalogo_tabla { display: none; }
     .st-key-catalogo_tarjetas { display: block; }
 }

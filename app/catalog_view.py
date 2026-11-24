@@ -83,15 +83,16 @@ def show_catalog(offers):
                 if name in frame
             ],
             column_config={
-                "titulo": st.column_config.TextColumn("Producto", width="large"),
-                "precio_publicado": "Precio publicado",
-                "presentacion": "Presentación",
-                "precio_100g": "Referencia por 100 g",
-                "vendedor": "Vendedor",
-                "insumo": "Insumo",
-                "marca": "Marca",
-                "url": st.column_config.LinkColumn("Publicación", display_text="Ver publicación"),
+                "titulo": st.column_config.TextColumn("Producto", width=240),
+                "precio_publicado": st.column_config.NumberColumn("Precio publicado", width=114),
+                "presentacion": st.column_config.TextColumn("Presentación", width=122),
+                "precio_100g": st.column_config.NumberColumn("Referencia por 100 g", width=126),
+                "vendedor": st.column_config.TextColumn("Vendedor", width=160),
+                "insumo": st.column_config.TextColumn("Insumo", width=120),
+                "marca": st.column_config.TextColumn("Marca", width=90),
+                "url": st.column_config.LinkColumn("Publicación", width=100, display_text="Ver publicación"),
             },
+            width="stretch",
             row_height=44,
         )
     with st.container(key="catalogo_tarjetas"):

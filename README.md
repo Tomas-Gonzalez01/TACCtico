@@ -1,3 +1,5 @@
+<img src="app/static/logo-tacctico.png" alt="Logo de TACCtico" width="140">
+
 # TACCtico
 
 Compará insumos sin TACC y armá el presupuesto de tu negocio con publicaciones de Mercado Libre Argentina.

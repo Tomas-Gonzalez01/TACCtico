@@ -1,6 +1,6 @@
 # Entrega de TACCtico: pipeline, modelo y aplicación
 
-Revisión del **23/11/2026** según los puntos del ejemplo docente. [Aplicación pública](https://tacctico-portafolio-ucn4pkoeemkzx9fowx7ktt.streamlit.app/) · [Repositorio público](https://github.com/Tomas-Gonzalez01/tacctico-portafolio).
+Revisión del **23/11/2026** según los puntos del ejemplo docente. [Aplicación pública](https://tacctico-portafolio-ucn4pkoeemkzx9fowx7ktt.streamlit.app/) · [Repositorio público](https://github.com/Tomas-Gonzalez01/TACCtico).
 
 | Punto | Evidencia entregada |
 | --- | --- |
@@ -18,7 +18,7 @@ Revisión del **23/11/2026** según los puntos del ejemplo docente. [Aplicación
 
 ## Ejecución real del actor
 
-[Actor propio en la cuenta del equipo](https://console.apify.com/actors/vrPmjPvnGdcnclUDA) · [Run verificado](https://console.apify.com/actors/vrPmjPvnGdcnclUDA/runs/j4iEFhMD3Bq6LQha9). Estos enlaces requieren acceso a la cuenta propietaria; el código y los resultados incluidos en GitHub son públicos.
+[Actor propio en la cuenta del equipo](https://console.apify.com/actors/vrPmjPvnGdcnclUDA) · [Run verificado](https://console.apify.com/actors/vrPmjPvnGdcnclUDA/runs/j4iEFhMD3Bq6LQha9). La administración del actor requiere acceso a la cuenta propietaria. La ejecución y sus resultados tienen acceso de lectura por enlace; el código y los resultados incluidos en GitHub son públicos.
 
 La corrida terminó con éxito, 372 resultados, 335 evaluados, 37 sin evaluar y 17 señales auxiliares. Usó 512 MB asignados, sin GPU. La consola mostró unos 4 segundos totales y USD 0,002, redondeado a tres decimales. La inferencia midió 0,0846 s. El detalle de mediciones no sustituye el gasto histórico del scraping.
 

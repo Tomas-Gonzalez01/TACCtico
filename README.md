@@ -1,6 +1,6 @@
 # TACCtico
 
-Compará ofertas de insumos sin TACC y armá el presupuesto de tu negocio con presentaciones completas, cantidades y precios de Mercado Libre Argentina. Incluye catálogo, lista de compras, PDF y el dashboard de abastecimiento de Kiara.
+Compará ofertas de insumos sin TACC y armá el presupuesto de tu negocio con presentaciones completas, cantidades y precios de Mercado Libre Argentina. Incluye catálogo, lista de compras, PDF y el dashboard de abastecimiento desarrollado por el equipo.
 
 [Abrir TACCtico online](https://tacctico-portafolio-ucn4pkoeemkzx9fowx7ktt.streamlit.app/)
 
@@ -46,11 +46,11 @@ Se puede consultar sin cuenta. La versión procesada el **23/11/2026**, con el R
 
 La interfaz muestra precios en formato argentino, nombres de insumos legibles y «Sin dato» cuando falta información. El catálogo usa una tabla en escritorio y tarjetas paginadas en celular. En el presupuesto, la cantidad aparece antes de los filtros opcionales; la lista queda visible en escritorio y una barra de resumen permite volver a ella en celular. Esa barra conserva el aviso de cargos pendientes.
 
-El encabezado verde y el logo permanecen visibles también en **Dashboard**. Las secciones cambian con un fundido breve de 180 ms y los desplegables usan un puntero de selección, conservando la búsqueda por teclado. La navegación por teclado responde de inmediato y se respeta el movimiento reducido. El dashboard de Kiara, sus datos, gráficos y métricas, y los cálculos del presupuesto conservan su comportamiento.
+El encabezado verde y el logo permanecen visibles también en **Dashboard**. Las secciones cambian con un fundido breve de 180 ms y los desplegables usan un puntero de selección, conservando la búsqueda por teclado. La navegación por teclado responde de inmediato y se respeta el movimiento reducido. El dashboard, sus datos, gráficos y métricas, y los cálculos del presupuesto conservan su comportamiento.
 
 ## Probarlo
 
-El catálogo permite desplegar **Ofertas con precio para revisar**. En **Arma tu presupuesto → Detalle e IVA**, aparece la referencia estimada por kg. Son señales del modelo entrenado con la captura real, sin modificar los precios ni descartar compras. El dashboard de Kiara se conserva.
+El catálogo permite desplegar **Ofertas con precio para revisar**. En **Arma tu presupuesto → Detalle e IVA**, aparece la referencia estimada por kg. Son señales del modelo entrenado con la captura real, sin modificar los precios ni descartar compras. El dashboard se conserva.
 
 El [informe de ML](docs/MODELO_ML.md) incluye entrenamiento, prueba reservada, comparación de modelos y consumo. También se entregan el [actor propio de inferencia](actor_apify/README.md), modelos versionados y notebooks de análisis y entrenamiento en `colabs/`. No se necesita entrenar ni introducir claves para usar la web.
 
@@ -109,7 +109,7 @@ La app consulta el puntero público configurado en `data_public/conexion.json` (
 
 ```mermaid
 flowchart LR
-    A[CSV crudo en Drive] --> B[n8n: limpieza de Kiara e inferencia ML]
+    A[CSV crudo en Drive] --> B[n8n: limpieza, validación e inferencia ML]
     B --> C[CSV + métricas + dashboard]
     C --> D[Subir o reutilizar y verificar]
     D --> E[Actualizar vigente]
@@ -136,7 +136,7 @@ El [CSV del lote incluido](data_public/actual/mercadolibre_validado.csv) usa UTF
 | `tiene_promo`, `descuento_pct`, `precio_anterior`, `envio`, `promocion` | Condiciones de referencia de la captura. |
 | `categoria`, `nombre_ficha`, `linea`, `sabor`, `rnpa` | Datos complementarios de la ficha. |
 
-Los archivos `metricas.json`, `calidad.json` y `manifest.json` documentan métodos, supuestos, conteos e integridad. El dashboard conserva el diseño final de Kiara y recalcula sus datos sobre el mismo lote. Sus estadísticas normalizadas no sustituyen la comprobación de presentación, disponibilidad y cargos para un pedido concreto.
+Los archivos `metricas.json`, `calidad.json` y `manifest.json` documentan métodos, supuestos, conteos e integridad. El dashboard conserva el diseño final del equipo y recalcula sus datos sobre el mismo lote. Sus estadísticas normalizadas no sustituyen la comprobación de presentación, disponibilidad y cargos para un pedido concreto.
 
 El equipo autorizó publicar estos resultados finales del Capstone. El dataset crudo, rechazos, credenciales y carpetas privadas no forman parte de esta distribución. Las referencias por hora se identifican como supuestos del equipo; no como valores salariales oficiales.
 

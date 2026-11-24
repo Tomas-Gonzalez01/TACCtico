@@ -101,7 +101,7 @@
         240
       ],
       "parameters": {
-        "content": "## Dataset limpio para TACCtico\n1. Ejecutá el flujo y cargá el CSV crudo en el formulario.\n2. Revisá el resumen de Limpiar y guardar lote.\n3. Descargá dataset_limpio desde el último nodo.\n\nCada lote queda en n8n/storage/lotes. Repetir el mismo archivo reutiliza el lote. Si falla un control, se conserva el vigente.\n\nLa conexión a Drive se agrega cuando esté autorizada. No incluye EDA ni métricas.",
+        "content": "## Dataset limpio para TACCtico\n1. Ejecutá el flujo y cargá el CSV crudo en el formulario.\n2. Revisá el resumen de Limpiar y guardar lote.\n3. Descargá dataset_limpio desde el último nodo.\n\nCada lote queda en n8n/storage/lotes e incluye CSV, métricas y dashboard. Repetir el mismo archivo reutiliza el lote. Si falla un control, se conserva el vigente.\n\nEsta alternativa carga un archivo local. Para publicar en Drive, usá el flujo principal y su subflujo publicador.",
         "height": 300,
         "width": 740
       }

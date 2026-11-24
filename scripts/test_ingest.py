@@ -2,6 +2,8 @@ import csv
 import io
 import json
 import sqlite3
+import subprocess
+import sys
 import unittest
 from contextlib import closing
 from pathlib import Path
@@ -20,6 +22,38 @@ def encode_csv(row):
 
 
 class IngestTest(unittest.TestCase):
+    def test_import_command_works_without_installed_third_party_packages(self):
+        row = {
+            "idPublicacion": "MLA-TEST-CLI",
+            "articuloTitulo": "Premezcla 500 g",
+            "nuevoPrecio": "5000",
+            "Moneda": "ARS",
+            "zProductoLink": "https://articulo.mercadolibre.com.ar/MLA-TEST-CLI",
+            "Tiempo": "2026-11-14T19:30:00-03:00",
+        }
+        with TemporaryDirectory() as temp:
+            source = Path(temp) / "crudo.csv"
+            destination = Path(temp) / "validado.csv"
+            source.write_text(encode_csv(row), encoding="utf-8")
+            subprocess.run(
+                [
+                    sys.executable,
+                    "-B",
+                    "-S",
+                    str(Path(__file__).with_name("importar_mercadolibre.py")),
+                    str(source),
+                    str(destination),
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            with destination.open(encoding="utf-8", newline="") as file:
+                (cleaned,) = csv.DictReader(file)
+            self.assertEqual(cleaned["id_publicacion"], row["idPublicacion"])
+            self.assertEqual(cleaned["precio_publicado"], "5000")
+            self.assertEqual(cleaned["capturado_en"], "2026-11-14T22:30:00+00:00")
+
     def test_curated_lot_keeps_the_original_capture(self):
         original = {
             "idPublicacion": "MLA-test",
@@ -69,7 +103,7 @@ class IngestTest(unittest.TestCase):
             self.assertEqual(ingest(snapshot, database), (0, 1))
 
     def test_csv_json_history_duplicates_and_rollback(self):
-        sample = Path(__file__).resolve().parents[1] / "data_sample" / "datos_mock.csv"
+        sample = Path(__file__).resolve().parent / "fixtures" / "datos_mock.csv"
         with sample.open(encoding="utf-8", newline="") as file:
             rows = list(csv.DictReader(file))[:10]
 

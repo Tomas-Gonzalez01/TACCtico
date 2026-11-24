@@ -1,12 +1,9 @@
 """Prepara el flujo Drive. La credencial OAuth se selecciona dentro de n8n."""
 
-import argparse
 import copy
-import json
-from pathlib import Path
 import uuid
 
-ROOT = Path(__file__).resolve().parent
+from generar_flujo import build as build_form
 
 
 def node(name, kind, x, parameters, version=2):
@@ -21,7 +18,7 @@ def node(name, kind, x, parameters, version=2):
 
 
 def generar(archivo="ID_DEL_CSV_CRUDO", carpeta="ID_CARPETA_SALIDA"):
-    base = json.loads((ROOT / "flujo_dataset_limpio.json").read_text(encoding="utf-8"))
+    base = build_form()
     transforms = copy.deepcopy(base["nodes"][1:4])
     for i, item in enumerate(transforms):
         item["position"] = [(i + 2) * 240, 0]
@@ -173,34 +170,3 @@ return [{json: {estado: 'listo_en_drive', lote: lote.lote, publicaciones: lote.p
         "settings": {"executionOrder": "v1", "binaryMode": "separate"},
         "pinData": {},
     }
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--archivo")
-    parser.add_argument("--carpeta")
-    args = parser.parse_args()
-    template = generar()
-    (ROOT / "flujo_drive_plantilla.json").write_text(
-        json.dumps(template, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
-    if args.archivo and args.carpeta:
-        local = ROOT / "backups/drive_destinos.json"
-        config = (
-            json.loads(local.read_text(encoding="utf-8"))
-            if local.exists()
-            else {"workflow_id": uuid.uuid4().hex[:16]}
-        )
-        config.update(archivo_crudo=args.archivo, carpeta_salida=args.carpeta)
-        local.parent.mkdir(exist_ok=True)
-        local.write_text(json.dumps(config, indent=2), encoding="utf-8")
-        workflow = generar(args.archivo, args.carpeta)
-        workflow["id"] = config["workflow_id"]
-        (ROOT / "backups/flujo_drive_configurado.json").write_text(
-            json.dumps(workflow, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
-        print(
-            "Flujo Drive preparado:", config["workflow_id"], "(requiere seleccionar credencial OAuth en n8n)"
-        )
-    else:
-        print("Plantilla Drive sin datos de cuenta generada.")

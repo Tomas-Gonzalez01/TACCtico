@@ -23,7 +23,5 @@ secrets*.json
 /data_real/
 *.sqlite3*
 *.csv
-!/data_sample/datos_mock.csv
-!/data_public/mercadolibre_validado_2026-11-14.csv
+!/scripts/fixtures/datos_mock.csv
 !/data_public/actual/mercadolibre_validado.csv
-configuracion_escenario.json

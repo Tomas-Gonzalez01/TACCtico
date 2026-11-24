@@ -1,5 +1,7 @@
 import sys
 from pathlib import Path
+import shutil
+from tempfile import TemporaryDirectory
 from unittest.mock import patch
 import unittest
 
@@ -9,9 +11,35 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "app"))
 import release_view
 from data_release import load_local
+from purchase_data import market_csv
 
 
 class ReleaseViewTests(unittest.TestCase):
+    def test_corrupt_local_update_falls_back_to_the_verified_372_row_bundle(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            backup = root / "data_public/actual"
+            shutil.copytree(ROOT / "data_public/actual", backup)
+            storage = root / "n8n/storage"
+            storage.mkdir(parents=True)
+            for pointer in ("incompleto", '{"lote":"' + "a" * 64 + '"}'):
+                with self.subTest(pointer=pointer):
+                    (storage / "publicado.json").write_text(pointer, encoding="utf-8")
+                    release = load_local(root)
+                    self.assertEqual(release["metrics"]["catalogo"], 372)
+                    self.assertEqual(market_csv(root), backup / "mercadolibre_validado.csv")
+
+    def test_corrupt_backup_is_rejected_instead_of_loaded_as_a_plain_csv(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            backup = root / "data_public/actual"
+            shutil.copytree(ROOT / "data_public/actual", backup)
+            (backup / "mercadolibre_validado.csv").write_text("alterado", encoding="utf-8")
+            for loader in (load_local, market_csv):
+                with self.subTest(loader=loader.__name__):
+                    with self.assertRaisesRegex(ValueError, "no coincide"):
+                        loader(root)
+
     def test_refresh_failure_retains_the_cart_and_lot(self):
         current = {"lote": "a" * 64, "metrics": {"captura_hasta": "2026-11-14"}}
         state = {"lote_datos": current, "lista_compras": {"pan": "oferta"}}

@@ -1,5 +1,6 @@
 """Genera flujos que publican CSV, paquete y un puntero vigente al final."""
 
+import argparse
 import copy
 import json
 from pathlib import Path
@@ -355,17 +356,35 @@ return [{json:{...e.vigente,id_vigente:a.id,enlace_vigente:a.webViewLink,estado:
     return parent, child
 
 
-if __name__ == "__main__":
-    config_path = ROOT / "backups/drive_destinos.json"
-    config = json.loads(config_path.read_text(encoding="utf-8"))
-    config.setdefault("publicador_id", uuid.uuid4().hex[:16])
-    config_path.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output-dir", type=Path, default=ROOT, help="Destino de las plantillas públicas.")
+    parser.add_argument("--config", type=Path, help="Configuración privada opcional de esta instalación.")
+    parser.add_argument(
+        "--credentials-from", type=Path, help="Exportación privada opcional de n8n con la conexión Drive."
+    )
+    args = parser.parse_args()
+    if args.credentials_from and not args.config:
+        parser.error("--credentials-from requiere --config.")
+    config = None
+    if args.config:
+        config = json.loads(args.config.read_text(encoding="utf-8"))
+        required = {"workflow_id", "carpeta_salida", "archivo_crudo"}
+        if not required <= config.keys():
+            parser.error("Faltan destinos en --config: " + ", ".join(sorted(required - config.keys())))
+        config.setdefault("publicador_id", uuid.uuid4().hex[:16])
+    args.output_dir.mkdir(parents=True, exist_ok=True)
     portable_parent, portable_child = build()
     for name, content in (
         ("flujo_drive_plantilla.json", portable_parent),
         ("flujo_publicador_plantilla.json", portable_child),
     ):
-        (ROOT / name).write_text(json.dumps(content, ensure_ascii=False, indent=2), encoding="utf-8")
+        (args.output_dir / name).write_text(
+            json.dumps(content, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
+    if config is None:
+        print("Plantillas Drive y publicación generadas sin destinos ni credenciales.")
+        return
     parent, child = build(
         config["carpeta_salida"],
         config["archivo_crudo"],
@@ -373,13 +392,29 @@ if __name__ == "__main__":
         config.get("acceso_publico", False),
     )
     parent["id"], child["id"] = config["workflow_id"], config["publicador_id"]
-    previous = json.loads((ROOT / "backups/drive_inicio_19.json").read_text(encoding="utf-8"))[0]
-    credential = next(n["credentials"] for n in previous["nodes"] if n.get("credentials"))
-    for flow in (parent, child):
-        for item in flow["nodes"]:
-            if item["type"] in ("n8n-nodes-base.googleDrive", "n8n-nodes-base.httpRequest"):
-                item["credentials"] = copy.deepcopy(credential)
-    (ROOT / "backups/flujos_publicacion.json").write_text(
+    if args.credentials_from:
+        previous = json.loads(args.credentials_from.read_text(encoding="utf-8"))
+        previous = previous[0] if isinstance(previous, list) else previous
+        credential = next(
+            (
+                n["credentials"]
+                for n in previous["nodes"]
+                if "googleDriveOAuth2Api" in n.get("credentials", {})
+            ),
+            None,
+        )
+        if credential is None:
+            parser.error("La exportación no contiene una conexión Google Drive.")
+        for flow in (parent, child):
+            for item in flow["nodes"]:
+                if item["type"] in ("n8n-nodes-base.googleDrive", "n8n-nodes-base.httpRequest"):
+                    item["credentials"] = copy.deepcopy(credential)
+    args.config.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
+    (args.config.parent / "flujos_publicacion.json").write_text(
         json.dumps([child, parent], ensure_ascii=False, indent=2), encoding="utf-8"
     )
     print("Flujo principal:", parent["id"], "Publicador:", child["id"])
+
+
+if __name__ == "__main__":
+    main()

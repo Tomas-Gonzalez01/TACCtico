@@ -36,7 +36,7 @@ def choose_release(root, *, refresh=False, controls=True):
                     messages.success("Datos actualizados. Podés armar un nuevo presupuesto.")
             elif refresh:
                 messages.info("Ya estás usando la última versión disponible.")
-        except (OSError, ValueError, KeyError, TypeError) as error:
+        except (OSError, ValueError, KeyError, TypeError):
             if current is None:
                 try:
                     current = load_local(root)

@@ -1,9 +1,7 @@
 """Verifica un lote terminado antes de instalarlo atómicamente en la demo local."""
 
 import argparse
-import csv
 import hashlib
-import io
 import json
 import os
 from pathlib import Path

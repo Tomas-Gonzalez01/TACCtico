@@ -80,6 +80,25 @@ Creá tu usuario local y [conectá tu propio Drive](CONECTAR_DRIVE.md). No requi
 
 Importá primero `flujo_publicador_plantilla.json` y después `flujo_drive_plantilla.json`. Seleccioná la conexión Google en los nodos Drive, el archivo de entrada, la carpeta de salida y el ID del subflujo. La lectura pública requiere autorización del equipo y configuración explícita; las plantillas no la activan. `flujo_dataset_limpio.json` conserva la alternativa de carga por formulario local.
 
+### Regenerar las plantillas
+
+Desde `n8n/`, estos comandos funcionan en un clon público nuevo, sin credenciales ni archivos de `backups/`:
+
+```powershell
+python generar_flujo.py
+python generar_publicacion.py
+```
+
+El primero genera la alternativa por formulario. El segundo genera las dos plantillas del recorrido principal de Drive. Ambos admiten `--output-dir RUTA` para comprobar los resultados en otra carpeta. Importar sus funciones no escribe archivos, y ninguno modifica las reglas ETL ni el lote publicado. `generar_flujo_drive.py` contiene funciones auxiliares; no se ejecuta como un generador separado.
+
+Para preparar una instalación propia desde un archivo privado existente:
+
+```powershell
+python generar_publicacion.py --config backups/drive_destinos.json
+```
+
+La configuración debe contener `workflow_id`, `archivo_crudo` y `carpeta_salida`. Se conserva o genera `publicador_id`; `acceso_publico` es opcional y queda desactivado por defecto. El resultado configurado se guarda como `flujos_publicacion.json` junto a la configuración privada. Las plantillas públicas conservan destinos de ejemplo. Las conexiones se seleccionan dentro de n8n; solo si se necesita reutilizar una exportación privada, se indica explícitamente `--credentials-from backups/mi_exportacion.json`. No subas esos archivos a GitHub.
+
 Para detener y volver a iniciar sin borrar datos:
 
 ```powershell

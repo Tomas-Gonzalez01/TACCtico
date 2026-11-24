@@ -27,7 +27,7 @@ Los archivos de árboles entrenados, flujos JSON, imágenes y resultados son art
 5. [Presupuesto](../app/budget.py): importes decimales, IVA, envío y cargos pendientes.
 6. [Interacciones de la lista](../app/budget_view.py) y [PDF](../app/budget_pdf.py): selección de productos y generación del documento.
 7. [Lote y actualización](../app/data_release.py): descarga, verificación de integridad y respaldo local.
-8. [Limpieza de n8n](../n8n/python/tacctico_etl/pipeline.py): validación del CSV crudo, selección de Kiara y contrato de salida.
+8. [Limpieza de n8n](../n8n/python/tacctico_etl/pipeline.py): validación del CSV crudo, selección del equipo y contrato de salida.
 9. [Entrenamiento](../scripts/train_ml.py): división por grupos, comparación de modelos y evaluación reservada.
 10. [Inferencia compartida](../n8n/python/tacctico_etl/ml_model.py) y [actor de Apify](../actor_apify/src/main.py): aplicar el modelo entrenado y registrar la ejecución.
 11. [Señales en la aplicación](../app/ml_view.py): consultar los resultados del mismo lote desde catálogo y presupuesto.
@@ -43,11 +43,13 @@ Los archivos de árboles entrenados, flujos JSON, imágenes y resultados son art
 | `app/offer_picker.js` | Botón y doble clic para agregar una oferta a la lista. |
 | `app/assets/navigation.js` | Fundido al navegar; manejo de cambios rápidos y teclado. |
 | `app/assets/tokens.css`, `theme.css`, `offers.css` | Colores, tipografía, tamaños y estilos de la aplicación. |
-| `scripts/importar_mercadolibre.py` | Importación al contrato validado. |
+| `scripts/importar_mercadolibre.py` | Comando de importación; reutiliza las reglas de `app_adapter.py` sin duplicarlas ni requerir pandas. |
 | `scripts/ingest.py` | Historial en SQLite, duplicados y conflictos. |
 | `n8n/flujo_drive_plantilla.json` | Flujo importable principal; usa destinos de ejemplo. |
 | `n8n/flujo_publicador_plantilla.json` | Subflujo importable de subida y comprobación de archivos. |
-| `n8n/generar_*.py` | Construcción de los flujos portables a partir de código legible. |
+| `n8n/generar_flujo.py` | Genera la alternativa de carga por formulario. Importarlo no escribe archivos. |
+| `n8n/generar_flujo_drive.py` | Funciones compartidas para construir el recorrido desde Drive. |
+| `n8n/generar_publicacion.py` | Genera el flujo principal y su subflujo publicador sin requerir archivos privados. |
 | `n8n/python/tacctico_etl/` | Limpieza, métricas, adaptación al contrato y almacenamiento. |
 | `n8n/python/tacctico_etl/ml_model.py` | Validación e inferencia sobre los árboles entrenados exportados a JSON; verifica la huella del modelo. |
 | `scripts/train_ml.py` | Separación por grupos, selección de modelos dentro del entrenamiento, evaluación reservada y exportación. |
@@ -55,6 +57,7 @@ Los archivos de árboles entrenados, flujos JSON, imágenes y resultados son art
 | `actor_apify/` | Actor propio de inferencia, contratos y Dockerfile. |
 | `colabs/` | Notebooks portables de análisis y entrenamiento con el CSV público. |
 | `data_public/actual/` | Resultados finales autorizados; no es código de extracción. |
+| `scripts/fixtures/` | Datos artificiales exclusivos de las pruebas de historial; nunca se muestran en la demo. |
 | `apify/README.md` | Scraper de karamelo: referencia confirmada y evidencia histórica pendiente. |
 
 ## Criterios de lectura y mantenimiento
@@ -63,6 +66,8 @@ Los archivos de árboles entrenados, flujos JSON, imágenes y resultados son art
 - Los importes se calculan con `Decimal`; los textos de precios se formatean al mostrarlos.
 - Los valores desconocidos se mantienen como pendientes; no se inventan IVA, envío ni cantidades.
 - Los generadores mantienen el código del flujo fuera de una exportación privada de n8n. Los JSON pueden importarse y los Python permiten revisar su construcción.
+- Las reglas de importación tienen una sola implementación en `n8n/python/tacctico_etl/app_adapter.py`. Los generadores no escriben ni reformatean ese módulo; así se conserva la huella de las reglas del lote publicado.
+- El respaldo público es el lote completo verificado de `data_public/actual/`, compartido por catálogo, presupuesto y dashboard. No se distribuye otro CSV con un conteo anterior.
 - Se usa sangría de cuatro espacios y formato uniforme con Ruff. La configuración está en [pyproject.toml](../pyproject.toml).
 - Los archivos originales de `n8n/python/tacctico_etl/` se conservan: su contenido participa en la huella de las reglas y en la trazabilidad del lote. No se reformatean automáticamente ni se cambia el HTML de Kiara durante esta revisión.
 - Las credenciales, el CSV crudo, el almacenamiento de n8n y sus copias de seguridad quedan fuera de Git.
@@ -74,7 +79,7 @@ Desde la raíz, con Python 3.12:
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 .\.venv\Scripts\python.exe -m ruff format --check app scripts actor_apify n8n
-.\.venv\Scripts\python.exe -m ruff check app scripts actor_apify n8n --select E9,F63,F7,F82
+.\.venv\Scripts\python.exe -m ruff check app scripts actor_apify n8n --select E9,F63,F7,F82,F401,F841
 .\.venv\Scripts\python.exe -m unittest discover -s scripts -p "test_*.py"
 .\.venv\Scripts\python.exe -m unittest discover -s n8n -p "test_*.py"
 .\.venv\Scripts\python.exe scripts/validar_demo.py

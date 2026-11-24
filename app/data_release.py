@@ -89,10 +89,14 @@ def load_remote(pointer_id):
 def load_local(root):
     storage = root / "n8n/storage"
     if (storage / "publicado.json").is_file():
-        pointer = json.loads((storage / "publicado.json").read_text(encoding="utf-8"))
-        batch = pointer.get("lote", "")
-        if re.fullmatch("[a-f0-9]{64}", batch):
-            return verify_folder(storage / "lotes" / batch)
+        try:
+            pointer = json.loads((storage / "publicado.json").read_text(encoding="utf-8"))
+            batch = pointer.get("lote", "")
+            if re.fullmatch("[a-f0-9]{64}", batch):
+                return verify_folder(storage / "lotes" / batch)
+        except (OSError, ValueError, KeyError, TypeError):
+            # Si el lote local quedó incompleto, usar el respaldo público verificado.
+            pass
     current = root / "data_public/actual"
     if (current / "manifest.json").is_file():
         return verify_folder(current)

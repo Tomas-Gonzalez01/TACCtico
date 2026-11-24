@@ -11,7 +11,7 @@ from purchase_engine import Offer, Supplier
 
 
 def market_csv(root: Path) -> Path:
-    from data_release import load_local
+    from data_release import load_local, verify_folder
 
     try:
         release = load_local(root)
@@ -22,7 +22,10 @@ def market_csv(root: Path) -> Path:
     local = root / "data_real" / "mercadolibre_validado.csv"
     if local.is_file():
         return local
-    return root / "data_public" / "mercadolibre_validado_2026-11-14.csv"
+    current = root / "data_public" / "actual"
+    if (current / "mercadolibre_validado.csv").is_file():
+        verify_folder(current)
+    return current / "mercadolibre_validado.csv"
 
 
 WEIGHT = r"(\d+(?:[.,]\d+)?)\s*(kg|grs?|g)\b"

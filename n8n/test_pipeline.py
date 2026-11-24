@@ -1,6 +1,5 @@
 import csv
 import io
-import json
 from pathlib import Path
 import sys
 from tempfile import TemporaryDirectory

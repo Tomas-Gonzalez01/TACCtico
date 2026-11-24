@@ -36,6 +36,8 @@ El [CSV del lote incluido](../data_public/actual/mercadolibre_validado.csv) usa 
 
 Los archivos `metricas.json`, `calidad.json` y `manifest.json` documentan métodos, supuestos, conteos e integridad. El dashboard conserva el diseño final del equipo y recalcula sus datos sobre el mismo lote. Sus estadísticas normalizadas no sustituyen la comprobación de presentación, disponibilidad y cargos para un pedido concreto.
 
+`data_public/actual/` también es el respaldo de la demo cuando Drive no responde. Se comprueba el manifiesto antes de cargarlo; si una actualización local queda incompleta, se vuelve a este lote verificado. No se incluye una segunda copia del CSV de 363 publicaciones. Los datos artificiales de `scripts/fixtures/` se usan únicamente para comprobar el historial y los duplicados en las pruebas.
+
 El equipo autorizó publicar estos resultados finales del Capstone. El dataset crudo, rechazos, credenciales y carpetas privadas no forman parte de esta distribución. Las referencias por hora se identifican como supuestos del equipo; no como valores salariales oficiales.
 
 ## Fuentes y licencias
